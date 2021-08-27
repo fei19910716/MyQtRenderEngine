@@ -1,6 +1,0 @@
-[submodule "vendor/glfw"]
-	path = vendor/glfw
-	url = https://github.com/glfw/glfw.git
-[submodule "vendor/glew"]
-	path = vendor/glew
-	url = https://github.com/nigels-com/glew.git

@@ -1,0 +1,26 @@
+if (CMAKE_BUILD_TYPE STREQUAL "DEBUG" OR CMAKE_BUILD_TYPE STREQUAL "Debug" OR CMAKE_BUILD_TYPE STREQUAL "")
+    add_definitions(-DQT_QML_DEBUG)
+endif ()
+
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTORCC ON)
+
+find_package(Qt5Widgets REQUIRED)
+find_package(Qt5Core REQUIRED)
+find_package(Qt5Gui REQUIRED)
+find_package(Qt5OpenGL REQUIRED)
+find_package(Qt5Qml REQUIRED)
+find_package(Qt5Quick REQUIRED)
+find_package(Qt5QuickControls2 REQUIRED)
+find_package(Qt5Multimedia REQUIRED)
+find_package(Qt5WebEngine REQUIRED)
+find_package(Qt5Concurrent REQUIRED)
+find_package(Qt5 COMPONENTS Svg REQUIRED)
+
+add_definitions(${Qt5Widgets_DEFINITIONS} ${QtQml_DEFINITIwONS} ${Qt5Quick_DEFINITIONS})
+qt5_add_resources(QT_RESOURCES assets/main.qrc)
+
+get_target_property(_qmake_executable Qt5::qmake IMPORTED_LOCATION)
+get_filename_component(_qt_bin_dir "${_qmake_executable}" DIRECTORY)
+find_program(DEPLOYQT_EXECUTABLE NAMES windeployqt macdeployqt HINTS "${_qt_bin_dir}")

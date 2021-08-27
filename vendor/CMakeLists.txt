@@ -1,13 +1,11 @@
-
 set(vendor_libs
-    glfw
-)   
+    entityx
+)
 
-foreach(lib ${vendor_libs})
-    add_subdirectory(${lib})
-endforeach(lib ${vendor_libs})
+foreach(vendor_lib ${vendor_libs})
+    add_subdirectory(${vendor_lib})
+endforeach(vendor_lib ${venc})
 
 
-add_library(libvendor INTERFACE)
-
-target_link_libraries(libvendor INTERFACE ${vendor_libs})
+add_library(vendor INTERFACE)
+target_link_libraries(vendor INTERFACE ${vendor_libs})
