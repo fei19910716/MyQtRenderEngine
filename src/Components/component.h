@@ -40,10 +40,4 @@ public slots:
     }
 };
 
-class TriangleComponent: public Component{
-public:
-    TriangleComponent();
-
-};
-
 #endif // COMPONENTS_H

@@ -27,7 +27,11 @@ set(ENTITYX_BUILD_SHARED false CACHE BOOL "Build shared libraries?")
 include(${CMAKE_ROOT}/Modules/CheckIncludeFile.cmake)
 include(CheckCXXSourceCompiles)
 
-if(ENTITYX_BUILD_SHARED AND CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+#------------------------------------------------------------------------------
+# 检查编译器
+#------------------------------------------------------------------------------
+
+if(ENTITYX_BUILD_SHARED AND CMAKE_CXX_COMPILER_ID STREQUAL "MSVC") #编译器类型，不支持win下的dll， 因为没有设置export
     message(WARNING "\nBuilding as a shared library with MSVC is currently unsupported \
         and will not function as expected.\
         \nUse -DENTITYX_BUILD_SHARED=FALSE to build as a static library.")
@@ -63,8 +67,9 @@ set(libdir ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR})
 
 set(OLD_CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 if ((MAKE_CXX_COMPILER_ID STREQUAL "GNU") OR (CMAKE_CXX_COMPILER_ID STREQUAL "Clang"))
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++") #增加C++11定义
 endif()
+#检查C++文件编译
 check_cxx_source_compiles(
 "
 #include <memory>
@@ -76,7 +81,7 @@ int main() {
 ENTITYX_HAVE_CXX11_STDLIB
 )
 
-if (NOT ENTITYX_HAVE_CXX11_STDLIB)
+if (NOT ENTITYX_HAVE_CXX11_STDLIB) # 如果编译C++11特性失败，设置回old
     message(STATUS "-- Not using -stdlib=libc++ (test failed to build)")
     set(CMAKE_CXX_FLAGS "${OLD_CMAKE_CXX_FLAGS}")
 else ()
@@ -95,7 +100,7 @@ macro(require FEATURE_NAME MESSAGE_STRING)
     endif()
 endmacro(require)
 
-macro(create_test TARGET_NAME SOURCE DEPENDENCIES)
+macro(create_test TARGET_NAME SOURCE DEPENDENCIES) #创建test target
     add_executable(${TARGET_NAME} ${SOURCE})
     set_target_properties(${TARGET_NAME} PROPERTIES FOLDER "entityx/tests")
     target_link_libraries(
@@ -114,13 +119,13 @@ macro(create_test TARGET_NAME SOURCE DEPENDENCIES)
     endif()
 endmacro()
 
-if (NOT CMAKE_BUILD_TYPE)
+if (NOT CMAKE_BUILD_TYPE) #默认构造release版本
     message(STATUS "-- Defaulting to release build (use -DCMAKE_BUILD_TYPE:STRING=Debug for debug build)")
     set(CMAKE_BUILD_TYPE "Release")
 endif()
 
 message(STATUS "-- Checking misc features")
-require(HAVE_STDINT_H "stdint.h")
+require(HAVE_STDINT_H "stdint.h") # 检查是否被包含
 
 # Things to install
 
@@ -128,22 +133,23 @@ if (NOT DEFINED CMAKE_DEBUG_POSTFIX)
   set(CMAKE_DEBUG_POSTFIX "-d")
 endif()
 
+# 获取源代码
 set(sources entityx/System.cc entityx/Event.cc entityx/Entity.cc entityx/help/Timer.cc entityx/help/Pool.cc)
 
-if (ENTITYX_BUILD_SHARED)
+if (ENTITYX_BUILD_SHARED) #动态库
     message(STATUS "-- Building shared libraries (-DENTITYX_BUILD_SHARED=0 to only build static libraries)")
     add_library(entityx SHARED ${sources})
 
     set_target_properties(entityx PROPERTIES
         OUTPUT_NAME entityx
-        DEBUG_POSTFIX "${CMAKE_DEBUG_POSTFIX}"
+        DEBUG_POSTFIX "${CMAKE_DEBUG_POSTFIX}" #设置库名的后缀
         VERSION ${ENTITYX_VERSION}
         SOVERSION ${ENTITYX_MAJOR_VERSION}
         FOLDER entityx)
     set(install_libs entityx)
-    set_property(TARGET entityx APPEND PROPERTY INTERFACE_INCLUDE_DIRECTORIES
+    set_property(TARGET entityx APPEND PROPERTY INTERFACE_INCLUDE_DIRECTORIES #给某个target增加include dir
           $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>)
-else()
+else() #静态库
     add_library(entityx STATIC ${sources})
     set_target_properties(entityx PROPERTIES 
         DEBUG_POSTFIX "${CMAKE_DEBUG_POSTFIX}"
@@ -203,7 +209,14 @@ if (NOT WINDOWS OR CYGWIN)
         )
 endif()
 
-install(
+message(STATUS "CMAKE_CURRENT_SOURCE_DIR: " ${CMAKE_CURRENT_SOURCE_DIR})
+message(STATUS "CMAKE_CURRENT_BINARY_DIR: " ${CMAKE_CURRENT_BINARY_DIR})
+message(STATUS "CMAKE_INSTALL_PREFIX: " ${CMAKE_INSTALL_PREFIX})
+message(STATUS "libdir: " ${libdir})
+message(STATUS "CMAKE_CXX_FLAGS: " ${CMAKE_CXX_FLAGS})
+
+
+install( # 把所有头文件install到指定dir
     DIRECTORY "entityx"
     DESTINATION "include"
     FILES_MATCHING PATTERN "*.h"

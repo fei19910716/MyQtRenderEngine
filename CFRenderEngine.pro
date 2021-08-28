@@ -29,19 +29,25 @@ SOURCES += \
         src/Components/componentwidget.cpp \
         src/Entities/entity.cpp \
         src/Render/Render.cpp \
+        src/Render/RenderEngine.cpp \
         src/Render/renderthread.cpp \
         src/Render/texturebuffer.cpp \
+        src/Systems/Render/DrawTriangleSystem.cpp \
         main.cpp \
         src/mainwindow.cpp \
         src/renderview.cpp
 
 HEADERS += \
         src/Components/component.h \
+        src/Components/Appearance/Triangle.h \
         src/Components/componentwidget.h \
         src/Entities/entity.h \
         src/Render/Render.h \
+        src/Render/RenderEngine.h \
         src/Render/renderthread.h \
         src/Render/texturebuffer.h \
+        src/Systems/Render/Appearance.h \
+        src/Systems/Render/DrawTriangleSystem.h \
         src/mainwindow.h \
         src/renderview.h
 

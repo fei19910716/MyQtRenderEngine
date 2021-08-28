@@ -4,6 +4,20 @@ project(CFRenderEngine)
 set(target CFRenderEngine)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
+set(CMAKE_CXX_STANDARD 14)
+if (APPLE)
+# use GLUT
+    find_package(GLUT REQUIRED)
+    include_directories(${GLUT_INCLUDE_DIRS})
+else()
+    # HACK: This is NOTFOUND on OS X 10.8
+    find_package(OpenGL REQUIRED)
+    include_directories(${OPENGL_INCLUDE_DIR})
+endif()
+
+
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "bin/")
 
 include(tool)
 
@@ -48,3 +62,9 @@ add_executable(${target} ${CORE_SOURCE_FILES})
 # 指定头文件路径，否则会提示在ui_mainwindow.cpp中找不到提升的class
 target_include_directories(${target} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
 target_link_libraries(${target} PRIVATE ${QT_libs} vendor)
+
+if (MSVC)
+    # Tell MSVC to use main instead of WinMain for Windows subsystem executables
+    set_target_properties(${target} PROPERTIES
+                          LINK_FLAGS "/ENTRY:mainCRTStartup")
+endif()

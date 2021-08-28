@@ -20,8 +20,3 @@ std::vector<Component> Component::getComponents(){
     coms.push_back(Component("two",2));
     return coms;
 }
-
-
-TriangleComponent::TriangleComponent(){
-    
-}

@@ -7,7 +7,7 @@
 #include <QOpenGLContext>
 #include <QMutex>
 
-#include "render.h"
+#include "Render.h"
 #include "TextureBuffer.h"
 
 class GLWidget;
