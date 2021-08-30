@@ -1,6 +1,8 @@
 #include "renderthread.h"
 #include <iostream>
 
+#include <QDateTime>
+
 RenderThread::RenderThread(QOffscreenSurface *surface, QOpenGLContext *context,QObject* parent):
     QThread (parent),
     m_renderSurface(surface),
@@ -18,30 +20,28 @@ RenderThread::RenderThread(QOffscreenSurface *surface, QOpenGLContext *context,Q
 void RenderThread::run(){
 
     m_renderContext->makeCurrent(m_renderSurface);
-    if(m_render== nullptr){
-        m_render=new Render;
+    if(m_renderEngine== nullptr){
+        m_renderEngine=new RenderEngine;
     }
     TextureBuffer::instance()->createTexture(m_renderContext);
-
-    //Render m_render;
+    int width = 0, height = 0;
     while (m_running){
-        int width=0;
-        int height = 0;
         {
             QMutexLocker lock(&m_mutex);
             width = m_width;
             height = m_height;
         }
-        m_render->render(width, height);
-        //TextureBuffer::instance()->updateTexture(m_renderContext,width,height);
-        TextureBuffer::instance()->updateTexture(m_renderContext,m_render->m_texture);
+        m_renderEngine->setRenderSize(width, height);
+        m_renderEngine->update(QDateTime::currentDateTime().time().msec());
+
+        TextureBuffer::instance()->updateTexture(m_renderContext,width,height);
         emit imageReady();
 
     }
     TextureBuffer::instance()->deleteTexture(m_renderContext);
 }
 
-void RenderThread::setNewSize(int width, int height)
+void RenderThread::setRenderSize(int width, int height)
 {
     QMutexLocker lock(&m_mutex);
     m_width = width;

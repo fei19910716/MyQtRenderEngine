@@ -18,11 +18,14 @@ MainWindow::MainWindow(QWidget *parent) :
     auto screenRects = QGuiApplication::screens();
     double screenX = screenRects[0]->size().width();
     double screenY = screenRects[0]->size().height();
-    this->setGeometry(0,0,static_cast<int>(screenX),static_cast<int>(screenY));
+    // this->setGeometry(0,0,static_cast<int>(screenX)/2,static_cast<int>(screenY)/2);
 
 //    this->showFullScreen();
 //    this->setWindowState(this->windowState() ^ Qt::WindowFullScreen);
-    this->showMaximized();
+    // this->showMaximized();
+
+    // 设置glView的size
+    ui->openGLWidget->setFixedSize(400,600);
 
     // 设置对象面板
     ui->treeWidget->setColumnCount(1);

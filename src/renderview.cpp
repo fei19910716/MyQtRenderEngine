@@ -1,13 +1,22 @@
 #include "renderview.h"
-
 #include <QDebug>
+
+#ifndef STB_IMAGE_IMPLEMENTATION
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+#endif
+
+#ifndef STB_IMAGE_WRITE_IMPLEMENTATION
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include "stb_image_write.h"
+#endif
 
 static float vertices[] = {
 //     ---- 位置 ----       ---- 颜色 ----     - 纹理坐标 -
-     0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // 右上
-     0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // 右下
-    -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // 左下
-    -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // 左上
+     1.0f,  0.8f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // 右上
+     1.0f, -0.8f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // 右下
+    -1.0f, -0.8f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // 左下
+    -1.0f,  0.8f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // 左上
 };
 
 static unsigned int indices[] = {
@@ -82,8 +91,8 @@ void RenderView::initializeGL()
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
     glEnableVertexAttribArray(2);
 
-    //  genTextureFromImage("/Users/fordchen/Desktop/test_opengl/light.png");
-    //  genTextureFromStb_image("/Users/fordchen/Desktop/111.png");
+    //! 加载纹理
+    genTextureFromStbImage("D:\\GameEngine\\CFRenderEngine\\test.png");
 
     glBindVertexArray(0);
 
@@ -93,28 +102,26 @@ void RenderView::initializeGL()
 
 void RenderView::resizeGL(int w, int h)
 {
-    // glViewport(0, 0, w, h);
-    m_thread->setNewSize(w, h);
+    m_thread->setRenderSize(w, h);
 }
 
 void RenderView::paintGL()
 {
-    glClearColor(0.3f,0.3f, 0.3f, 1.0f);
+    glClearColor(0.7f,0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
 
     m_program->bind();
     glBindVertexArray(m_vao);
-    glBindTexture(GL_TEXTURE_2D, m_textureID);
-    if(TextureBuffer::instance()->isMReady())
-        TextureBuffer::instance()->drawTexture(this->context(), 6);
+//! 调试用，渲染一张图片
+//    glBindTexture(GL_TEXTURE_2D, m_textureID);
+//    glActiveTexture(GL_TEXTURE0);
+//    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+    TextureBuffer::instance()->drawTexture(this->context(), 6);
 
 
-    // save the opengl result to image
-    // unsigned char * data1 = new unsigned char[width()*height()*4];
-    // transfer the bind fbo image data, here is the opengl result data
-    // glReadPixels(0,0,width(),height(),GL_RGBA,GL_UNSIGNED_BYTE,data1);
-    // stbi_write_png("/Users/fordchen/Desktop/out1.png",width(),height(),4,data1,0);
+
 
 
     // save the texture to image, we should first bind it to a fbo
@@ -141,6 +148,13 @@ void RenderView::paintGL()
 
 }
 
+void RenderView::saveFBOToPNG(QString& path){
+    //! save the opengl result to image
+     unsigned char * data1 = new unsigned char[width()*height()*4];
+     glReadPixels(0,0,width(),height(),GL_RGBA,GL_UNSIGNED_BYTE,data1);
+     stbi_write_png("",width(),height(),4,data1,0);
+}
+
 void RenderView::genTextureFromImage(const QString &path)
 {
 
@@ -162,7 +176,7 @@ void RenderView::genTextureFromImage(const QString &path)
     }
 }
 
-void RenderView::genTextureFromStb_image(const QString &path)
+void RenderView::genTextureFromStbImage(const QString &path)
 {
     glGenTextures(1, &m_textureID);
     glBindTexture(GL_TEXTURE_2D, m_textureID);
@@ -173,17 +187,17 @@ void RenderView::genTextureFromStb_image(const QString &path)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
     // 加载并生成纹理
-//    int width, height, nrChannels;
-//    unsigned char *data = stbi_load(path.toStdString().c_str(), &width, &height, &nrChannels, 0);
-//    if (data)
-//    {
-//        texture_w = width;
-//        texture_h = height;
-//        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-//        glGenerateMipmap(GL_TEXTURE_2D);
-//    }
-//    stbi_image_free(data);
-//    glBindTexture(GL_TEXTURE_2D, 0);
+    int width, height, nrChannels;
+    unsigned char *data = stbi_load(path.toStdString().c_str(), &width, &height, &nrChannels,0);
+    if (data)
+    {
+        texture_w = width;
+        texture_h = height;
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+    }
+    stbi_image_free(data);
+    glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void RenderView::initRenderThread()
@@ -201,8 +215,8 @@ void RenderView::initRenderThread()
     context->makeCurrent(mainSurface);
 
     connect(m_thread,&RenderThread::imageReady, this, [this]() { update(); },Qt::QueuedConnection);
+    m_thread->setRenderSize(WIDTH,HEIGHT);
     m_thread->start();
 
     qDebug() << "GLWidget::initRenderThread() end";
-
 }

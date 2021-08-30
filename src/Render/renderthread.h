@@ -7,10 +7,9 @@
 #include <QOpenGLContext>
 #include <QMutex>
 
-#include "Render.h"
+#include "RenderEngine.h"
 #include "TextureBuffer.h"
 
-class GLWidget;
 class RenderThread : public QThread
 {
     Q_OBJECT
@@ -18,7 +17,7 @@ public:
     RenderThread(QOffscreenSurface* surface,QOpenGLContext* context,QObject* parent=nullptr);
     ~RenderThread();
 
-    void setNewSize(int width, int height);
+    void setRenderSize(int width, int height);
     void run() override;
     void setRenderDegree(float degree);
 
@@ -38,7 +37,7 @@ private:
     unsigned int m_width;
     unsigned int m_height;
     bool  m_running = true;
-    Render* m_render= nullptr;
+    RenderEngine* m_renderEngine= nullptr;
 };
 
 #endif // RENDERTHREAD_H

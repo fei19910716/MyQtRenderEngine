@@ -18,7 +18,7 @@ public:
     void deleteTexture(QOpenGLContext *context);
     void updateTexture(QOpenGLContext *context, int width, int height);
     void updateTexture(QOpenGLContext *context, int textureID);
-    void drawTexture(QOpenGLContext *context, int vertextCount);
+    void drawTexture(QOpenGLContext *context, int vertexCount);
 
 private:
     TextureBuffer();
@@ -30,9 +30,6 @@ private:
 
     unsigned int m_texture;
     mutable QMutex m_mutex;
-    bool m_ready;
-public:
-    bool isMReady() const;
 };
 
 #endif //TEXTUREBUFFER_H

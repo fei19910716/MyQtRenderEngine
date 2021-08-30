@@ -15,7 +15,6 @@ TextureBuffer *TextureBuffer::instance()
 void TextureBuffer::createTexture(QOpenGLContext *context)
 {
     context->functions()->glGenTextures(1, &m_texture);
-    m_ready = true;
 }
 
 void TextureBuffer::deleteTexture(QOpenGLContext *context) {
@@ -26,6 +25,7 @@ void TextureBuffer::deleteTexture(QOpenGLContext *context) {
 void TextureBuffer::updateTexture(QOpenGLContext *context, int width, int height) {
 
     QMutexLocker locker(&m_mutex);
+    //! 拷贝当前fbo中的纹理到m_texture中
     auto f= context->functions();
     f->glActiveTexture(GL_TEXTURE0);
     f->glBindTexture(GL_TEXTURE_2D,m_texture);
@@ -38,11 +38,10 @@ void TextureBuffer::updateTexture(QOpenGLContext *context, int width, int height
 void TextureBuffer::updateTexture(QOpenGLContext *context, int textureID) {
 
     QMutexLocker locker(&m_mutex);
-    //qDebug()<<"the texture id :"<<textureID;
     m_texture=textureID;
 }
 
-void TextureBuffer::drawTexture(QOpenGLContext *context, int vertextCount) {
+void TextureBuffer::drawTexture(QOpenGLContext *context, int vertexCount) {
 
     QMutexLocker locker(&m_mutex);
 
@@ -52,7 +51,7 @@ void TextureBuffer::drawTexture(QOpenGLContext *context, int vertextCount) {
     f->glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     f->glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     f->glActiveTexture(GL_TEXTURE0);
-    f->glDrawElements(GL_TRIANGLES, vertextCount, GL_UNSIGNED_INT, 0);
+    f->glDrawElements(GL_TRIANGLES, vertexCount, GL_UNSIGNED_INT, 0);
     f->glBindTexture(GL_TEXTURE_2D, 0);
 
 }
@@ -63,8 +62,4 @@ TextureBuffer::TextureBuffer():m_texture(0) {
 
 TextureBuffer::~TextureBuffer() {
 
-}
-
-bool TextureBuffer::isMReady() const {
-    return m_ready;
 }

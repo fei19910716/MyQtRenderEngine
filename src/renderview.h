@@ -7,6 +7,7 @@
 #include <QOpenGLShaderProgram>
 
 #include "Render/renderthread.h"
+
 class RenderView : public QOpenGLWidget, public QOpenGLFunctions_3_3_Core
 {
     Q_OBJECT
@@ -24,7 +25,8 @@ protected:
     void paintGL();
     void initRenderThread();
     void genTextureFromImage(const QString& path);
-    void genTextureFromStb_image(const QString& path);
+    void genTextureFromStbImage(const QString& path);
+    void saveFBOToPNG(QString& path);
 
 private:
     QOpenGLContext* m_context;
@@ -34,6 +36,9 @@ private:
     int texture_w;
     int texture_h;
     RenderThread* m_thread=nullptr;
+
+    const int WIDTH = 400;
+    const int HEIGHT = 600;
 };
 
 #endif // RENDERVIEW_H

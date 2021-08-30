@@ -1,5 +1,6 @@
 set(vendor_libs
-    entityx
+    EnTT
+    stb
 )
 
 foreach(vendor_lib ${vendor_libs})
