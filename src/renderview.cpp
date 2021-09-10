@@ -110,7 +110,6 @@ void RenderView::paintGL()
     glClearColor(0.7f,0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
-
     m_program->bind();
     glBindVertexArray(m_vao);
 //! 调试用，渲染一张图片
@@ -120,9 +119,16 @@ void RenderView::paintGL()
 
     TextureBuffer::instance()->drawTexture(this->context(), 6);
 
+    glBindVertexArray(0);
+    m_program->release();
 
+}
 
-
+void RenderView::saveFBOToPNG(QString& path){
+    //! save the opengl result to image
+     unsigned char * data1 = new unsigned char[width()*height()*4];
+     glReadPixels(0,0,width(),height(),GL_RGBA,GL_UNSIGNED_BYTE,data1);
+     stbi_write_png("",width(),height(),4,data1,0);
 
     // save the texture to image, we should first bind it to a fbo
 //    GLuint fbo;
@@ -141,21 +147,9 @@ void RenderView::paintGL()
 //    glBindTexture(GL_TEXTURE_2D, m_textureID);
 //    glGetTexImage(GL_TEXTURE_2D,0,GL_RGBA,GL_UNSIGNED_BYTE,data2);
 //    stbi_write_png("/Users/fordchen/Desktop/out2.png",texture_w,texture_h,4,data2,0);
-
-
-    glBindVertexArray(0);
-    m_program->release();
-
 }
 
-void RenderView::saveFBOToPNG(QString& path){
-    //! save the opengl result to image
-     unsigned char * data1 = new unsigned char[width()*height()*4];
-     glReadPixels(0,0,width(),height(),GL_RGBA,GL_UNSIGNED_BYTE,data1);
-     stbi_write_png("",width(),height(),4,data1,0);
-}
-
-void RenderView::genTextureFromImage(const QString &path)
+void RenderView::genTextureFromQImage(const QString &path)
 {
 
     glGenTextures(1, &m_textureID);

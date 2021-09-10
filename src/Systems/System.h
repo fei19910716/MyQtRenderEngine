@@ -3,7 +3,7 @@
 
 #include <string>
 #include <iostream>
-#include <entt/entity/registry.hpp>
+#include <entt/entt.hpp>
 #include <QOpenGLFunctions_3_3_Core>
 
 class System: public QOpenGLFunctions_3_3_Core{

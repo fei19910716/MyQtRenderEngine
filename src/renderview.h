@@ -24,7 +24,7 @@ protected:
     void resizeGL(int w, int h);
     void paintGL();
     void initRenderThread();
-    void genTextureFromImage(const QString& path);
+    void genTextureFromQImage(const QString& path);
     void genTextureFromStbImage(const QString& path);
     void saveFBOToPNG(QString& path);
 

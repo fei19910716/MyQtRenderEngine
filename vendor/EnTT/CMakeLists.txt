@@ -187,8 +187,8 @@ endif()
 # Documentation
 #
 
-option(ENTT_BUILD_DOCS "Enable building with documentation." OFF)
-
+#option(ENTT_BUILD_DOCS "Enable building with documentation." OFF)
+set(ENTT_BUILD_DOCS ON)
 if(ENTT_BUILD_DOCS)
     find_package(Doxygen 1.8)
 

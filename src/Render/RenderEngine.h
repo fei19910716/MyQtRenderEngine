@@ -1,10 +1,11 @@
 #pragma once
 #include <QObject>
+#include <QOpenGLFunctions_3_3_Core>
 
 #include <vector>
-#include "Systems/Render/TriangleSystem.h"
 
-#include <QOpenGLFunctions_3_3_Core>
+#include "Systems/Primitive/TriangleSystem.h"
+#include "Components/ComponentManager.h"
 
 class RenderEngine : public QObject ,public QOpenGLFunctions_3_3_Core{
   Q_OBJECT
@@ -16,7 +17,9 @@ public:
   unsigned int m_vao,m_vbo,m_fbo,m_texture,m_rbo,m_ebo;
 
   explicit RenderEngine(){
-      const auto entity = m_registry.create();
+      ComponentManager::registerComponentDescriptions();
+
+      entt::registry::entity_type entity = m_registry.create();
       m_registry.emplace<Triangle>(entity);
 
       m_systems.push_back(new TriangleSystem());
