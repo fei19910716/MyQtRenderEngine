@@ -1,6 +1,8 @@
 #include "renderview.h"
 #include <QDebug>
 
+#include "Entity/EntityManager.h"
+
 #ifndef STB_IMAGE_IMPLEMENTATION
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
@@ -52,6 +54,16 @@ static const char* fragmentShaderSource =
 RenderView::RenderView(QWidget *parent) : QOpenGLWidget(parent)
 {
 
+}
+
+void RenderView::onAddEntity(){
+    EntityManager::createEntity(1);
+    Q_EMIT rebuildObejctTree();
+}
+
+void RenderView::onDelEntity(){
+    EntityManager::deleteEntity(1);
+    Q_EMIT rebuildObejctTree();
 }
 
 void RenderView::initializeGL()

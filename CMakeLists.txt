@@ -21,7 +21,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "bin/")
 
 include(tool)
 
-set_local_qt_path(C:/Qt/Qt5.13.0/5.13.0) #这里需要填入自己安装的路径
+set_local_qt_path(C:/Qt5.13.0/5.13.0) #这里需要填入自己安装的路径
 include(qt_config)
 
 set(QT_libs
@@ -40,9 +40,10 @@ set(QT_libs
 
 file(GLOB_RECURSE CORE_SOURCE_FILES
     src/Components/*.*
-    src/Entities/*.*
+    src/Entity/*.*
     src/Render/*.*
     src/Systems/*.*
+    src/UI/*.*
     ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
     src/mainwindow.cpp
     src/renderview.cpp
@@ -50,7 +51,7 @@ file(GLOB_RECURSE CORE_SOURCE_FILES
 
 add_subdirectory(vendor)
 
-add_executable(${target} ${CORE_SOURCE_FILES} src/Components/ComponentManager.cpp src/Components/ComponentManager.h)
+add_executable(${target} ${CORE_SOURCE_FILES})
 
 # add_custom_target(CopyResources
 #     COMMAND cp -r assets/package/windows/resources/ ${CMAKE_CURRENT_BINARY_DIR}/resources/
@@ -68,7 +69,9 @@ add_executable(${target} ${CORE_SOURCE_FILES} src/Components/ComponentManager.cp
 # )
 
 # 指定头文件路径，否则会提示在ui_mainwindow.cpp中找不到提升的class
+target_include_directories(${target} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src/UI)
 target_include_directories(${target} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
+
 target_link_libraries(${target} PRIVATE ${QT_libs} vendor)
 
 if (MSVC)

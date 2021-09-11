@@ -10,7 +10,7 @@
 
 #include <vector>
 
-#include "component.h"
+#include "Base/component.h"
 #include "Primitive/Triangle.h"
 
 class ComponentManager {

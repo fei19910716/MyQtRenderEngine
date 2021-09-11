@@ -5,7 +5,7 @@
 #ifndef CFRENDERENGINE_TRIANGLESYSTEM_H
 #define CFRENDERENGINE_TRIANGLESYSTEM_H
 
-#include "Systems/System.h"
+#include "Systems/Base/System.h"
 #include "Components/Primitive/Triangle.h"
 
 class TriangleSystem : public System{

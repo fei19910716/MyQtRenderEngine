@@ -47,11 +47,8 @@ void ComponentWidget::constructBool(ComponentPropertyDescription* property){
     checkBox->setChecked(value.toBool());
     checkBox->setEnabled(property->editable_);
 
-    connect(checkBox,&QCheckBox::stateChanged,[&](int state){
-        qDebug() << "enable------------" << propertyName;
-        qDebug() << "state------------" << (state == Qt::Checked);
+    connect(checkBox,&QCheckBox::stateChanged,[=](int state){
         component_->setProperty(propertyName,(state == Qt::Checked));
-        qDebug() << "state------------" << component_->property(propertyName).toBool();
     });
 
     QHBoxLayout* hLayout = new QHBoxLayout;

@@ -5,9 +5,8 @@
 #include <QTreeWidgetItem>
 #include <QDebug>
 
-#include "Entities/entity.h"
 #include "Components/ComponentManager.h"
-#include "Components/componentwidget.h"
+#include "UI/componentwidget.h"
 
 class QListWidgetItem;
 
@@ -15,6 +14,7 @@ namespace Ui {
 class MainWindow;
 }
 
+class MetaInfo;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -30,7 +30,7 @@ public:
      *
      * @return 构建的QTreeWidgetItem
      */
-    QTreeWidgetItem* buildTreeItemFromEntity(Entity& ent);
+    QTreeWidgetItem* buildTreeItemFromEntity(MetaInfo& metaInfo);
 
     /**
      * 从一个entity来构建对象树，会递归调用buildTreeItemFromEntity
@@ -39,7 +39,7 @@ public:
      *
      * @return 顶层QTreeWidgetItem
      */
-    QTreeWidgetItem* buildRootTreeItem(Entity& root);
+    QTreeWidgetItem* buildRootTreeItem(MetaInfo& metaInfo);
 
 
     /**

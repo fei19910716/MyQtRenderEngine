@@ -1,5 +1,18 @@
 #include "RenderEngine.h"
 
+#include "Entity/EntityManager.h"
+
+RenderEngine::RenderEngine(){
+      ComponentManager::registerComponentDescriptions();
+      m_systems.push_back(new TriangleSystem());
+  }
+
+void RenderEngine::update(float dt){
+    for (System *system : m_systems) {
+        system->update(EntityManager::m_registry, dt);
+    }
+}
+
 void RenderEngine::setRenderSize(int width,int height){
     initializeOpenGLFunctions();
     m_width = width;

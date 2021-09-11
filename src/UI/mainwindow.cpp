@@ -1,5 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "Components/Base/MetaInfo.h"
+#include "Entity/EntityManager.h"
 
 #include <QDesktopWidget>
 #include <QScreen>
@@ -15,6 +17,16 @@ MainWindow::MainWindow(QWidget *parent) :
     this->constructObjectPanel();
 
     this->constructInspectorPanel();
+
+    connect(ui->openGLWidget, &RenderView::rebuildObejctTree, [=](){
+        auto root = EntityManager::getRoot();
+        if(!EntityManager::m_registry.valid(root)) {
+            ui->treeWidget->clear();
+            return nullptr;
+        }
+        auto metaInfo = EntityManager::m_registry.try_get<MetaInfo>(root);
+        ui->treeWidget->addTopLevelItem(this->buildRootTreeItem(*metaInfo));
+    });
 }
 
 void MainWindow::constructInspectorPanel(){
@@ -44,8 +56,8 @@ void MainWindow::constructObjectPanel(){
 
     this->constructTreeWidgetMenu();
 
-    auto root = Entity::getRoot();
-    ui->treeWidget->addTopLevelItem(buildRootTreeItem(*root));
+    // auto root = EntityManager::getRoot();
+    // ui->treeWidget->addTopLevelItem(buildRootTreeItem(root));
 }
 
 void MainWindow::initWindowSize(){
@@ -69,10 +81,13 @@ void MainWindow::initWindowSize(){
 void MainWindow::constructTreeWidgetMenu(){
     ui->treeWidget->setContextMenuPolicy(Qt::CustomContextMenu);
     m_contextMenu = new QMenu;
-    QAction* m_addAction = new QAction("add Item", this);
-    QAction* m_delAction = new QAction("del Item", this);
+    QAction* m_addAction = new QAction("add Object", this);
+    QAction* m_delAction = new QAction("del Object", this);
     m_contextMenu->addAction(m_addAction);
     m_contextMenu->addAction(m_delAction);
+
+    connect(m_addAction,&QAction::triggered,ui->openGLWidget,&RenderView::onAddEntity);
+    connect(m_delAction,&QAction::triggered,ui->openGLWidget,&RenderView::onDelEntity);
     connect(ui->treeWidget, SIGNAL(customContextMenuRequested(QPoint)),this, SLOT(showTreeWidgetMenuSlot(QPoint)));
 }
 
@@ -86,17 +101,18 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-QTreeWidgetItem *MainWindow::buildTreeItemFromEntity(Entity &ent)
+QTreeWidgetItem *MainWindow::buildTreeItemFromEntity(MetaInfo& metaInfo)
 {
     QTreeWidgetItem* item = new QTreeWidgetItem();
-    item->setText(0,QString::number(ent.id));
+    item->setText(0,metaInfo.label_);
     return item;
 }
 
-QTreeWidgetItem *MainWindow::buildRootTreeItem(Entity &root)
+QTreeWidgetItem *MainWindow::buildRootTreeItem(MetaInfo& metaInfo)
 {
-    QTreeWidgetItem* rootItem = buildTreeItemFromEntity(root);
-    for(auto& child: root.children){
+    QTreeWidgetItem* rootItem = buildTreeItemFromEntity(metaInfo);
+
+    for(auto& child: metaInfo.children_){
         auto childItems = buildRootTreeItem(child);
         rootItem->addChild(childItems);
     }

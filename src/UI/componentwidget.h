@@ -5,7 +5,7 @@
 #include <QDebug>
 #include <QVBoxLayout>
 
-#include "component.h"
+#include "Components/Base/component.h"
 
 class ComponentPropertyDescription;
 

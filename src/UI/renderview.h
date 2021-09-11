@@ -15,10 +15,12 @@ public:
     explicit RenderView(QWidget *parent = nullptr);
 
 signals:
+    void rebuildObejctTree();
 
 public slots:
+    void onAddEntity();
+    void onDelEntity();
 
-    // QOpenGLWidget interface
 protected:
     void initializeGL();
     void resizeGL(int w, int h);
@@ -29,16 +31,43 @@ protected:
     void saveFBOToPNG(QString& path);
 
 private:
+    /**
+     * UI线程的context，子线程需要与之share
+     */
     QOpenGLContext* m_context;
+
+    /**
+     * UI线程渲染的ShaderProgram
+     */
     QOpenGLShaderProgram* m_program;
+
+    /**
+     * 仅Debug用。UI线程渲染的纹理，用于渲染一张图片
+     */
     unsigned int m_textureID;
-    unsigned int m_vao;
+
+    /**
+     * 仅Debug用。加载图片的宽高
+     */
     int texture_w;
     int texture_h;
+
+    /**
+     * UI线程渲染的VAO
+     */
+    unsigned int m_vao;
+
+
+    /**
+     * 渲染子线程，离屏渲染后共享纹理给UI线程上屏
+     */
     RenderThread* m_thread=nullptr;
 
-    const int WIDTH = 400;
-    const int HEIGHT = 600;
+    /**
+     * 子线程初始的渲染尺寸
+     */
+    const int WIDTH = 200;
+    const int HEIGHT = 400;
 };
 
 #endif // RENDERVIEW_H

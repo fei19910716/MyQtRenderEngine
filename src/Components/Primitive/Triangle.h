@@ -4,7 +4,7 @@
 
 #include <vector>
 
-#include "Components/component.h"
+#include "Components/Base/component.h"
 
 class Triangle: public Component{
     Q_OBJECT
