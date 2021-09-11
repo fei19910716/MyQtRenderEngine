@@ -52,7 +52,7 @@ HEADERS += \
         src/renderview.h
 
 FORMS += \
-        src/mainwindow.ui
+        src/UI/mainwindow.ui
 
 INCLUDEPATH += src
 

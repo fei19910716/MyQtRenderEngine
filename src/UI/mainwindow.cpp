@@ -2,6 +2,8 @@
 #include "ui_mainwindow.h"
 #include "Components/Base/MetaInfo.h"
 #include "Entity/EntityManager.h"
+#include "UI/componentwidget.h"
+#include "UI/AddComponentWidget.h"
 
 #include <QDesktopWidget>
 #include <QScreen>
@@ -26,6 +28,12 @@ MainWindow::MainWindow(QWidget *parent) :
         }
         auto metaInfo = EntityManager::m_registry.try_get<MetaInfo>(root);
         ui->treeWidget->addTopLevelItem(this->buildRootTreeItem(*metaInfo));
+    });
+
+    // 参考 https://blog.csdn.net/a844651990/article/details/83242159
+    connect(ui->pushButton,&QPushButton::clicked, [=](){
+        AddComponentWidget* add =new AddComponentWidget;
+        add->show();
     });
 }
 
@@ -55,9 +63,6 @@ void MainWindow::constructObjectPanel(){
     ui->treeWidget->setHeaderHidden(true); // 隐藏header
 
     this->constructTreeWidgetMenu();
-
-    // auto root = EntityManager::getRoot();
-    // ui->treeWidget->addTopLevelItem(buildRootTreeItem(root));
 }
 
 void MainWindow::initWindowSize(){
@@ -80,20 +85,27 @@ void MainWindow::initWindowSize(){
 
 void MainWindow::constructTreeWidgetMenu(){
     ui->treeWidget->setContextMenuPolicy(Qt::CustomContextMenu);
-    m_contextMenu = new QMenu;
+    treeContextMenu_ = new QMenu(ui->treeWidget);
     QAction* m_addAction = new QAction("add Object", this);
     QAction* m_delAction = new QAction("del Object", this);
-    m_contextMenu->addAction(m_addAction);
-    m_contextMenu->addAction(m_delAction);
+    treeContextMenu_->addAction(m_addAction);
+    treeContextMenu_->addAction(m_delAction);
+
+    treeItemContextMenu_ = new QMenu(ui->treeWidget);
+    treeItemContextMenu_->addAction(new QAction("add Child", this));
 
     connect(m_addAction,&QAction::triggered,ui->openGLWidget,&RenderView::onAddEntity);
     connect(m_delAction,&QAction::triggered,ui->openGLWidget,&RenderView::onDelEntity);
-    connect(ui->treeWidget, SIGNAL(customContextMenuRequested(QPoint)),this, SLOT(showTreeWidgetMenuSlot(QPoint)));
+    connect(ui->treeWidget, &QTreeWidget::customContextMenuRequested,this, &MainWindow::showTreeWidgetMenuSlot);
 }
 
 void MainWindow::showTreeWidgetMenuSlot(QPoint pos)
 {
-    m_contextMenu->exec(QCursor::pos());
+    QTreeWidgetItem* curItem = ui->treeWidget->itemAt(pos);  //获取当前被点击的节点
+    if (curItem == NULL) 
+        treeContextMenu_->exec(QCursor::pos());           //这种情况是右键的位置不在treeItem的范围内，即在空白位置右击
+    else
+        treeItemContextMenu_->exec(QCursor::pos());   //菜单弹出位置为鼠标点击位置
 }
 
 MainWindow::~MainWindow()
@@ -105,6 +117,7 @@ QTreeWidgetItem *MainWindow::buildTreeItemFromEntity(MetaInfo& metaInfo)
 {
     QTreeWidgetItem* item = new QTreeWidgetItem();
     item->setText(0,metaInfo.label_);
+    item->setFlags(item->flags() | Qt::ItemIsEditable);
     return item;
 }
 

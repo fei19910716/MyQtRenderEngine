@@ -6,15 +6,15 @@
 #include <QDebug>
 
 #include "Components/ComponentManager.h"
-#include "UI/componentwidget.h"
 
 class QListWidgetItem;
+class MetaInfo;
 
 namespace Ui {
 class MainWindow;
 }
 
-class MetaInfo;
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -77,7 +77,9 @@ private:
     /**
      * 对象面板的右键菜单
      */
-    QMenu* m_contextMenu;
+    QMenu* treeContextMenu_;
+
+    QMenu* treeItemContextMenu_;
 };
 
 #endif // MAINWINDOW_H
