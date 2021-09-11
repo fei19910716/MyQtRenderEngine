@@ -56,16 +56,6 @@ RenderView::RenderView(QWidget *parent) : QOpenGLWidget(parent)
 
 }
 
-void RenderView::onAddEntity(){
-    EntityManager::createEntity(1);
-    Q_EMIT rebuildObejctTree();
-}
-
-void RenderView::onDelEntity(){
-    EntityManager::deleteEntity(1);
-    Q_EMIT rebuildObejctTree();
-}
-
 void RenderView::initializeGL()
 {
     initRenderThread();

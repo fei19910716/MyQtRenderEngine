@@ -15,11 +15,8 @@ public:
     explicit RenderView(QWidget *parent = nullptr);
 
 signals:
-    void rebuildObejctTree();
 
 public slots:
-    void onAddEntity();
-    void onDelEntity();
 
 protected:
     void initializeGL();

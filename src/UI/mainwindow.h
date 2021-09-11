@@ -62,6 +62,8 @@ public:
      */
     void initWindowSize();
 
+    void rebuildEntityTree();
+
 private slots:
     void on_listWidget_itemClicked(QListWidgetItem *item);
 

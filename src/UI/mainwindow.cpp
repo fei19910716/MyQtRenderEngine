@@ -20,16 +20,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     this->constructInspectorPanel();
 
-    connect(ui->openGLWidget, &RenderView::rebuildObejctTree, [=](){
-        auto root = EntityManager::getRoot();
-        if(!EntityManager::m_registry.valid(root)) {
-            ui->treeWidget->clear();
-            return nullptr;
-        }
-        auto metaInfo = EntityManager::m_registry.try_get<MetaInfo>(root);
-        ui->treeWidget->addTopLevelItem(this->buildRootTreeItem(*metaInfo));
-    });
-
     // 参考 https://blog.csdn.net/a844651990/article/details/83242159
     connect(ui->pushButton,&QPushButton::clicked, [=](){
         AddComponentWidget* add =new AddComponentWidget;
@@ -59,6 +49,7 @@ void MainWindow::constructObjectPanel(){
     } else {
         ui->treeWidget->setHeaderLabel(tr("entities"));
     }
+    ui->treeWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
 
     ui->treeWidget->setHeaderHidden(true); // 隐藏header
 
@@ -92,11 +83,38 @@ void MainWindow::constructTreeWidgetMenu(){
     treeContextMenu_->addAction(m_delAction);
 
     treeItemContextMenu_ = new QMenu(ui->treeWidget);
-    treeItemContextMenu_->addAction(new QAction("add Child", this));
+    QAction* m_childAction = new QAction("add Child", this);
+    treeItemContextMenu_->addAction(m_childAction);
 
-    connect(m_addAction,&QAction::triggered,ui->openGLWidget,&RenderView::onAddEntity);
-    connect(m_delAction,&QAction::triggered,ui->openGLWidget,&RenderView::onDelEntity);
+    connect(m_addAction,&QAction::triggered,[=]{
+        EntityManager::createEntity(1);
+        this->rebuildEntityTree();
+    });
+    connect(m_delAction,&QAction::triggered,[=]{
+        EntityManager::deleteEntity(1);
+        this->rebuildEntityTree();
+    });
+    connect(m_childAction,&QAction::triggered,[=]{
+        EntityManager::createEntity(1);
+
+        QTreeWidgetItem* curItem = ui->treeWidget->currentItem();
+        QTreeWidgetItem* item = new QTreeWidgetItem();
+        item->setText(0,"GameObejct");
+        item->setFlags(item->flags() | Qt::ItemIsEditable);
+        curItem->addChild(item);
+        curItem->setExpanded(true);
+    });
     connect(ui->treeWidget, &QTreeWidget::customContextMenuRequested,this, &MainWindow::showTreeWidgetMenuSlot);
+}
+
+void MainWindow::rebuildEntityTree(){
+    auto root = EntityManager::getRoot();
+    if(!EntityManager::m_registry.valid(root)) {
+        ui->treeWidget->clear();
+        return;
+    }
+    auto metaInfo = EntityManager::m_registry.try_get<MetaInfo>(root);
+    ui->treeWidget->addTopLevelItem(this->buildRootTreeItem(*metaInfo));
 }
 
 void MainWindow::showTreeWidgetMenuSlot(QPoint pos)

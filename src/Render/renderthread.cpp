@@ -14,7 +14,7 @@ RenderThread::RenderThread(QOffscreenSurface *surface, QOpenGLContext *context,Q
     m_renderContext->setShareContext(m_mainContext);
     m_renderContext->create();
     m_renderContext->moveToThread(this);
-
+    m_renderSurface->moveToThread(this);
 }
 
 void RenderThread::run(){
@@ -24,17 +24,12 @@ void RenderThread::run(){
         m_renderEngine=new RenderEngine;
     }
     TextureBuffer::instance()->createTexture(m_renderContext);
-    int width = 0, height = 0;
     while (m_running){
-        {
-            QMutexLocker lock(&m_mutex);
-            width = m_width;
-            height = m_height;
-        }
-        m_renderEngine->setRenderSize(width, height);
+        m_renderEngine->setRenderSize(m_width, m_height);
         m_renderEngine->update(QDateTime::currentDateTime().time().msec());
 
-        TextureBuffer::instance()->updateTexture(m_renderContext,width,height);
+        // TextureBuffer::instance()->updateTexture(m_renderContext,m_width,m_height);
+        TextureBuffer::instance()->updateTexture(m_renderContext,m_renderEngine->m_textureToDisplay);
         emit imageReady();
 
     }
