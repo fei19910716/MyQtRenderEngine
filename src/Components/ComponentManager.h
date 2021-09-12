@@ -10,9 +10,10 @@
 
 #include <vector>
 
-#include "Base/component.h"
-#include "Primitive/Triangle.h"
 #include "Core/entityx.h"
+
+class ComponentDescription;
+class Component;
 
 class ComponentManager {
 public:
@@ -26,7 +27,7 @@ public:
      */
     static std::vector<ComponentDescription*> getComponentDescriptions();
 
-    static std::vector<Component*> getComponents();
+    static std::vector<Component*> getComponentsOfEntity(CFEntity& entity);
 
     template<typename T>
     static bool addComponentOfEntity(CFEntity& entity);

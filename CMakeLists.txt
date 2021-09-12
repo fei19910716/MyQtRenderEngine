@@ -4,7 +4,7 @@ project(CFRenderEngine)
 set(target CFRenderEngine)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 if (APPLE)
 # use GLUT
     find_package(GLUT REQUIRED)
@@ -44,9 +44,8 @@ file(GLOB_RECURSE CORE_SOURCE_FILES
     src/Render/*.*
     src/Systems/*.*
     src/UI/*.*
+    src/Core/*.*
     ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
-    src/mainwindow.cpp
-    src/renderview.cpp
 )
 
 add_subdirectory(vendor)

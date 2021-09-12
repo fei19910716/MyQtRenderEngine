@@ -11,6 +11,8 @@
 #include <QScreen>
 #include <QLabel>
 
+Q_DECLARE_METATYPE(MetaInfo)
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -57,7 +59,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 void MainWindow::constructInspectorPanel(){
     //! 设置组件面板
-    for(auto& com : ComponentManager::getComponents()){
+    for(auto& com : ComponentManager::getComponentsOfEntity(EntityManager::getRoot())){
         int count = com->propertyDescriptions_.size();
         QListWidgetItem* item = new QListWidgetItem(ui->listWidget);
         ComponentWidget* cw = new ComponentWidget(this,com);
@@ -173,7 +175,7 @@ QTreeWidgetItem *MainWindow::buildTreeItemFromEntity(MetaInfo& metaInfo)
 QTreeWidgetItem *MainWindow::buildRootTreeItem(MetaInfo& metaInfo)
 {
     QTreeWidgetItem* rootItem = buildTreeItemFromEntity(metaInfo);
-
+    rootItem->setData(0,0,QVariant::fromValue<MetaInfo>(metaInfo));
     for(auto& child: metaInfo.children_){
         auto childItems = buildRootTreeItem(child);
         rootItem->addChild(childItems);

@@ -4,7 +4,9 @@
 
 #include "ComponentManager.h"
 
-extern const char* const triangle="Triangle";
+#include "Base/component.h"
+#include "Primitive/Triangle.h"
+#include "Base/MetaInfo.h"
 
 std::vector<ComponentDescription*> ComponentManager::allComponentDescriptions_;
 
@@ -21,9 +23,8 @@ std::vector<ComponentDescription*> ComponentManager::getComponentDescriptions(){
     return allComponentDescriptions_;
 }
 
-std::vector<Component*> ComponentManager::getComponents(){
-    CFEntity entity = ENTT::registry.create();
-    auto com = ENTT::registry.try_get<triangle>(entity);
+std::vector<Component*>  ComponentManager::getComponentsOfEntity(CFEntity& entity){
+    auto com = ENTT::registry.try_get<MetaInfo,Triangle>(entity); //TODO 这里需要注册所有的component
 
     std::vector<Component*> coms;
 

@@ -7,10 +7,16 @@
 
 CFEntity EntityManager::root_;
 
-CFEntity EntityManager::createEntity(QString entityId, QString name){
+CFEntity EntityManager::createEntity(QString entityId, QString name, CFEntity* parent){
+    if(!ENTT::registry.valid(root_)){
+        root_ = ENTT::registry.create();
+        ENTT::registry.emplace<MetaInfo>(root_,entityId,name,std::vector<MetaInfo>());
+        return root_;
+    }
     CFEntity entity = ENTT::registry.create();
-    ENTT::registry.emplace<MetaInfo>(root_,entityId,name,std::vector<MetaInfo>());
-    // registry_.emplace<Triangle>(root_);
+
+    ENTT::registry.emplace<MetaInfo>(entity,entityId,name,std::vector<MetaInfo>{});
+    
     return entity;
 }
 

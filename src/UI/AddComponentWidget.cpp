@@ -8,6 +8,7 @@
 #include <QDebug>
 
 #include "Components/ComponentManager.h"
+#include "Components/Base/component.h"
 
 AddComponentWidget::AddComponentWidget(QWidget *parent)
     : QWidget(parent)

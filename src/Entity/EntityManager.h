@@ -10,7 +10,7 @@ class EntityManager : public QObject{
     Q_OBJECT
 public:
 
-    static CFEntity createEntity(QString entityId, QString name);
+    static CFEntity createEntity(QString entityId, QString name, CFEntity* parent = nullptr);
 
     static void deleteEntity(QString entityId);
 
