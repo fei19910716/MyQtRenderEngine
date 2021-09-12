@@ -6,27 +6,21 @@
 #include "Components/Base/MetaInfo.h"
 
 CFEntity EntityManager::root_;
-entt::registry EntityManager::m_registry;
-std::vector<CFEntity> EntityManager::children;
 
-EntityManager::EntityManager(){
-
+CFEntity EntityManager::createEntity(QString entityId, QString name){
+    CFEntity entity = ENTT::registry.create();
+    ENTT::registry.emplace<MetaInfo>(root_,entityId,name,std::vector<MetaInfo>());
+    // registry_.emplace<Triangle>(root_);
+    return entity;
 }
 
-void EntityManager::createEntity(int id){
-    qDebug() << "add entity----";
-    root_ = m_registry.create();
-    std::vector<MetaInfo> childs = {
-        {"001","one",{}},
-        {"002","two",{}}
-    };
-    m_registry.emplace<MetaInfo>(root_,"001","Triangle",std::move(childs));
-    m_registry.emplace<Triangle>(root_);
-}
-
-void EntityManager::deleteEntity(int id){
-    qDebug() << "del entity----";
-    m_registry.destroy(root_);
+void EntityManager::deleteEntity(QString entityId){
+    auto view = ENTT::registry.view<const MetaInfo>();
+    view.each([&](const auto entity, const MetaInfo &metaInfo) { 
+        if(metaInfo.entityId() == entityId){
+            ENTT::registry.destroy(entity);
+        }
+     });
 }
 
 CFEntity& EntityManager::getRoot(){

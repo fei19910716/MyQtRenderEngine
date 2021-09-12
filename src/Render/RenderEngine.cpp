@@ -9,7 +9,7 @@ RenderEngine::RenderEngine(){
 
 void RenderEngine::update(float dt){
     for (System *system : m_systems) {
-        system->update(EntityManager::m_registry, dt);
+        system->update(ENTT::registry, dt);
     }
 
     unsigned int tmp = m_textureToRender;

@@ -12,34 +12,36 @@
 
 #include "Base/component.h"
 #include "Primitive/Triangle.h"
+#include "Core/entityx.h"
 
 class ComponentManager {
 public:
+    /*
+     * 注册需要展示在UI上的组件
+     */
+    static void registerComponentDescriptions();
 
+    /*
+     * 获取所有需要展示在UI上的组件，用于创建添加组件窗口
+     */
+    static std::vector<ComponentDescription*> getComponentDescriptions();
+
+    static std::vector<Component*> getComponents();
+
+    template<typename T>
+    static bool addComponentOfEntity(CFEntity& entity);
+
+    template<typename T>
+    static T* getComponentOfEntity(CFEntity& entity);
+
+    template<typename T>
+    static void deleteComponentOfEntity(CFEntity& entity);
+
+public:
+    /*
+     * 记录所有需要展示在UI上的组件
+     */
     static std::vector<ComponentDescription*> allComponentDescriptions_;
-
-    static void registerComponentDescriptions() {
-        ComponentDescription* triangle = new ComponentDescription;
-        triangle->type_ = ComponentType::kTriangle;
-        triangle->label_ = QObject::tr("Triangle");
-        triangle->group_ = ComponentGroup::kPrimitive;
-
-        allComponentDescriptions_.emplace_back(triangle);
-    }
-
-    static std::vector<ComponentDescription*> getComponentDescriptions(){
-        return allComponentDescriptions_;
-    }
-
-    static std::vector<Component*> getComponents(){
-        std::vector<Component*> coms;
-
-        coms.push_back(new Triangle(001,1));
-
-        coms.push_back(new Triangle(002,1));
-
-        return coms;
-    }
 };
 
 

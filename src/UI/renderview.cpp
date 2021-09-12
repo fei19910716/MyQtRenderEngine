@@ -56,6 +56,13 @@ RenderView::RenderView(QWidget *parent) : QOpenGLWidget(parent)
 
 }
 
+RenderView::~RenderView(){
+    qDebug() << "close the render view ----";
+    m_thread->m_running = false;
+    m_thread->m_condition.wakeAll();
+    m_thread->wait();
+}
+
 void RenderView::initializeGL()
 {
     initRenderThread();
@@ -202,7 +209,7 @@ void RenderView::initRenderThread()
     auto context = this->context();
     auto mainSurface = context->surface();
 
-    auto renderSurface = new QOffscreenSurface(nullptr,this);
+    auto renderSurface = new QOffscreenSurface(nullptr);
     renderSurface->setFormat(mainSurface->format());
     renderSurface->create();
 

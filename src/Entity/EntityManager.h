@@ -5,25 +5,19 @@
 
 #include <vector>
 
-#include <entt/entt.hpp>
-
-using CFEntity = entt::registry::entity_type;
+#include "Core/entityx.h"
 class EntityManager : public QObject{
     Q_OBJECT
 public:
-    
-    EntityManager();
 
-    static void createEntity(int id);
+    static CFEntity createEntity(QString entityId, QString name);
 
-    static void deleteEntity(int id);
+    static void deleteEntity(QString entityId);
 
     static CFEntity& getRoot();
 
 public:
     static CFEntity root_;
-    static entt::registry m_registry;
-    static std::vector<CFEntity> children;
 };
 
 #endif // ENTITY_H

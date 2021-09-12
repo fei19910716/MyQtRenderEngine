@@ -13,6 +13,7 @@ class RenderView : public QOpenGLWidget, public QOpenGLFunctions_3_3_Core
     Q_OBJECT
 public:
     explicit RenderView(QWidget *parent = nullptr);
+    ~RenderView();
 
 signals:
 

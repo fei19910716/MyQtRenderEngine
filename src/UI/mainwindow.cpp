@@ -38,7 +38,6 @@ MainWindow::MainWindow(QWidget *parent) :
         if(addComponentWidget_ == nullptr){
             addComponentWidget_ = new AddComponentWidget(this);
             pBtn->setMainWidget(addComponentWidget_);
-            addComponentWidget_->setFocus();
         }
     });
 
@@ -117,17 +116,17 @@ void MainWindow::constructEntityTreeMenu(){
     treeItemContextMenu_->addAction(m_childAction);
 
     connect(m_addAction,&QAction::triggered,[=]{
-        EntityManager::createEntity(1);
+        EntityManager::createEntity("001","Triangle");
         ui->openGLWidget->m_thread->m_requestRender = true;
         ui->openGLWidget->m_thread->m_condition.wakeOne();
         this->rebuildEntityTree();
     });
     connect(m_delAction,&QAction::triggered,[=]{
-        EntityManager::deleteEntity(1);
+        EntityManager::deleteEntity("001");
         this->rebuildEntityTree();
     });
     connect(m_childAction,&QAction::triggered,[=]{
-        EntityManager::createEntity(1);
+        EntityManager::createEntity("001","GameObejct");
 
         QTreeWidgetItem* curItem = ui->treeWidget->currentItem();
         QTreeWidgetItem* item = new QTreeWidgetItem();
@@ -141,11 +140,11 @@ void MainWindow::constructEntityTreeMenu(){
 
 void MainWindow::rebuildEntityTree(){
     auto root = EntityManager::getRoot();
-    if(!EntityManager::m_registry.valid(root)) {
+    if(!ENTT::registry.valid(root)) {
         ui->treeWidget->clear();
         return;
     }
-    auto metaInfo = EntityManager::m_registry.try_get<MetaInfo>(root);
+    auto metaInfo = ENTT::registry.try_get<MetaInfo>(root);
     ui->treeWidget->addTopLevelItem(this->buildRootTreeItem(*metaInfo));
 }
 

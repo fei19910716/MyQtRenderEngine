@@ -50,6 +50,4 @@ void RenderThread::setRenderSize(int width, int height)
 
 RenderThread::~RenderThread() {
 
-    m_running = false;
-    this->wait();
 }

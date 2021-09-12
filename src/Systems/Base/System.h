@@ -3,8 +3,10 @@
 
 #include <string>
 #include <iostream>
-#include <entt/entt.hpp>
+
 #include <QOpenGLFunctions_3_3_Core>
+
+#include "Core/entityx.h"
 
 class System: public QOpenGLFunctions_3_3_Core{
 public:

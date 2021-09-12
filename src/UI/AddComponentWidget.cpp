@@ -5,6 +5,7 @@
 #include <QPushButton>
 #include <QLabel>
 #include <QLineEdit>
+#include <QDebug>
 
 #include "Components/ComponentManager.h"
 
@@ -43,6 +44,10 @@ AddComponentWidget::AddComponentWidget(QWidget *parent)
                    "border-color:rgba(255,255,255,200);"
                    "color:rgba(0,0,0,200);"
                    "}");
+
+        connect(com, &QPushButton::clicked,[=](){
+            qDebug() << "add a component-----" << item->label_;
+        });
         pMainLayout->addWidget(com);
     }
 }
