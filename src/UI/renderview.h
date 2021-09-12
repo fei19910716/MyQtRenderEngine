@@ -27,7 +27,7 @@ protected:
     void genTextureFromStbImage(const QString& path);
     void saveFBOToPNG(QString& path);
 
-private:
+public:
     /**
      * UI线程的context，子线程需要与之share
      */

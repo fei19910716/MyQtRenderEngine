@@ -9,6 +9,7 @@
 
 class QListWidgetItem;
 class MetaInfo;
+class AddComponentWidget;
 
 namespace Ui {
 class MainWindow;
@@ -55,7 +56,7 @@ public:
     /**
      * 对象面板的右键菜单
      */
-    void constructTreeWidgetMenu();
+    void constructEntityTreeMenu();
 
     /**
      * 设置窗口大小，设置是否全屏，是否最大化显示等
@@ -82,6 +83,8 @@ private:
     QMenu* treeContextMenu_;
 
     QMenu* treeItemContextMenu_;
+
+    AddComponentWidget* addComponentWidget_ = nullptr;
 };
 
 #endif // MAINWINDOW_H

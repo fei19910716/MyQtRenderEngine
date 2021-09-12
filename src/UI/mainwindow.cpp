@@ -3,10 +3,13 @@
 #include "Components/Base/MetaInfo.h"
 #include "Entity/EntityManager.h"
 #include "UI/componentwidget.h"
-#include "UI/AddComponentWidget.h"
+
+#include "popupwidgetbutton.h"
+#include "addcomponentwidget.h"
 
 #include <QDesktopWidget>
 #include <QScreen>
+#include <QLabel>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -21,22 +24,48 @@ MainWindow::MainWindow(QWidget *parent) :
     this->constructInspectorPanel();
 
     // 参考 https://blog.csdn.net/a844651990/article/details/83242159
-    connect(ui->pushButton,&QPushButton::clicked, [=](){
-        AddComponentWidget* add =new AddComponentWidget;
-        add->show();
+    PopupWidgetButton *pBtn = new PopupWidgetButton(PWB::Vertical, this, ui->dockWidget_2);
+    pBtn->setMinimumSize(150,30);
+    QHBoxLayout* addLayout = new QHBoxLayout(ui->dockWidget_2);
+    addLayout->addStretch(1);
+    addLayout->addWidget(pBtn);
+    addLayout->addStretch(1);
+    pBtn->button()->setText("Add Component");
+    ui->componentPanelLayout->addLayout(addLayout);
+
+    connect(pBtn, &PopupWidgetButton::ButtonClicked,[=](){
+        // 弹出窗口
+        if(addComponentWidget_ == nullptr){
+            addComponentWidget_ = new AddComponentWidget(this);
+            pBtn->setMainWidget(addComponentWidget_);
+            addComponentWidget_->setFocus();
+        }
     });
+
+    // ui->dockWidget->setStyleSheet("border: 1px solid black");
+    ui->dockWidget->setTitleBarWidget(new QLabel("Entity"));
+    ui->dockWidget->widget()->layout()->setContentsMargins( 0,0,0,0 );
+
+    ui->dockWidget_2->setTitleBarWidget(new QLabel("Component"));
+    ui->dockWidget_2->widget()->layout()->setContentsMargins( 0,0,0,0 );
+
+    ui->dockWidget_4->setTitleBarWidget(new QLabel("Resource"));
+    ui->dockWidget_4->widget()->layout()->setContentsMargins( 0,0,0,0 );
+
+    ui->centralWidget->setStyleSheet("background-color: #f7f2f2; border-bottom: 1px solid black;border-right: 1px solid black;border-left: 1px solid black");
+
 }
 
 void MainWindow::constructInspectorPanel(){
     //! 设置组件面板
     for(auto& com : ComponentManager::getComponents()){
-//        const QMetaObject *metaObject = com->metaObject();
-//        int count = metaObject->propertyCount();
         int count = com->propertyDescriptions_.size();
         QListWidgetItem* item = new QListWidgetItem(ui->listWidget);
         ComponentWidget* cw = new ComponentWidget(this,com);
         item->setSizeHint(QSize(200,count*40));
         ui->listWidget->addItem(item);
+        ui->listWidget->setSpacing(2);
+        item->setBackgroundColor(QColor(230,230,230));
         ui->listWidget->setItemWidget(item,cw);
     }
 }
@@ -49,11 +78,10 @@ void MainWindow::constructObjectPanel(){
     } else {
         ui->treeWidget->setHeaderLabel(tr("entities"));
     }
-    ui->treeWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
 
     ui->treeWidget->setHeaderHidden(true); // 隐藏header
 
-    this->constructTreeWidgetMenu();
+    this->constructEntityTreeMenu();
 }
 
 void MainWindow::initWindowSize(){
@@ -70,11 +98,13 @@ void MainWindow::initWindowSize(){
 //     this->setWindowState(this->windowState() ^ Qt::WindowFullScreen); // 设置全屏显示
 //     this->showMaximized(); // 设置最大化显示
 
+    this->resize(1200,800);
+
     //! 设置glView的size
     ui->openGLWidget->setFixedSize(400,600);
 }
 
-void MainWindow::constructTreeWidgetMenu(){
+void MainWindow::constructEntityTreeMenu(){
     ui->treeWidget->setContextMenuPolicy(Qt::CustomContextMenu);
     treeContextMenu_ = new QMenu(ui->treeWidget);
     QAction* m_addAction = new QAction("add Object", this);
@@ -88,6 +118,8 @@ void MainWindow::constructTreeWidgetMenu(){
 
     connect(m_addAction,&QAction::triggered,[=]{
         EntityManager::createEntity(1);
+        ui->openGLWidget->m_thread->m_requestRender = true;
+        ui->openGLWidget->m_thread->m_condition.wakeOne();
         this->rebuildEntityTree();
     });
     connect(m_delAction,&QAction::triggered,[=]{

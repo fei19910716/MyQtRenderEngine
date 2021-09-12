@@ -27,10 +27,16 @@ public:
         allComponentDescriptions_.emplace_back(triangle);
     }
 
+    static std::vector<ComponentDescription*> getComponentDescriptions(){
+        return allComponentDescriptions_;
+    }
+
     static std::vector<Component*> getComponents(){
         std::vector<Component*> coms;
 
         coms.push_back(new Triangle(001,1));
+
+        coms.push_back(new Triangle(002,1));
 
         return coms;
     }

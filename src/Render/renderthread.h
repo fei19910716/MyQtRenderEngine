@@ -6,6 +6,7 @@
 #include <QOffscreenSurface>
 #include <QOpenGLContext>
 #include <QMutex>
+#include <QWaitCondition>
 
 #include "RenderEngine.h"
 #include "TextureBuffer.h"
@@ -24,7 +25,7 @@ public:
 signals:
     void imageReady();
 
-private:
+public:
     RenderThread(const RenderThread &) = delete;
     RenderThread &operator =(const RenderThread &) = delete;
     RenderThread(const RenderThread &&) = delete;
@@ -34,9 +35,11 @@ private:
     QOpenGLContext* m_renderContext;
     QOpenGLContext* m_mainContext;
     QMutex m_mutex;
+    QWaitCondition m_condition;
     unsigned int m_width;
     unsigned int m_height;
     bool  m_running = true;
+    bool  m_requestRender = false;
     RenderEngine* m_renderEngine= nullptr;
 };
 

@@ -25,13 +25,18 @@ void RenderThread::run(){
     }
     TextureBuffer::instance()->createTexture(m_renderContext);
     while (m_running){
+        if(!m_requestRender){
+            static QMutex lock_;
+            QMutexLocker lock(&lock_);
+            m_condition.wait(&lock_);
+        }
         m_renderEngine->setRenderSize(m_width, m_height);
         m_renderEngine->update(QDateTime::currentDateTime().time().msec());
 
         // TextureBuffer::instance()->updateTexture(m_renderContext,m_width,m_height);
         TextureBuffer::instance()->updateTexture(m_renderContext,m_renderEngine->m_textureToDisplay);
         emit imageReady();
-
+        m_requestRender = false;
     }
     TextureBuffer::instance()->deleteTexture(m_renderContext);
 }
