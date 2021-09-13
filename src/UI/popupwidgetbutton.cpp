@@ -323,6 +323,10 @@ PopupWidgetButton::PopupWidgetButton(PWB::WidgetOrientation orien, QWidget *root
     connect(this, &PopupWidgetButton::OthersClicked, m_pMainWidget, &PopupWidget::hide);
 }
 
+void PopupWidgetButton::hide() {
+    m_pMainWidget->hide();
+}
+
 PopupWidgetButton::~PopupWidgetButton()
 {
     if (m_pWidgets.contains(m_pMainWidget)) {

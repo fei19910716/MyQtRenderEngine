@@ -40,6 +40,8 @@ public:
      */
     QPushButton *button() { return m_pButton; }
 
+    void hide();
+
 protected:
     virtual bool eventFilter(QObject *watched, QEvent *event);
 

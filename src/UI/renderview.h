@@ -3,6 +3,7 @@
 
 #include <QOpenGLWidget>
 #include <QOpenGLContext>
+#include <QMutex>
 #include <QOpenGLFunctions_3_3_Core>
 #include <QOpenGLShaderProgram>
 
@@ -13,13 +14,16 @@ class RenderView : public QOpenGLWidget, public QOpenGLFunctions_3_3_Core
     Q_OBJECT
 public:
     explicit RenderView(QWidget *parent = nullptr);
+    /**
+     * 资源清理：子线程和本线程的gl资源
+     */
     ~RenderView();
 
 signals:
 
 public slots:
 
-protected:
+public:
     void initializeGL();
     void resizeGL(int w, int h);
     void paintGL();
@@ -27,6 +31,8 @@ protected:
     void genTextureFromQImage(const QString& path);
     void genTextureFromStbImage(const QString& path);
     void saveFBOToPNG(QString& path);
+
+    void requestRender();
 
 public:
     /**
@@ -66,6 +72,8 @@ public:
      */
     const int WIDTH = 200;
     const int HEIGHT = 400;
+
+    QMutex lock_;
 };
 
 #endif // RENDERVIEW_H

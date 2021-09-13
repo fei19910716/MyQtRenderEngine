@@ -22,6 +22,11 @@ public:
     void run() override;
     void setRenderDegree(float degree);
 
+    /**
+     * 释放gl资源，只能在本线程调用
+     */
+    Q_INVOKABLE void release();
+
 signals:
     void imageReady();
 
@@ -39,7 +44,7 @@ public:
     unsigned int m_width;
     unsigned int m_height;
     bool  m_running = true;
-    bool  m_requestRender = false;
+    bool m_requestRender = false;
     RenderEngine* m_renderEngine= nullptr;
 };
 

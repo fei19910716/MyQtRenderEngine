@@ -4,6 +4,7 @@
 
 #include "TriangleSystem.h"
 
+#include <QDebug>
 
 #include "stb_image_write.h"
 
@@ -11,7 +12,7 @@
 void TriangleSystem::update(entt::registry &registry, float dt){
     initializeOpenGLFunctions();
 
-    glClearColor(0.1f, 0.3f, 0.3f, 1.0f);
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
     unsigned int shaderProgram = createShaderProgram(m_vertexShader,m_fragmentShader);
@@ -49,6 +50,8 @@ void TriangleSystem::update(entt::registry &registry, float dt){
 //        // transfer the bind fbo image data, here is the opengl result data
 //        glReadPixels(0,0,400,600,GL_RGBA,GL_UNSIGNED_BYTE,data1);
 //        stbi_write_png("D:\\GameEngine\\CFRenderEngine\\out1.png",400,600,4,data1,0);
+
+        qDebug() << "after-----------------------";
 
         glDeleteVertexArrays(1, &VAO);
         glDeleteBuffers(1, &VBO);

@@ -3,8 +3,9 @@
 //
 
 #include "TextureBuffer.h"
-#include <QMutexLocker>
 #include <QDebug>
+
+#include "stb_image_write.h"
 
 TextureBuffer *TextureBuffer::instance()
 {
@@ -48,12 +49,12 @@ void TextureBuffer::drawTexture(QOpenGLContext *context, int vertexCount) {
     auto f = context->functions();
 
     f->glBindTexture(GL_TEXTURE_2D, m_texture);
+
     f->glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     f->glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     f->glActiveTexture(GL_TEXTURE0);
     f->glDrawElements(GL_TRIANGLES, vertexCount, GL_UNSIGNED_INT, 0);
     f->glBindTexture(GL_TEXTURE_2D, 0);
-
 }
 
 TextureBuffer::TextureBuffer():m_texture(0) {

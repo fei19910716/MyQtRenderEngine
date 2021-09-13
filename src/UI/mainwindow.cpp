@@ -25,22 +25,22 @@ MainWindow::MainWindow(QWidget *parent) :
     this->constructInspectorPanel();
 
     // ui->dockWidget->setStyleSheet("border: 1px solid black");
-    ui->dockWidget->setTitleBarWidget(new QLabel("Entity"));
-    ui->dockWidget->widget()->layout()->setContentsMargins( 0,0,0,0 );
+    ui->entityDock->setTitleBarWidget(new QLabel("Entity"));
+    ui->entityDock->widget()->layout()->setContentsMargins( 0,0,0,0 );
 
-    ui->dockWidget_2->setTitleBarWidget(new QLabel("Component"));
-    ui->dockWidget_2->widget()->layout()->setContentsMargins( 0,0,0,0 );
+    ui->componentDock->setTitleBarWidget(new QLabel("Component"));
+    ui->componentDock->widget()->layout()->setContentsMargins( 0,0,0,0 );
 
-    ui->dockWidget_4->setTitleBarWidget(new QLabel("Resource"));
-    ui->dockWidget_4->widget()->layout()->setContentsMargins( 0,0,0,0 );
+    ui->resourceDock->setTitleBarWidget(new QLabel("Resource"));
+    ui->resourceDock->widget()->layout()->setContentsMargins( 0,0,0,0 );
 
     ui->centralWidget->setStyleSheet("background-color: #f7f2f2; border-bottom: 1px solid black;border-right: 1px solid black;border-left: 1px solid black");
-
+    ui->verticalLayout_2->setAlignment(Qt::AlignHCenter | Qt::AlignHCenter); // 设置renderView居中显示
 }
 
 void MainWindow::constructInspectorPanel(){
     // 参考 https://blog.csdn.net/a844651990/article/details/83242159
-    PopupWidgetButton *pBtn = new PopupWidgetButton(PWB::Vertical, this, ui->dockWidget_2);
+    PopupWidgetButton *pBtn = new PopupWidgetButton(PWB::Vertical, this, ui->componentDock);
     pBtn->setMinimumSize(150,30);
     QHBoxLayout* addLayout = new QHBoxLayout;
     addLayout->addStretch(1);
@@ -55,28 +55,34 @@ void MainWindow::constructInspectorPanel(){
             addComponentWidget_ = new AddComponentWidget(this);
             pBtn->setMainWidget(addComponentWidget_);
 
-            connect(addComponentWidget_,&AddComponentWidget::componentClicked,this,&MainWindow::onAddComponent);
+            connect(addComponentWidget_,&AddComponentWidget::componentClicked,[=](QObject* sender){
+                pBtn->hide();
+                this->onAddComponent(sender);
+            });
         }
     });
 }
 
 void MainWindow::constructEntityPanel(){
     //! 设置对象面板
-    ui->treeWidget->setColumnCount(1);
-    if(QTreeWidgetItem* header = ui->treeWidget->headerItem()) {
+    ui->entityTreeWidget->setColumnCount(1);
+    if(QTreeWidgetItem* header = ui->entityTreeWidget->headerItem()) {
         header->setText(0, tr("entities"));
     } else {
-        ui->treeWidget->setHeaderLabel(tr("entities"));
+        ui->entityTreeWidget->setHeaderLabel(tr("entities"));
     }
 
-    ui->treeWidget->setHeaderHidden(true); // 隐藏header
+    ui->entityTreeWidget->setHeaderHidden(true); // 隐藏header
 
     this->constructEntityTreeMenu();
 
-    connect(ui->treeWidget,&QTreeWidget::itemClicked,[=](QTreeWidgetItem *item){
+    connect(ui->entityTreeWidget,&QTreeWidget::itemClicked,[=](QTreeWidgetItem *item){
         auto entity = item->data(0,Qt::UserRole).value<CFEntity*>();
 
         this->onDisplayComponents(entity);
+
+        // render
+        ui->renderView->requestRender();
     });
 }
 
@@ -97,17 +103,17 @@ void MainWindow::initWindowSize(){
     this->resize(1200,800);
 
     //! 设置glView的size
-    ui->openGLWidget->setFixedSize(400,600);
+    ui->renderView->setFixedSize(400,600);
 }
 
 void MainWindow::constructEntityTreeMenu(){
-    ui->treeWidget->setContextMenuPolicy(Qt::CustomContextMenu);
-    treeContextMenu_ = new QMenu(ui->treeWidget);
+    ui->entityTreeWidget->setContextMenuPolicy(Qt::CustomContextMenu);
+    treeContextMenu_ = new QMenu(ui->entityTreeWidget);
     QAction* m_addAction = new QAction("add Object", this);
 
     treeContextMenu_->addAction(m_addAction);
 
-    treeItemContextMenu_ = new QMenu(ui->treeWidget);
+    treeItemContextMenu_ = new QMenu(ui->entityTreeWidget);
     QAction* m_childAction = new QAction("add Child", this);
     QAction* m_delAction = new QAction("del Object", this);
     treeItemContextMenu_->addAction(m_childAction);
@@ -117,67 +123,71 @@ void MainWindow::constructEntityTreeMenu(){
         auto entity = EntityManager::createEntity("001","GameObejct");
         QTreeWidgetItem* item = this->buildTreeItemFromEntity(entity);
 
-        QTreeWidgetItem* root = ui->treeWidget->topLevelItem(0);
+        QTreeWidgetItem* root = ui->entityTreeWidget->topLevelItem(0);
         if(root == nullptr){
-            ui->treeWidget->addTopLevelItem(item);
+            ui->entityTreeWidget->addTopLevelItem(item);
             root = item;
         }
         root->addChild(item);
         root->setExpanded(true);
         item->setSelected(true);
-        ui->treeWidget->setCurrentItem(item);
+        ui->entityTreeWidget->setCurrentItem(item);
+        auto ent = item->data(0,Qt::UserRole).value<CFEntity*>();
+        this->onDisplayComponents(ent);
         // render
-        ui->openGLWidget->m_thread->m_requestRender = true;
-        ui->openGLWidget->m_thread->m_condition.wakeOne();
+        ui->renderView->requestRender();
     });
     connect(m_delAction,&QAction::triggered,[=]{
-        QTreeWidgetItem* curItem = ui->treeWidget->currentItem();
+        QTreeWidgetItem* curItem = ui->entityTreeWidget->currentItem();
         auto entity = curItem->data(0,Qt::UserRole).value<CFEntity*>();
         EntityManager::deleteEntity(entity);
 
         if(curItem->parent() == nullptr){
-            ui->treeWidget->clear();
+            ui->entityTreeWidget->clear();
         }else{
-            curItem->parent()->removeChild(curItem);
-            curItem->parent()->setSelected(true);
-            ui->treeWidget->setCurrentItem(curItem->parent());
+            auto parent = curItem->parent();
+            parent->removeChild(curItem);
+            parent->setSelected(true);
+            ui->entityTreeWidget->setCurrentItem(parent);
+            auto entity = parent->data(0,Qt::UserRole).value<CFEntity*>();
+            this->onDisplayComponents(entity);
         }
 
 
         // render
-        ui->openGLWidget->m_thread->m_requestRender = true;
-        ui->openGLWidget->m_thread->m_condition.wakeOne();
+        ui->renderView->requestRender();
     });
     connect(m_childAction,&QAction::triggered,[=]{
         auto entity = EntityManager::createEntity("001","GameObejct");
 
-        QTreeWidgetItem* curItem = ui->treeWidget->currentItem();
+        QTreeWidgetItem* curItem = ui->entityTreeWidget->currentItem();
         QTreeWidgetItem* item = this->buildTreeItemFromEntity(entity);
         curItem->addChild(item);
         curItem->setExpanded(true);
         item->setSelected(true);
-        ui->treeWidget->setCurrentItem(item);
+        ui->entityTreeWidget->setCurrentItem(item);
+        auto ent = item->data(0,Qt::UserRole).value<CFEntity*>();
+        this->onDisplayComponents(ent);
 
         // render
-        ui->openGLWidget->m_thread->m_requestRender = true;
-        ui->openGLWidget->m_thread->m_condition.wakeOne();
+        ui->renderView->requestRender();
     });
-    connect(ui->treeWidget, &QTreeWidget::customContextMenuRequested,this, &MainWindow::onShowTreeWidgetMenu);
+    connect(ui->entityTreeWidget, &QTreeWidget::customContextMenuRequested,this, &MainWindow::onShowTreeWidgetMenu);
 }
 
 void MainWindow::rebuildEntityTree(){
     auto root = EntityManager::root();
     if(!root->valid()) {
-        ui->treeWidget->clear();
+        ui->entityTreeWidget->clear();
         return;
     }
-    ui->treeWidget->clear();
-    ui->treeWidget->addTopLevelItem(this->buildRootTreeItem(root));
+    ui->entityTreeWidget->clear();
+    ui->entityTreeWidget->addTopLevelItem(this->buildRootTreeItem(root));
 }
 
 void MainWindow::onShowTreeWidgetMenu(QPoint pos)
 {
-    QTreeWidgetItem* curItem = ui->treeWidget->itemAt(pos);  //获取当前被点击的节点
+    QTreeWidgetItem* curItem = ui->entityTreeWidget->itemAt(pos);  //获取当前被点击的节点
     if (curItem == NULL) 
         treeContextMenu_->exec(QCursor::pos());           //这种情况是右键的位置不在treeItem的范围内，即在空白位置右击
     else
@@ -217,7 +227,9 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
 }
 
 void MainWindow::onAddComponent(QObject* sender) {
-    QTreeWidgetItem* curItem = ui->treeWidget->currentItem();
+
+
+    QTreeWidgetItem* curItem = ui->entityTreeWidget->currentItem();
     auto entity = curItem->data(0,Qt::UserRole).value<CFEntity*>();
 
     QPushButton *pButton = qobject_cast<QPushButton *>(sender);
@@ -231,23 +243,27 @@ void MainWindow::onAddComponent(QObject* sender) {
             break;
     }
     this->onDisplayComponents(entity);
+    // render
+    ui->renderView->requestRender();
 }
 
 void MainWindow::onDisplayComponents(CFEntity* entity){
     //! 设置组件面板
     if(!entity->valid())
         return;
-    ui->listWidget->clear();
+    ui->componentListWidget->clear();
     for(auto& com : entity->allComponents()){
-        if(com == nullptr) continue;
+        if(com == nullptr)
+            continue;
         int count = com->propertyDescriptions_.size();
-        if(count == 0) continue;
-        QListWidgetItem* item = new QListWidgetItem(ui->listWidget);
+        if(count == 0)
+            continue;
+        QListWidgetItem* item = new QListWidgetItem(ui->componentListWidget);
         ComponentWidget* cw = new ComponentWidget(this,com);
         item->setSizeHint(QSize(200,count*40));
-        ui->listWidget->addItem(item);
-        ui->listWidget->setSpacing(2);
+        ui->componentListWidget->addItem(item);
+        ui->componentListWidget->setSpacing(2);
         item->setBackgroundColor(QColor(230,230,230));
-        ui->listWidget->setItemWidget(item,cw);
+        ui->componentListWidget->setItemWidget(item,cw);
     }
 }

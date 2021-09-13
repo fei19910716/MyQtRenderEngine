@@ -57,10 +57,20 @@ RenderView::RenderView(QWidget *parent) : QOpenGLWidget(parent)
 }
 
 RenderView::~RenderView(){
-    qDebug() << "close the render view ----";
+    // 清除子线程的资源
     m_thread->m_running = false;
     m_thread->m_condition.wakeAll();
+    QMetaObject::invokeMethod(m_thread,"release",Qt::QueuedConnection);
     m_thread->wait();
+
+    // 清除本线程的资源
+    auto context = this->context();
+    auto mainSurface = context->surface();
+    context->makeCurrent(mainSurface);
+    delete m_program;
+    m_program = nullptr;
+    context->doneCurrent();
+
 }
 
 void RenderView::initializeGL()
@@ -131,6 +141,11 @@ void RenderView::paintGL()
     glBindVertexArray(0);
     m_program->release();
 
+}
+
+void RenderView::requestRender() {
+    QMutexLocker locker(&lock_);
+    m_thread->m_condition.wakeOne();
 }
 
 void RenderView::saveFBOToPNG(QString& path){
