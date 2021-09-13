@@ -1,11 +1,11 @@
 #pragma once
-#include "Components/Base/component.h"
+#include "Components/Base/cfcomponent.h"
 
 #include <vector>
 
 #include "Core/entityx.h"
 
-class MetaInfo: public Component
+class MetaInfo: public CFComponent
 {
     Q_OBJECT
 public:

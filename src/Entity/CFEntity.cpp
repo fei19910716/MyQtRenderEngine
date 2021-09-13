@@ -46,9 +46,9 @@ void CFEntity::removeChild(CFEntity* child){
     }
 }
 
-std::vector<Component*> CFEntity::allComponents(){
+std::vector<CFComponent*> CFEntity::allComponents(){
     auto com = ENTT::registry.try_get<MetaInfo,Triangle>(entity_); //TODO 这里需要注册所有的component
-    std::vector<Component*> components;
+    std::vector<CFComponent*> components;
     allComponentsGetter(components,com);
     return components;
 }

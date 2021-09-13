@@ -50,7 +50,7 @@ file(GLOB_RECURSE CORE_SOURCE_FILES
 
 add_subdirectory(vendor)
 
-add_executable(${target} ${CORE_SOURCE_FILES} src/Entity/CFEntity.cpp src/Entity/CFEntity.h)
+add_executable(${target} ${CORE_SOURCE_FILES})
 
 # add_custom_target(CopyResources
 #     COMMAND cp -r assets/package/windows/resources/ ${CMAKE_CURRENT_BINARY_DIR}/resources/

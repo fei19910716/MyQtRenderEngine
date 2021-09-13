@@ -95,17 +95,19 @@ struct ComponentDescription{
     std::optional<bool> isGlobalUnique_;
 };
 
-class Component: public QObject{
+class CFComponent: public QObject{
     Q_OBJECT
     Q_PROPERTY(int componentId READ componentId WRITE setComponentId)
     Q_PROPERTY(int entityId READ entityId WRITE setEntityId)
     Q_PROPERTY(std::vector<ComponentPropertyDescription*> propertyDescriptions READ propertyDescriptions WRITE setPropertyDescriptions)
 
 public:
-    Component &operator =(const Component &);
-    Component() = default;
-    Component(int componentId, int entityId);
-    Component(const Component& com);
+    CFComponent &operator =(const CFComponent &);
+    CFComponent() = default;
+    CFComponent(int componentId, int entityId);
+    CFComponent(const CFComponent& com);
+
+    virtual ~CFComponent();
 
 
     std::vector<ComponentPropertyDescription*> propertyDescriptions_;

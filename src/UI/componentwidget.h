@@ -5,7 +5,7 @@
 #include <QDebug>
 #include <QVBoxLayout>
 
-#include "Components/Base/component.h"
+#include "Components/Base/cfcomponent.h"
 
 class ComponentPropertyDescription;
 
@@ -19,7 +19,7 @@ public:
      * @param component 当前需要构建UI的组件
      * @param parent 父窗口，一般为null
      */
-    explicit ComponentWidget(QWidget *parent = nullptr, Component* component = nullptr);
+    explicit ComponentWidget(QWidget *parent = nullptr, CFComponent* component = nullptr);
 
     /**
      * 构建组件的enum属性的UI
@@ -51,7 +51,7 @@ public:
 
 private:
     QVBoxLayout* mainLayout_;
-    Component* component_;
+    CFComponent* component_;
 
 signals:
 

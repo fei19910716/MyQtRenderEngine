@@ -10,7 +10,7 @@
 #include <QPushButton>
 #include <QCheckBox>
 
-ComponentWidget::ComponentWidget(QWidget *parent, Component* component) : QWidget(parent), component_(component)
+ComponentWidget::ComponentWidget(QWidget *parent, CFComponent* component) : QWidget(parent), component_(component)
 {
     // 设置布局
     mainLayout_ = new QVBoxLayout;

@@ -54,23 +54,10 @@ void MainWindow::constructInspectorPanel(){
         if(addComponentWidget_ == nullptr){
             addComponentWidget_ = new AddComponentWidget(this);
             pBtn->setMainWidget(addComponentWidget_);
+
+            connect(addComponentWidget_,&AddComponentWidget::componentClicked,this,&MainWindow::onAddComponent);
         }
     });
-
-    //! 设置组件面板
-    auto root = EntityManager::root();
-    if(!root || !root->valid()) return;
-    for(auto& com : EntityManager::root()->allComponents()){
-        int count = com->propertyDescriptions_.size();
-        QListWidgetItem* item = new QListWidgetItem(ui->listWidget);
-        ComponentWidget* cw = new ComponentWidget(this,com);
-        item->setSizeHint(QSize(200,count*40));
-        ui->listWidget->addItem(item);
-        ui->listWidget->setSpacing(2);
-        item->setBackgroundColor(QColor(230,230,230));
-        ui->listWidget->setItemWidget(item,cw);
-    }
-
 }
 
 void MainWindow::constructEntityPanel(){
@@ -85,6 +72,12 @@ void MainWindow::constructEntityPanel(){
     ui->treeWidget->setHeaderHidden(true); // 隐藏header
 
     this->constructEntityTreeMenu();
+
+    connect(ui->treeWidget,&QTreeWidget::itemClicked,[=](QTreeWidgetItem *item){
+        auto entity = item->data(0,Qt::UserRole).value<CFEntity*>();
+
+        this->onDisplayComponents(entity);
+    });
 }
 
 void MainWindow::initWindowSize(){
@@ -131,6 +124,8 @@ void MainWindow::constructEntityTreeMenu(){
         }
         root->addChild(item);
         root->setExpanded(true);
+        item->setSelected(true);
+        ui->treeWidget->setCurrentItem(item);
         // render
         ui->openGLWidget->m_thread->m_requestRender = true;
         ui->openGLWidget->m_thread->m_condition.wakeOne();
@@ -144,6 +139,8 @@ void MainWindow::constructEntityTreeMenu(){
             ui->treeWidget->clear();
         }else{
             curItem->parent()->removeChild(curItem);
+            curItem->parent()->setSelected(true);
+            ui->treeWidget->setCurrentItem(curItem->parent());
         }
 
 
@@ -158,12 +155,14 @@ void MainWindow::constructEntityTreeMenu(){
         QTreeWidgetItem* item = this->buildTreeItemFromEntity(entity);
         curItem->addChild(item);
         curItem->setExpanded(true);
+        item->setSelected(true);
+        ui->treeWidget->setCurrentItem(item);
 
         // render
         ui->openGLWidget->m_thread->m_requestRender = true;
         ui->openGLWidget->m_thread->m_condition.wakeOne();
     });
-    connect(ui->treeWidget, &QTreeWidget::customContextMenuRequested,this, &MainWindow::showTreeWidgetMenuSlot);
+    connect(ui->treeWidget, &QTreeWidget::customContextMenuRequested,this, &MainWindow::onShowTreeWidgetMenu);
 }
 
 void MainWindow::rebuildEntityTree(){
@@ -176,7 +175,7 @@ void MainWindow::rebuildEntityTree(){
     ui->treeWidget->addTopLevelItem(this->buildRootTreeItem(root));
 }
 
-void MainWindow::showTreeWidgetMenuSlot(QPoint pos)
+void MainWindow::onShowTreeWidgetMenu(QPoint pos)
 {
     QTreeWidgetItem* curItem = ui->treeWidget->itemAt(pos);  //获取当前被点击的节点
     if (curItem == NULL) 
@@ -215,4 +214,40 @@ QTreeWidgetItem *MainWindow::buildRootTreeItem(CFEntity* entity)
 void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
 {
     qDebug() <<"click : " <<item->text();
+}
+
+void MainWindow::onAddComponent(QObject* sender) {
+    QTreeWidgetItem* curItem = ui->treeWidget->currentItem();
+    auto entity = curItem->data(0,Qt::UserRole).value<CFEntity*>();
+
+    QPushButton *pButton = qobject_cast<QPushButton *>(sender);
+
+    // 获取第一个用户数据
+    AddComponentWidget::User *pUser = (AddComponentWidget::User *)(pButton->userData(Qt::UserRole+1));
+
+    switch(pUser->type_){
+        case ComponentType::kTriangle:
+            entity->addComponent<Triangle>();
+            break;
+    }
+    this->onDisplayComponents(entity);
+}
+
+void MainWindow::onDisplayComponents(CFEntity* entity){
+    //! 设置组件面板
+    if(!entity->valid())
+        return;
+    ui->listWidget->clear();
+    for(auto& com : entity->allComponents()){
+        if(com == nullptr) continue;
+        int count = com->propertyDescriptions_.size();
+        if(count == 0) continue;
+        QListWidgetItem* item = new QListWidgetItem(ui->listWidget);
+        ComponentWidget* cw = new ComponentWidget(this,com);
+        item->setSizeHint(QSize(200,count*40));
+        ui->listWidget->addItem(item);
+        ui->listWidget->setSpacing(2);
+        item->setBackgroundColor(QColor(230,230,230));
+        ui->listWidget->setItemWidget(item,cw);
+    }
 }

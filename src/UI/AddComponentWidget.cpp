@@ -3,12 +3,9 @@
 #include <QPainter>
 #include <QLayout>
 #include <QPushButton>
-#include <QLabel>
-#include <QLineEdit>
 #include <QDebug>
 
 #include "Components/ComponentManager.h"
-#include "Components/Base/component.h"
 
 AddComponentWidget::AddComponentWidget(QWidget *parent)
     : QWidget(parent)
@@ -17,10 +14,13 @@ AddComponentWidget::AddComponentWidget(QWidget *parent)
     pMainLayout->setAlignment(Qt::AlignTop);
     // pLabel->setStyleSheet("QLabel { color: black; }");
 
-    for(auto& item: ComponentManager::getComponentDescriptions()){
+    for(auto& item: ComponentManager::componentDescriptions()){
         QPushButton* com = new QPushButton(this);
         com->setText(item->label_);
-        com->  setStyleSheet(
+        User *user = new User;
+        user->type_ = item->type_;
+        com->setUserData(Qt::UserRole+1, user);
+        com->setStyleSheet(
                    //正常状态样式
                    "QPushButton{"
                    "background-color:rgba(100,225,100,30);"//背景色（也可以设置图片）
@@ -47,7 +47,7 @@ AddComponentWidget::AddComponentWidget(QWidget *parent)
                    "}");
 
         connect(com, &QPushButton::clicked,[=](){
-            qDebug() << "add a component-----" << item->label_;
+            emit componentClicked(com);
         });
         pMainLayout->addWidget(com);
     }

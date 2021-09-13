@@ -10,7 +10,7 @@
 
 #include <vector>
 
-class ComponentDescription;
+struct ComponentDescription;
 
 class ComponentManager {
 public:
@@ -22,7 +22,7 @@ public:
     /*
      * 获取所有需要展示在UI上的组件，用于创建添加组件窗口
      */
-    static std::vector<ComponentDescription*> getComponentDescriptions();
+    static std::vector<ComponentDescription*>& componentDescriptions();
 
 public:
     /*

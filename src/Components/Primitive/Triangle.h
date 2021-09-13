@@ -4,9 +4,9 @@
 
 #include <vector>
 
-#include "Components/Base/component.h"
+#include "Components/Base/CFComponent.h"
 
-class Triangle: public Component{
+class Triangle: public CFComponent{
     Q_OBJECT
 
     Q_PROPERTY(QString name READ name)
@@ -18,8 +18,14 @@ public:
     enum Priority { High, Low, VeryHigh, VeryLow };
     Q_ENUM(Priority)
 
-    Triangle(){}
-    Triangle(int componentId, int entityId):Component(componentId,entityId){
+    Triangle(){
+        this->initPropertyDescription();
+    }
+    Triangle(int componentId, int entityId):CFComponent(componentId,entityId){
+        this->initPropertyDescription();
+    }
+
+    void initPropertyDescription(){
         ComponentPropertyDescription* name = new ComponentPropertyDescription;
         name->name_ = "name";
         name->label_ = "name";

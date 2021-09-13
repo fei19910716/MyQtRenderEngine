@@ -67,12 +67,16 @@ public:
 private slots:
     void on_listWidget_itemClicked(QListWidgetItem *item);
 
+    void onAddComponent(QObject* sender);
+
     /**
      * 对象面板显示的右键菜单槽函数
      *
      * @param pos 鼠标右键的位置
      */
-    void showTreeWidgetMenuSlot(QPoint pos);
+    void onShowTreeWidgetMenu(QPoint pos);
+
+    void onDisplayComponents(CFEntity* entity);
 
 private:
     Ui::MainWindow *ui;

@@ -4,7 +4,7 @@
 
 #include "ComponentManager.h"
 
-#include "Base/component.h"
+#include "Base/cfcomponent.h"
 
 std::vector<ComponentDescription*> ComponentManager::allComponentDescriptions_;
 
@@ -17,6 +17,6 @@ void ComponentManager::registerComponentDescriptions() {
     allComponentDescriptions_.emplace_back(triangle);
 }
 
-std::vector<ComponentDescription*> ComponentManager::getComponentDescriptions(){
+std::vector<ComponentDescription*>& ComponentManager::componentDescriptions(){
     return allComponentDescriptions_;
 }
