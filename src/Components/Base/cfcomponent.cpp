@@ -10,6 +10,8 @@ CFComponent::~CFComponent() noexcept {
     for(auto& item: propertyDescriptions_){
         delete item;
     }
+
+    delete componentDescription_;
 }
 CFComponent::CFComponent(const CFComponent& com){
     this->componentId_ = com.componentId();

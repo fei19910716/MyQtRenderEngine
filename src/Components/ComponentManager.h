@@ -8,7 +8,7 @@
 #include <QString>
 #include <QObject>
 
-#include <vector>
+#include <unordered_map>
 
 struct ComponentDescription;
 
@@ -24,11 +24,13 @@ public:
      */
     static std::vector<ComponentDescription*>& componentDescriptions();
 
+    static ComponentDescription* componentDescriptionWithType(ComponentType type);
+
 public:
     /*
      * 记录所有需要展示在UI上的组件
      */
-    static std::vector<ComponentDescription*> allComponentDescriptions_;
+    static std::unordered_map<ComponentType,ComponentDescription*> allComponentDescriptions_;
 };
 
 

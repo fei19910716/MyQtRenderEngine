@@ -49,6 +49,7 @@ void ComponentWidget::constructBool(ComponentPropertyDescription* property){
 
     connect(checkBox,&QCheckBox::stateChanged,[=](int state){
         component_->setProperty(propertyName,(state == Qt::Checked));
+        emit componentChanged(component_);
     });
 
     QHBoxLayout* hLayout = new QHBoxLayout;

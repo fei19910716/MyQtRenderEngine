@@ -10,7 +10,6 @@ class Triangle: public CFComponent{
     Q_OBJECT
 
     Q_PROPERTY(QString name READ name)
-    Q_PROPERTY(bool enable READ enable WRITE setEnable)
     Q_PROPERTY(QColor color READ color)
     Q_PROPERTY(Priority priority READ priority)
 
@@ -19,13 +18,19 @@ public:
     Q_ENUM(Priority)
 
     Triangle(){
-        this->initPropertyDescription();
+        this->createPropertyDescription();
+
+        componentDescription_ = ComponentManager::componentDescriptionWithType(ComponentType::kTriangle);
+        
     }
     Triangle(int componentId, int entityId):CFComponent(componentId,entityId){
-        this->initPropertyDescription();
+        this->createPropertyDescription();
+
+        componentDescription_ = ComponentManager::componentDescriptionWithType(ComponentType::kTriangle);
     }
 
-    void initPropertyDescription(){
+    void createPropertyDescription(){
+        // 
         ComponentPropertyDescription* name = new ComponentPropertyDescription;
         name->name_ = "name";
         name->label_ = "name";
@@ -66,14 +71,6 @@ public:
     };
 
 public:
-
-    bool enable_ = true;
-    bool enable(){
-        return enable_;
-    }
-    void setEnable(bool enable){
-        enable_ = enable;
-    }
 
     QString name_ = "Triangle";
     QString name(){

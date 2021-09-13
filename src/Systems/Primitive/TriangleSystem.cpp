@@ -16,8 +16,12 @@ void TriangleSystem::update(entt::registry &registry, float dt){
     glClear(GL_COLOR_BUFFER_BIT);
 
     unsigned int shaderProgram = createShaderProgram(m_vertexShader,m_fragmentShader);
-    auto view = registry.view<const Triangle>();
-    view.each([&](const auto &triangle){
+    auto view = registry.view<Triangle>();
+    for(auto entity: view) {
+        auto &triangle = view.get<Triangle>(entity);
+
+        if(!triangle.enable()) continue;
+
         unsigned int VBO, VAO, EBO;
         glGenVertexArrays(1, &VAO);
         glGenBuffers(1, &VBO);
@@ -51,11 +55,9 @@ void TriangleSystem::update(entt::registry &registry, float dt){
 //        glReadPixels(0,0,400,600,GL_RGBA,GL_UNSIGNED_BYTE,data1);
 //        stbi_write_png("D:\\GameEngine\\CFRenderEngine\\out1.png",400,600,4,data1,0);
 
-        qDebug() << "after-----------------------";
-
         glDeleteVertexArrays(1, &VAO);
         glDeleteBuffers(1, &VBO);
         glDeleteBuffers(1, &EBO);
         glDeleteProgram(shaderProgram);
-    });
+    }
 }

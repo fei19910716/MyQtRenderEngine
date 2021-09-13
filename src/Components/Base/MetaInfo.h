@@ -3,7 +3,6 @@
 
 #include <vector>
 
-#include "Core/entityx.h"
 
 class MetaInfo: public CFComponent
 {

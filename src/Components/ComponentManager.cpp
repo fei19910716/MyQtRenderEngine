@@ -6,17 +6,19 @@
 
 #include "Base/cfcomponent.h"
 
-std::vector<ComponentDescription*> ComponentManager::allComponentDescriptions_;
+std::unordered_map<ComponentType,ComponentDescription*> ComponentManager::allComponentDescriptions_;
 
 void ComponentManager::registerComponentDescriptions() {
-    ComponentDescription* triangle = new ComponentDescription;
-    triangle->type_ = ComponentType::kTriangle;
-    triangle->label_ = QObject::tr("Triangle");
-    triangle->group_ = ComponentGroup::kPrimitive;
+    ComponentDescription* componentDescription_ = new ComponentDescription;
+    componentDescription_->type_ = ComponentType::kTriangle;
+    componentDescription_->group_ = ComponentGroup::kPrimitive;
+    componentDescription_->isHiddenInList_ = false;
 
-    allComponentDescriptions_.emplace_back(triangle);
+    auto pair = std::make_pair<ComponentType,ComponentDescription*>(ComponentType::kTriangle,componentDescription_);
+    allComponentDescriptions_.insert(pair);
 }
 
 std::vector<ComponentDescription*>& ComponentManager::componentDescriptions(){
+    
     return allComponentDescriptions_;
 }

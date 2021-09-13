@@ -8,6 +8,8 @@
 
 #include <optional>
 
+#include "Components/ComponentManager.h"
+
 enum ComponentGroup{
     kPrimitive,
 };
@@ -100,7 +102,8 @@ class CFComponent: public QObject{
     Q_PROPERTY(int componentId READ componentId WRITE setComponentId)
     Q_PROPERTY(int entityId READ entityId WRITE setEntityId)
     Q_PROPERTY(std::vector<ComponentPropertyDescription*> propertyDescriptions READ propertyDescriptions WRITE setPropertyDescriptions)
-
+    Q_PROPERTY(bool enable READ enable WRITE setEnable)
+    Q_PROPERTY(ComponentDescription* componentDescription READ componentDescription WRITE setComponentDescription)
 public:
     CFComponent &operator =(const CFComponent &);
     CFComponent() = default;
@@ -111,6 +114,7 @@ public:
 
 
     std::vector<ComponentPropertyDescription*> propertyDescriptions_;
+    ComponentDescription* componentDescription_;
     int componentId_;
     int entityId_;
 
@@ -124,6 +128,14 @@ public:
         componentId_ = componentId;
     }
 
+    bool enable_ = true;
+    bool enable(){
+        return enable_;
+    }
+    void setEnable(bool enable){
+        enable_ = enable;
+    }
+
 
     int entityId() const
     {
@@ -132,6 +144,15 @@ public:
     void setEntityId(int entityId)
     {
         entityId_ = entityId;
+    }
+
+    ComponentDescription* componentDescription() const
+    {
+        return componentDescription_;
+    }
+    void setComponentDescription(ComponentDescription* componentDescription)
+    {
+        componentDescription_ = componentDescription;
     }
 
     std::vector<ComponentPropertyDescription*> propertyDescriptions() const

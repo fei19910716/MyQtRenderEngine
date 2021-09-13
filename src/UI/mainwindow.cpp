@@ -265,5 +265,13 @@ void MainWindow::onDisplayComponents(CFEntity* entity){
         ui->componentListWidget->setSpacing(2);
         item->setBackgroundColor(QColor(230,230,230));
         ui->componentListWidget->setItemWidget(item,cw);
+
+        connect(cw, &ComponentWidget::componentChanged,[=](CFComponent* component){
+            QTreeWidgetItem* curItem = ui->entityTreeWidget->currentItem();
+            auto entity = curItem->data(0,Qt::UserRole).value<CFEntity*>();
+            
+            this->onDisplayComponents(entity);
+            ui->renderView->requestRender();
+        });
     }
 }

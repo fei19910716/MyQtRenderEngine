@@ -54,6 +54,7 @@ private:
     CFComponent* component_;
 
 signals:
+    void componentChanged(CFComponent* component);
 
 public slots:
 };
