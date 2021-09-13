@@ -2,7 +2,7 @@
 
 #include <entt/entt.hpp>
 
-using CFEntity = entt::registry::entity_type;
+using ENTTEntity = entt::registry::entity_type;
 
 class ENTT{
 public:

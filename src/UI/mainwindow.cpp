@@ -1,17 +1,16 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+
 #include "Components/Base/MetaInfo.h"
 #include "Entity/EntityManager.h"
 #include "UI/componentwidget.h"
-
-#include "popupwidgetbutton.h"
-#include "addcomponentwidget.h"
+#include "UI/popupwidgetbutton.h"
+#include "UI/addcomponentwidget.h"
 
 #include <QDesktopWidget>
 #include <QScreen>
 #include <QLabel>
 
-Q_DECLARE_METATYPE(MetaInfo)
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -21,27 +20,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     this->initWindowSize();
 
-    this->constructObjectPanel();
+    this->constructEntityPanel();
 
     this->constructInspectorPanel();
-
-    // 参考 https://blog.csdn.net/a844651990/article/details/83242159
-    PopupWidgetButton *pBtn = new PopupWidgetButton(PWB::Vertical, this, ui->dockWidget_2);
-    pBtn->setMinimumSize(150,30);
-    QHBoxLayout* addLayout = new QHBoxLayout(ui->dockWidget_2);
-    addLayout->addStretch(1);
-    addLayout->addWidget(pBtn);
-    addLayout->addStretch(1);
-    pBtn->button()->setText("Add Component");
-    ui->componentPanelLayout->addLayout(addLayout);
-
-    connect(pBtn, &PopupWidgetButton::ButtonClicked,[=](){
-        // 弹出窗口
-        if(addComponentWidget_ == nullptr){
-            addComponentWidget_ = new AddComponentWidget(this);
-            pBtn->setMainWidget(addComponentWidget_);
-        }
-    });
 
     // ui->dockWidget->setStyleSheet("border: 1px solid black");
     ui->dockWidget->setTitleBarWidget(new QLabel("Entity"));
@@ -58,8 +39,28 @@ MainWindow::MainWindow(QWidget *parent) :
 }
 
 void MainWindow::constructInspectorPanel(){
+    // 参考 https://blog.csdn.net/a844651990/article/details/83242159
+    PopupWidgetButton *pBtn = new PopupWidgetButton(PWB::Vertical, this, ui->dockWidget_2);
+    pBtn->setMinimumSize(150,30);
+    QHBoxLayout* addLayout = new QHBoxLayout;
+    addLayout->addStretch(1);
+    addLayout->addWidget(pBtn);
+    addLayout->addStretch(1);
+    pBtn->button()->setText("Add Component");
+    ui->componentPanelLayout->addLayout(addLayout);
+
+    connect(pBtn, &PopupWidgetButton::ButtonClicked,[=](){
+        // 弹出窗口
+        if(addComponentWidget_ == nullptr){
+            addComponentWidget_ = new AddComponentWidget(this);
+            pBtn->setMainWidget(addComponentWidget_);
+        }
+    });
+
     //! 设置组件面板
-    for(auto& com : ComponentManager::getComponentsOfEntity(EntityManager::getRoot())){
+    auto root = EntityManager::root();
+    if(!root || !root->valid()) return;
+    for(auto& com : EntityManager::root()->allComponents()){
         int count = com->propertyDescriptions_.size();
         QListWidgetItem* item = new QListWidgetItem(ui->listWidget);
         ComponentWidget* cw = new ComponentWidget(this,com);
@@ -69,9 +70,10 @@ void MainWindow::constructInspectorPanel(){
         item->setBackgroundColor(QColor(230,230,230));
         ui->listWidget->setItemWidget(item,cw);
     }
+
 }
 
-void MainWindow::constructObjectPanel(){
+void MainWindow::constructEntityPanel(){
     //! 设置对象面板
     ui->treeWidget->setColumnCount(1);
     if(QTreeWidgetItem* header = ui->treeWidget->headerItem()) {
@@ -109,45 +111,69 @@ void MainWindow::constructEntityTreeMenu(){
     ui->treeWidget->setContextMenuPolicy(Qt::CustomContextMenu);
     treeContextMenu_ = new QMenu(ui->treeWidget);
     QAction* m_addAction = new QAction("add Object", this);
-    QAction* m_delAction = new QAction("del Object", this);
+
     treeContextMenu_->addAction(m_addAction);
-    treeContextMenu_->addAction(m_delAction);
 
     treeItemContextMenu_ = new QMenu(ui->treeWidget);
     QAction* m_childAction = new QAction("add Child", this);
+    QAction* m_delAction = new QAction("del Object", this);
     treeItemContextMenu_->addAction(m_childAction);
+    treeItemContextMenu_->addAction(m_delAction);
 
     connect(m_addAction,&QAction::triggered,[=]{
-        EntityManager::createEntity("001","Triangle");
+        auto entity = EntityManager::createEntity("001","GameObejct");
+        QTreeWidgetItem* item = this->buildTreeItemFromEntity(entity);
+
+        QTreeWidgetItem* root = ui->treeWidget->topLevelItem(0);
+        if(root == nullptr){
+            ui->treeWidget->addTopLevelItem(item);
+            root = item;
+        }
+        root->addChild(item);
+        root->setExpanded(true);
+        // render
         ui->openGLWidget->m_thread->m_requestRender = true;
         ui->openGLWidget->m_thread->m_condition.wakeOne();
-        this->rebuildEntityTree();
     });
     connect(m_delAction,&QAction::triggered,[=]{
-        EntityManager::deleteEntity("001");
-        this->rebuildEntityTree();
+        QTreeWidgetItem* curItem = ui->treeWidget->currentItem();
+        auto entity = curItem->data(0,Qt::UserRole).value<CFEntity*>();
+        EntityManager::deleteEntity(entity);
+
+        if(curItem->parent() == nullptr){
+            ui->treeWidget->clear();
+        }else{
+            curItem->parent()->removeChild(curItem);
+        }
+
+
+        // render
+        ui->openGLWidget->m_thread->m_requestRender = true;
+        ui->openGLWidget->m_thread->m_condition.wakeOne();
     });
     connect(m_childAction,&QAction::triggered,[=]{
-        EntityManager::createEntity("001","GameObejct");
+        auto entity = EntityManager::createEntity("001","GameObejct");
 
         QTreeWidgetItem* curItem = ui->treeWidget->currentItem();
-        QTreeWidgetItem* item = new QTreeWidgetItem();
-        item->setText(0,"GameObejct");
-        item->setFlags(item->flags() | Qt::ItemIsEditable);
+        QTreeWidgetItem* item = this->buildTreeItemFromEntity(entity);
         curItem->addChild(item);
         curItem->setExpanded(true);
+
+        // render
+        ui->openGLWidget->m_thread->m_requestRender = true;
+        ui->openGLWidget->m_thread->m_condition.wakeOne();
     });
     connect(ui->treeWidget, &QTreeWidget::customContextMenuRequested,this, &MainWindow::showTreeWidgetMenuSlot);
 }
 
 void MainWindow::rebuildEntityTree(){
-    auto root = EntityManager::getRoot();
-    if(!ENTT::registry.valid(root)) {
+    auto root = EntityManager::root();
+    if(!root->valid()) {
         ui->treeWidget->clear();
         return;
     }
-    auto metaInfo = ENTT::registry.try_get<MetaInfo>(root);
-    ui->treeWidget->addTopLevelItem(this->buildRootTreeItem(*metaInfo));
+    ui->treeWidget->clear();
+    ui->treeWidget->addTopLevelItem(this->buildRootTreeItem(root));
 }
 
 void MainWindow::showTreeWidgetMenuSlot(QPoint pos)
@@ -164,19 +190,22 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-QTreeWidgetItem *MainWindow::buildTreeItemFromEntity(MetaInfo& metaInfo)
+QTreeWidgetItem *MainWindow::buildTreeItemFromEntity(CFEntity* entity)
 {
     QTreeWidgetItem* item = new QTreeWidgetItem();
-    item->setText(0,metaInfo.label_);
+
+    auto metaInfo = entity->component<MetaInfo>();
+    item->setData(0,Qt::UserRole,QVariant::fromValue<CFEntity*>(entity));
+    item->setText(0,metaInfo->label_);
     item->setFlags(item->flags() | Qt::ItemIsEditable);
     return item;
 }
 
-QTreeWidgetItem *MainWindow::buildRootTreeItem(MetaInfo& metaInfo)
+QTreeWidgetItem *MainWindow::buildRootTreeItem(CFEntity* entity)
 {
-    QTreeWidgetItem* rootItem = buildTreeItemFromEntity(metaInfo);
-    rootItem->setData(0,0,QVariant::fromValue<MetaInfo>(metaInfo));
-    for(auto& child: metaInfo.children_){
+    QTreeWidgetItem* rootItem = buildTreeItemFromEntity(entity);
+
+    for(auto& child: entity->children_){
         auto childItems = buildRootTreeItem(child);
         rootItem->addChild(childItems);
     }

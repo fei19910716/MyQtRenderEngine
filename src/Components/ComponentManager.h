@@ -10,10 +10,7 @@
 
 #include <vector>
 
-#include "Core/entityx.h"
-
 class ComponentDescription;
-class Component;
 
 class ComponentManager {
 public:
@@ -26,17 +23,6 @@ public:
      * 获取所有需要展示在UI上的组件，用于创建添加组件窗口
      */
     static std::vector<ComponentDescription*> getComponentDescriptions();
-
-    static std::vector<Component*> getComponentsOfEntity(CFEntity& entity);
-
-    template<typename T>
-    static bool addComponentOfEntity(CFEntity& entity);
-
-    template<typename T>
-    static T* getComponentOfEntity(CFEntity& entity);
-
-    template<typename T>
-    static void deleteComponentOfEntity(CFEntity& entity);
 
 public:
     /*

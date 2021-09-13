@@ -5,19 +5,20 @@
 
 #include <vector>
 
-#include "Core/entityx.h"
+#include "CFEntity.h"
+
 class EntityManager : public QObject{
     Q_OBJECT
 public:
 
-    static CFEntity createEntity(QString entityId, QString name, CFEntity* parent = nullptr);
+    static CFEntity* createEntity(QString entityId, QString name, CFEntity* parent = nullptr);
 
-    static void deleteEntity(QString entityId);
+    static void deleteEntity(CFEntity* entity);
 
-    static CFEntity& getRoot();
+    static CFEntity* root();
 
 public:
-    static CFEntity root_;
+    static CFEntity* root_;
 };
 
 #endif // ENTITY_H

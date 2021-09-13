@@ -21,7 +21,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "bin/")
 
 include(tool)
 
-set_local_qt_path(C:/Qt5.13.0/5.13.0) #这里需要填入自己安装的路径
+set_local_qt_path(C:/Qt/Qt5.13.0/5.13.0) #这里需要填入自己安装的路径
 include(qt_config)
 
 set(QT_libs
@@ -50,7 +50,7 @@ file(GLOB_RECURSE CORE_SOURCE_FILES
 
 add_subdirectory(vendor)
 
-add_executable(${target} ${CORE_SOURCE_FILES})
+add_executable(${target} ${CORE_SOURCE_FILES} src/Entity/CFEntity.cpp src/Entity/CFEntity.h)
 
 # add_custom_target(CopyResources
 #     COMMAND cp -r assets/package/windows/resources/ ${CMAKE_CURRENT_BINARY_DIR}/resources/

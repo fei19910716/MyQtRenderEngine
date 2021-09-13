@@ -9,21 +9,17 @@ class MetaInfo: public Component
 {
     Q_OBJECT
 public:
-    
+    /**
+     * 记录entity的id
+     */
     QString entityId_;
     QString label_;
 
-    CFEntity* entity_;
-
-    std::vector<MetaInfo> children_;
-    MetaInfo* parent_;
 public:
     MetaInfo(){}
-    MetaInfo(QString entityId,QString label,std::vector<MetaInfo>&& children): 
+    MetaInfo(QString entityId,QString label):
         entityId_(entityId),
-        label_(label),
-        children_(children),
-        entity_(nullptr)
+        label_(label)
     {
 
     }

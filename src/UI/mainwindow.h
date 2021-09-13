@@ -5,10 +5,9 @@
 #include <QTreeWidgetItem>
 #include <QDebug>
 
-#include "Components/ComponentManager.h"
+#include "Entity/CFEntity.h"
 
 class QListWidgetItem;
-class MetaInfo;
 class AddComponentWidget;
 
 namespace Ui {
@@ -31,7 +30,7 @@ public:
      *
      * @return 构建的QTreeWidgetItem
      */
-    QTreeWidgetItem* buildTreeItemFromEntity(MetaInfo& metaInfo);
+    QTreeWidgetItem* buildTreeItemFromEntity(CFEntity* entity);
 
     /**
      * 从一个entity来构建对象树，会递归调用buildTreeItemFromEntity
@@ -40,7 +39,7 @@ public:
      *
      * @return 顶层QTreeWidgetItem
      */
-    QTreeWidgetItem* buildRootTreeItem(MetaInfo& metaInfo);
+    QTreeWidgetItem* buildRootTreeItem(CFEntity* entity);
 
 
     /**
@@ -51,7 +50,7 @@ public:
     /**
      * 创建对象面板的对象树
      */
-    void constructObjectPanel();
+    void constructEntityPanel();
 
     /**
      * 对象面板的右键菜单

@@ -2,33 +2,32 @@
 
 #include <QDebug>
 
-#include "Components/Primitive/Triangle.h"
-#include "Components/Base/MetaInfo.h"
 
-CFEntity EntityManager::root_;
+CFEntity* EntityManager::root_ = nullptr;
 
-CFEntity EntityManager::createEntity(QString entityId, QString name, CFEntity* parent){
-    if(!ENTT::registry.valid(root_)){
-        root_ = ENTT::registry.create();
-        ENTT::registry.emplace<MetaInfo>(root_,entityId,name,std::vector<MetaInfo>());
+CFEntity* EntityManager::createEntity(QString entityId, QString name, CFEntity* parent){
+    if(!root_ || !root_->valid()){
+        root_ = new CFEntity(entityId,name);
         return root_;
     }
-    CFEntity entity = ENTT::registry.create();
 
-    ENTT::registry.emplace<MetaInfo>(entity,entityId,name,std::vector<MetaInfo>{});
-    
+    auto entity = new CFEntity(entityId,name);
+    if(parent == nullptr){
+        entity->parent_ = root_;
+        root_->addChild(entity);
+    }else{
+        entity->parent_ = parent;
+        parent->addChild(entity);
+    }
     return entity;
 }
 
-void EntityManager::deleteEntity(QString entityId){
-    auto view = ENTT::registry.view<const MetaInfo>();
-    view.each([&](const auto entity, const MetaInfo &metaInfo) { 
-        if(metaInfo.entityId() == entityId){
-            ENTT::registry.destroy(entity);
-        }
-     });
+void EntityManager::deleteEntity(CFEntity* entity){
+    if(entity->parent_)
+        entity->parent_->removeChild(entity);
+    delete entity;
 }
 
-CFEntity& EntityManager::getRoot(){
+CFEntity* EntityManager::root(){
     return root_;
 }
