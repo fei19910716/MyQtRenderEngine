@@ -14,11 +14,11 @@ AddComponentWidget::AddComponentWidget(QWidget *parent)
     pMainLayout->setAlignment(Qt::AlignTop);
     // pLabel->setStyleSheet("QLabel { color: black; }");
 
-    for(auto& item: ComponentManager::componentDescriptions()){
+    for(auto& item: CFEngineRender::ComponentManager::componentDescriptions()){
         QPushButton* com = new QPushButton(this);
-        com->setText(item->label_);
+        com->setText(item.second->label_);
         User *user = new User;
-        user->type_ = item->type_;
+        user->type_ = item.second->type_;
         com->setUserData(Qt::UserRole+1, user);
         com->setStyleSheet(
                    //正常状态样式

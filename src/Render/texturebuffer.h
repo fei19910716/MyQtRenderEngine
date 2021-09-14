@@ -9,7 +9,9 @@
 #include <QOpenGLExtraFunctions>
 #include <QMutex>
 
+#include "Core/Core.h"
 
+CFENGINE_RENDER_START
 class TextureBuffer{
 public:
     static TextureBuffer *instance();
@@ -60,5 +62,5 @@ private:
 
     mutable QMutex m_mutex;
 };
-
+CFENGINE_RENDER_END
 #endif //TEXTUREBUFFER_H

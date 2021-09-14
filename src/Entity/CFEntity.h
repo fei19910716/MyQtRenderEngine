@@ -10,7 +10,7 @@
 #include <tuple>
 
 #include "Core/entityx.h"
-#include "Components/Base/cfcomponent.h"
+#include "Components/Base/Component.h"
 class CFEntity: public QObject {
     Q_OBJECT
 public:
@@ -49,11 +49,11 @@ public:
     }
 
 
-    std::vector<CFComponent*> allComponents();
+    std::vector<CFEngineRender::Component*> allComponents();
 
 private:
     template<typename... Args>
-    void allComponentsGetter(std::vector<CFComponent*>& components, std::tuple<Args...> tup){
+    void allComponentsGetter(std::vector<CFEngineRender::Component*>& components, std::tuple<Args...> tup){
         //    cout << get<0>(tup) << ((tuple_size<decltype(tup)>::value > 1) ? ", " : "");
         //    cout << tup._Myfirst._Val << ((tuple_size<decltype(tup)>::value > 1) ? ", " : "");
         auto com = tup._Myfirst._Val;
@@ -61,7 +61,7 @@ private:
         allComponentsGetter(components, tup._Get_rest());  //对除头1项之外的tup递归调用
     }
     template<>
-    void allComponentsGetter(std::vector<CFComponent*>& components, std::tuple<> tup){
+    void allComponentsGetter(std::vector<CFEngineRender::Component*>& components, std::tuple<> tup){
 
     }
 public:

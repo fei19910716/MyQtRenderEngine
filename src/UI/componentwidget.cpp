@@ -10,7 +10,7 @@
 #include <QPushButton>
 #include <QCheckBox>
 
-ComponentWidget::ComponentWidget(QWidget *parent, CFComponent* component) : QWidget(parent), component_(component)
+ComponentWidget::ComponentWidget(QWidget *parent, CFEngineRender::UIComponent* component) : QWidget(parent), component_(component)
 {
     // 设置布局
     mainLayout_ = new QVBoxLayout;
@@ -18,13 +18,13 @@ ComponentWidget::ComponentWidget(QWidget *parent, CFComponent* component) : QWid
     // 遍历组件所有需要展示的属性
     for(auto& property: component_->propertyDescriptions_){
         switch (property->type_) {
-            case ComponentPropertyType::kBool:
+            case CFEngineRender::ComponentPropertyType::kBool:
                 constructBool(property);
                 break;
-            case ComponentPropertyType::kColor:
+            case CFEngineRender::ComponentPropertyType::kColor:
                 constructColor(property);
                 break;
-            case ComponentPropertyType::kEnum:
+            case CFEngineRender::ComponentPropertyType::kEnum:
                 constructEnum(property);
                 break;
             default:
@@ -35,7 +35,7 @@ ComponentWidget::ComponentWidget(QWidget *parent, CFComponent* component) : QWid
     this->setLayout(mainLayout_);
 }
 
-void ComponentWidget::constructBool(ComponentPropertyDescription* property){
+void ComponentWidget::constructBool(std::shared_ptr<CFEngineRender::ComponentPropertyDescription> property){
 
     QLabel* uiName = new QLabel(property->label_);
     uiName->setFixedWidth(80);
@@ -58,7 +58,7 @@ void ComponentWidget::constructBool(ComponentPropertyDescription* property){
     mainLayout_->addLayout(hLayout);
 }
 
-void ComponentWidget::constructNormal(ComponentPropertyDescription* property){
+void ComponentWidget::constructNormal(std::shared_ptr<CFEngineRender::ComponentPropertyDescription> property){
     QLabel* uiName = new QLabel(property->label_);
     uiName->setFixedWidth(80);
 
@@ -74,7 +74,7 @@ void ComponentWidget::constructNormal(ComponentPropertyDescription* property){
     mainLayout_->addLayout(hLayout);
 }
 
-void ComponentWidget::constructColor(ComponentPropertyDescription* property){
+void ComponentWidget::constructColor(std::shared_ptr<CFEngineRender::ComponentPropertyDescription> property){
     QLabel* uiName = new QLabel(property->label_);
     uiName->setFixedWidth(80);
 
@@ -109,7 +109,7 @@ void ComponentWidget::constructColor(ComponentPropertyDescription* property){
     mainLayout_->addLayout(hLayout);
 }
 
-void ComponentWidget::constructEnum(ComponentPropertyDescription* property){
+void ComponentWidget::constructEnum(std::shared_ptr<CFEngineRender::ComponentPropertyDescription> property){
     QLabel* uiName = new QLabel(property->label_);
     uiName->setFixedWidth(80);
 

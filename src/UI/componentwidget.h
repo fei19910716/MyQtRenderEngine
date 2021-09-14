@@ -5,7 +5,7 @@
 #include <QDebug>
 #include <QVBoxLayout>
 
-#include "Components/Base/cfcomponent.h"
+#include "Components/Base/UIComponent.h"
 
 class ComponentPropertyDescription;
 
@@ -19,42 +19,42 @@ public:
      * @param component 当前需要构建UI的组件
      * @param parent 父窗口，一般为null
      */
-    explicit ComponentWidget(QWidget *parent = nullptr, CFComponent* component = nullptr);
+    explicit ComponentWidget(QWidget *parent = nullptr, CFEngineRender::UIComponent* component = nullptr);
 
     /**
      * 构建组件的enum属性的UI
      *
      * @param metaProperty 组件的元属性
      */
-    void constructEnum(ComponentPropertyDescription* property);
+    void constructEnum(std::shared_ptr<CFEngineRender::ComponentPropertyDescription> property);
 
     /**
      * 构建组件的color属性的UI
      *
      * @param metaProperty 组件的元属性
      */
-    void constructColor(ComponentPropertyDescription* property);
+    void constructColor(std::shared_ptr<CFEngineRender::ComponentPropertyDescription> property);
 
     /**
      * 构建组件的bool属性的UI
      *
      * @param metaProperty 组件的元属性
      */
-    void constructBool(ComponentPropertyDescription* property);
+    void constructBool(std::shared_ptr<CFEngineRender::ComponentPropertyDescription> property);
 
     /**
      * 构建组件的一般属性的UI，比如：QString
      *
      * @param metaProperty 组件的元属性
      */
-    void constructNormal(ComponentPropertyDescription* property);
+    void constructNormal(std::shared_ptr<CFEngineRender::ComponentPropertyDescription> property);
 
 private:
     QVBoxLayout* mainLayout_;
-    CFComponent* component_;
+    CFEngineRender::UIComponent* component_;
 
 signals:
-    void componentChanged(CFComponent* component);
+    void componentChanged(CFEngineRender::UIComponent* component);
 
 public slots:
 };

@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-#include "Components/Base/MetaInfo.h"
+#include "Components/Base/EntityInfo.h"
 #include "Entity/EntityManager.h"
 #include "UI/componentwidget.h"
 #include "UI/popupwidgetbutton.h"
@@ -144,6 +144,7 @@ void MainWindow::constructEntityTreeMenu(){
 
         if(curItem->parent() == nullptr){
             ui->entityTreeWidget->clear();
+            ui->componentListWidget->clear();
         }else{
             auto parent = curItem->parent();
             parent->removeChild(curItem);
@@ -203,7 +204,7 @@ QTreeWidgetItem *MainWindow::buildTreeItemFromEntity(CFEntity* entity)
 {
     QTreeWidgetItem* item = new QTreeWidgetItem();
 
-    auto metaInfo = entity->component<MetaInfo>();
+    auto metaInfo = entity->component<CFEngineRender::EntityInfo>();
     item->setData(0,Qt::UserRole,QVariant::fromValue<CFEntity*>(entity));
     item->setText(0,metaInfo->label_);
     item->setFlags(item->flags() | Qt::ItemIsEditable);
@@ -238,8 +239,8 @@ void MainWindow::onAddComponent(QObject* sender) {
     AddComponentWidget::User *pUser = (AddComponentWidget::User *)(pButton->userData(Qt::UserRole+1));
 
     switch(pUser->type_){
-        case ComponentType::kTriangle:
-            entity->addComponent<Triangle>();
+        case CFEngineRender::ComponentType::kTriangle:
+            entity->addComponent<CFEngineRender::Triangle>();
             break;
     }
     this->onDisplayComponents(entity);
@@ -255,18 +256,21 @@ void MainWindow::onDisplayComponents(CFEntity* entity){
     for(auto& com : entity->allComponents()){
         if(com == nullptr)
             continue;
-        int count = com->propertyDescriptions_.size();
+        auto uiCom = dynamic_cast<CFEngineRender::UIComponent*>(com);
+        if(uiCom == nullptr)
+            continue;
+        int count = uiCom->propertyDescriptions_.size();
         if(count == 0)
             continue;
         QListWidgetItem* item = new QListWidgetItem(ui->componentListWidget);
-        ComponentWidget* cw = new ComponentWidget(this,com);
+        ComponentWidget* cw = new ComponentWidget(this,uiCom);
         item->setSizeHint(QSize(200,count*40));
         ui->componentListWidget->addItem(item);
         ui->componentListWidget->setSpacing(2);
         item->setBackgroundColor(QColor(230,230,230));
         ui->componentListWidget->setItemWidget(item,cw);
 
-        connect(cw, &ComponentWidget::componentChanged,[=](CFComponent* component){
+        connect(cw, &ComponentWidget::componentChanged,[=](CFEngineRender::Component* component){
             QTreeWidgetItem* curItem = ui->entityTreeWidget->currentItem();
             auto entity = curItem->data(0,Qt::UserRole).value<CFEntity*>();
             

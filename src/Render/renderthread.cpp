@@ -3,11 +3,11 @@
 
 #include <QDateTime>
 
-RenderThread::~RenderThread() {
+CFEngineRender::RenderThread::~RenderThread() {
 
 }
 
-void RenderThread::release() {
+void CFEngineRender::RenderThread::release() {
     m_renderContext->makeCurrent(m_renderSurface);
     delete m_renderEngine;
     delete m_renderSurface;
@@ -16,7 +16,7 @@ void RenderThread::release() {
     exit(0);
 }
 
-RenderThread::RenderThread(QOffscreenSurface *surface, QOpenGLContext *context,QObject* parent):
+CFEngineRender::RenderThread::RenderThread(QOffscreenSurface *surface, QOpenGLContext *context,QObject* parent):
     QThread (parent),
     m_renderSurface(surface),
     m_mainContext(context)
@@ -28,10 +28,11 @@ RenderThread::RenderThread(QOffscreenSurface *surface, QOpenGLContext *context,Q
     m_renderContext->create();
     m_renderContext->moveToThread(this);
 
-    m_renderEngine=new RenderEngine;
+    m_renderEngine=new CFEngineRender::RenderEngine;
+    m_renderEngine->moveToThread(this);
 }
 
-void RenderThread::run(){
+void CFEngineRender::RenderThread::run(){
 
     m_renderContext->makeCurrent(m_renderSurface);
 
@@ -41,17 +42,19 @@ void RenderThread::run(){
             QMutexLocker lock(&m_mutex);
             m_condition.wait(&m_mutex);
         }
+        m_renderContext->functions()->glViewport(0,0,m_width,m_height);
         m_renderEngine->setRenderSize(m_width, m_height);
         m_renderEngine->update(QDateTime::currentDateTime().time().msec());
 
-        TextureBuffer::instance()->updateTexture(m_renderContext,m_renderEngine->m_textureToDisplay);
+        // TextureBuffer::instance()->updateTexture(m_renderContext,m_renderEngine->textureToDisplay_->handle());
+        TextureBuffer::instance()->updateTexture(m_renderContext,m_width,m_height);
         emit imageReady();
         m_requestRender = false;
     }
     // TextureBuffer::instance()->deleteTexture(m_renderContext);
 }
 
-void RenderThread::setRenderSize(int width, int height)
+void CFEngineRender::RenderThread::setRenderSize(int width, int height)
 {
     QMutexLocker lock(&m_mutex);
     m_width = width;

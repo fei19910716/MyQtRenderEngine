@@ -10,7 +10,9 @@
 
 #include <unordered_map>
 
-struct ComponentDescription;
+#include "Base/Component.h"
+
+CFENGINE_RENDER_START
 
 class ComponentManager {
 public:
@@ -22,17 +24,17 @@ public:
     /*
      * 获取所有需要展示在UI上的组件，用于创建添加组件窗口
      */
-    static std::vector<ComponentDescription*>& componentDescriptions();
+    static std::unordered_map<ComponentType,std::shared_ptr<ComponentDescription>>& componentDescriptions();
 
-    static ComponentDescription* componentDescriptionWithType(ComponentType type);
+    static std::shared_ptr<ComponentDescription> componentDescriptionWithType(ComponentType type);
 
 public:
     /*
      * 记录所有需要展示在UI上的组件
      */
-    static std::unordered_map<ComponentType,ComponentDescription*> allComponentDescriptions_;
+    static std::unordered_map<ComponentType,std::shared_ptr<ComponentDescription>> allComponentDescriptions_;
 };
 
 
-
+CFENGINE_RENDER_END
 #endif //CFRENDERENGINE_COMPONENTMANAGER_H

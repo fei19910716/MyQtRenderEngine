@@ -8,7 +8,9 @@
 
 #include <optional>
 
-#include "Components/ComponentManager.h"
+#include "Core/Core.h"
+
+CFENGINE_RENDER_START
 
 enum ComponentGroup{
     kPrimitive,
@@ -97,24 +99,19 @@ struct ComponentDescription{
     std::optional<bool> isGlobalUnique_;
 };
 
-class CFComponent: public QObject{
+class Component: public QObject{
     Q_OBJECT
     Q_PROPERTY(int componentId READ componentId WRITE setComponentId)
     Q_PROPERTY(int entityId READ entityId WRITE setEntityId)
-    Q_PROPERTY(std::vector<ComponentPropertyDescription*> propertyDescriptions READ propertyDescriptions WRITE setPropertyDescriptions)
     Q_PROPERTY(bool enable READ enable WRITE setEnable)
-    Q_PROPERTY(ComponentDescription* componentDescription READ componentDescription WRITE setComponentDescription)
 public:
-    CFComponent &operator =(const CFComponent &);
-    CFComponent() = default;
-    CFComponent(int componentId, int entityId);
-    CFComponent(const CFComponent& com);
+    Component &operator =(const Component &);
+    Component() = default;
+    Component(int componentId, int entityId);
+    Component(const Component& com);
 
-    virtual ~CFComponent();
+    virtual ~Component();
 
-
-    std::vector<ComponentPropertyDescription*> propertyDescriptions_;
-    ComponentDescription* componentDescription_;
     int componentId_;
     int entityId_;
 
@@ -146,23 +143,8 @@ public:
         entityId_ = entityId;
     }
 
-    ComponentDescription* componentDescription() const
-    {
-        return componentDescription_;
-    }
-    void setComponentDescription(ComponentDescription* componentDescription)
-    {
-        componentDescription_ = componentDescription;
-    }
-
-    std::vector<ComponentPropertyDescription*> propertyDescriptions() const
-    {
-        return propertyDescriptions_;
-    }
-    void setPropertyDescriptions(std::vector<ComponentPropertyDescription*> propertyDescriptions)
-    {
-        propertyDescriptions_ = propertyDescriptions;
-    }
 };
+
+CFENGINE_RENDER_END
 
 #endif // COMPONENTS_H

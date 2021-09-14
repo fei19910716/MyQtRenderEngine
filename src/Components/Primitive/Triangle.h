@@ -4,9 +4,12 @@
 
 #include <vector>
 
-#include "Components/Base/CFComponent.h"
+#include "Components/Base/UIComponent.h"
+#include "Components/ComponentManager.h"
 
-class Triangle: public CFComponent{
+CFENGINE_RENDER_START
+
+class Triangle: public UIComponent{
     Q_OBJECT
 
     Q_PROPERTY(QString name READ name)
@@ -18,18 +21,20 @@ public:
     Q_ENUM(Priority)
 
     Triangle(){
-        this->createPropertyDescription();
+        this->createComponentPropertyDescriptions();
 
-        componentDescription_ = ComponentManager::componentDescriptionWithType(ComponentType::kTriangle);
+        componentDescription_ = ComponentManager::componentDescriptionWithType(CFEngineRender::ComponentType::kTriangle);
         
     }
-    Triangle(int componentId, int entityId):CFComponent(componentId,entityId){
-        this->createPropertyDescription();
+    Triangle(int componentId, int entityId):UIComponent(componentId,entityId){
+        this->createComponentPropertyDescriptions();
 
-        componentDescription_ = ComponentManager::componentDescriptionWithType(ComponentType::kTriangle);
+        componentDescription_ = ComponentManager::componentDescriptionWithType(CFEngineRender::ComponentType::kTriangle);
     }
 
-    void createPropertyDescription(){
+    ~Triangle() = default;
+
+    void createComponentPropertyDescriptions() override{
         // 
         ComponentPropertyDescription* name = new ComponentPropertyDescription;
         name->name_ = "name";
@@ -90,3 +95,4 @@ public:
 
 signals:
 };
+CFENGINE_RENDER_END

@@ -4,21 +4,24 @@
 
 #include "ComponentManager.h"
 
-#include "Base/cfcomponent.h"
+std::unordered_map<CFEngineRender::ComponentType,std::shared_ptr<CFEngineRender::ComponentDescription>> CFEngineRender::ComponentManager::allComponentDescriptions_;
 
-std::unordered_map<ComponentType,ComponentDescription*> ComponentManager::allComponentDescriptions_;
-
-void ComponentManager::registerComponentDescriptions() {
-    ComponentDescription* componentDescription_ = new ComponentDescription;
+void CFEngineRender::ComponentManager::registerComponentDescriptions() {
+    auto componentDescription_ = std::make_shared<CFEngineRender::ComponentDescription>();
     componentDescription_->type_ = ComponentType::kTriangle;
     componentDescription_->group_ = ComponentGroup::kPrimitive;
+    componentDescription_->label_ = "Triangle";
     componentDescription_->isHiddenInList_ = false;
 
-    auto pair = std::make_pair<ComponentType,ComponentDescription*>(ComponentType::kTriangle,componentDescription_);
+    auto pair = std::make_pair(ComponentType::kTriangle,componentDescription_);
     allComponentDescriptions_.insert(pair);
 }
 
-std::vector<ComponentDescription*>& ComponentManager::componentDescriptions(){
+std::shared_ptr<CFEngineRender::ComponentDescription> CFEngineRender::ComponentManager::componentDescriptionWithType(CFEngineRender::ComponentType type){
+    return allComponentDescriptions_[type];
+}
+
+std::unordered_map<CFEngineRender::ComponentType,std::shared_ptr<CFEngineRender::ComponentDescription>>& CFEngineRender::ComponentManager::componentDescriptions(){
     
     return allComponentDescriptions_;
 }

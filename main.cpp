@@ -1,6 +1,8 @@
 
 #include "mainwindow.h"
 #include <QApplication>
+
+#include "Components/ComponentManager.h"
 #ifndef WIN32
 #include <QSurfaceFormat>
 #endif
@@ -13,6 +15,7 @@ int main(int argc, char *argv[])
     glFormat.setProfile(QSurfaceFormat :: CoreProfile);
     QSurfaceFormat :: setDefaultFormat(glFormat);
 #endif
+    CFEngineRender::ComponentManager::registerComponentDescriptions();
     MainWindow w;
     w.show();
 

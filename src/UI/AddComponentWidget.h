@@ -3,14 +3,14 @@
 #include <QWidget>
 #include <QObjectUserData>
 
-#include "Components/Base/cfcomponent.h"
+#include "Components/Base/Component.h"
 
 class AddComponentWidget : public QWidget
 {
     Q_OBJECT
 public:
     struct User : QObjectUserData {
-        ComponentType type_;
+        CFEngineRender::ComponentType type_;
     };
 
     explicit AddComponentWidget(QWidget *parent = nullptr);

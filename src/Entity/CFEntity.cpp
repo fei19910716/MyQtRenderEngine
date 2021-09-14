@@ -4,7 +4,7 @@
 
 #include "CFEntity.h"
 
-#include "Components/Base/MetaInfo.h"
+#include "Components/Base/EntityInfo.h"
 #include "Components/Primitive/Triangle.h"
 
 CFEntity::CFEntity() {
@@ -17,7 +17,7 @@ CFEntity::CFEntity(const CFEntity &other){
 
 CFEntity::CFEntity(QString entityId, QString name){
     entity_ = ENTT::registry.create();
-    ENTT::registry.emplace<MetaInfo>(entity_,entityId,name);
+    ENTT::registry.emplace<CFEngineRender::EntityInfo>(entity_,entityId,name);
 }
 
 CFEntity::~CFEntity() noexcept {
@@ -46,9 +46,9 @@ void CFEntity::removeChild(CFEntity* child){
     }
 }
 
-std::vector<CFComponent*> CFEntity::allComponents(){
-    auto com = ENTT::registry.try_get<MetaInfo,Triangle>(entity_); //TODO 这里需要注册所有的component
-    std::vector<CFComponent*> components;
+std::vector<CFEngineRender::Component*> CFEntity::allComponents(){
+    auto com = ENTT::registry.try_get<CFEngineRender::EntityInfo,CFEngineRender::Triangle>(entity_); //TODO 这里需要注册所有的component
+    std::vector<CFEngineRender::Component*> components;
     allComponentsGetter(components,com);
     return components;
 }

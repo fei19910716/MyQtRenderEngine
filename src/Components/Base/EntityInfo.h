@@ -1,10 +1,10 @@
 #pragma once
-#include "Components/Base/cfcomponent.h"
+#include "Components/Base/Component.h"
 
 #include <vector>
 
-
-class MetaInfo: public CFComponent
+CFENGINE_RENDER_START
+class EntityInfo: public Component
 {
     Q_OBJECT
 public:
@@ -15,13 +15,14 @@ public:
     QString label_;
 
 public:
-    MetaInfo(){}
-    MetaInfo(QString entityId,QString label):
+    EntityInfo(){}
+    EntityInfo(QString entityId, QString label):
         entityId_(entityId),
         label_(label)
     {
 
     }
-    ~MetaInfo(){}
+    ~EntityInfo(){}
 };
 
+CFENGINE_RENDER_END

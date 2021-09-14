@@ -8,10 +8,12 @@
 #include "Systems/Base/System.h"
 #include "Components/Primitive/Triangle.h"
 
+CFENGINE_RENDER_START
 class TriangleSystem : public System{
 public:
 
-    void update(entt::registry &registry, float dt) override;
+    std::shared_ptr<Renderer> update(entt::registry &registry, float dt) override;
+
 
 private:
     std::string m_vertexShader = "#version 330 core\n"
@@ -22,11 +24,12 @@ private:
                                  "}\0";
     std::string m_fragmentShader = "#version 330 core\n"
                                    "out vec4 FragColor;\n"
+                                   "uniform vec4 u_color;\n"
                                    "void main()\n"
                                    "{\n"
-                                   "   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+                                   "   FragColor = u_color;\n"
                                    "}\n\0";
 };
-
+CFENGINE_RENDER_END
 
 #endif //CFRENDERENGINE_TRIANGLESYSTEM_H

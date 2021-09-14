@@ -136,7 +136,7 @@ void RenderView::paintGL()
 //    glActiveTexture(GL_TEXTURE0);
 //    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
-    TextureBuffer::instance()->drawTexture(this->context(), 6);
+    CFEngineRender::TextureBuffer::instance()->drawTexture(this->context(), 6);
 
     glBindVertexArray(0);
     m_program->release();
@@ -229,10 +229,10 @@ void RenderView::initRenderThread()
     renderSurface->create();
 
     context->doneCurrent();
-    m_thread = new RenderThread(renderSurface,context,this);
+    m_thread = new CFEngineRender::RenderThread(renderSurface,context,this);
     context->makeCurrent(mainSurface);
 
-    connect(m_thread,&RenderThread::imageReady, this, [this]() { update(); },Qt::QueuedConnection);
+    connect(m_thread,&CFEngineRender::RenderThread::imageReady, this, [this]() { update(); },Qt::QueuedConnection);
     m_thread->setRenderSize(WIDTH,HEIGHT);
     m_thread->start();
 

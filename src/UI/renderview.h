@@ -65,7 +65,7 @@ public:
     /**
      * 渲染子线程，离屏渲染后共享纹理给UI线程上屏
      */
-    RenderThread* m_thread=nullptr;
+    CFEngineRender::RenderThread* m_thread=nullptr;
 
     /**
      * 子线程初始的渲染尺寸
