@@ -4,11 +4,12 @@
 #include "Components/Base/EntityInfo.h"
 #include "Entity/EntityManager.h"
 #include "UI/componentwidget.h"
-#include "UI/popupwidgetbutton.h"
 #include "UI/addcomponentwidget.h"
 
 #include <QDesktopWidget>
+#include <QWidgetAction>
 #include <QScreen>
+#include <QPushButton>
 #include <QLabel>
 
 
@@ -39,28 +40,77 @@ MainWindow::MainWindow(QWidget *parent) :
 }
 
 void MainWindow::constructInspectorPanel(){
-    // 参考 https://blog.csdn.net/a844651990/article/details/83242159
-    PopupWidgetButton *pBtn = new PopupWidgetButton(PWB::Vertical, this, ui->componentDock);
-    pBtn->setMinimumSize(150,30);
+
+    addComponentBtn_ = new QPushButton(this);
+    addComponentBtn_->setMinimumSize(150,30);
     QHBoxLayout* addLayout = new QHBoxLayout;
     addLayout->addStretch(1);
-    addLayout->addWidget(pBtn);
+    addLayout->addWidget(addComponentBtn_);
     addLayout->addStretch(1);
-    pBtn->button()->setText("Add Component");
+    addComponentBtn_->setText("Add Component");
     ui->componentPanelLayout->addLayout(addLayout);
 
-    connect(pBtn, &PopupWidgetButton::ButtonClicked,[=](){
-        // 弹出窗口
-        if(addComponentWidget_ == nullptr){
-            addComponentWidget_ = new AddComponentWidget(this);
-            pBtn->setMainWidget(addComponentWidget_);
+    addComponentMenu_ = new QMenu(this);
+    auto size = addComponentBtn_->size();
+    QLabel* text = new QLabel( "Triangle" );
+    text->setStyleSheet("background-color: gray");
+    text->setAlignment( Qt::AlignVCenter | Qt::AlignHCenter );
+    text->setFixedSize(size.width()*1.5, size.height()*1.3);
+    QWidgetAction* triangle = new QWidgetAction( addComponentMenu_ );
+    triangle->setDefaultWidget(text);
+    addComponentMenu_->addAction(triangle);
 
-            connect(addComponentWidget_,&AddComponentWidget::componentClicked,[=](QObject* sender){
-                pBtn->hide();
-                this->onAddComponent(sender);
-            });
-        }
+    addComponentBtn_->setMenu(addComponentMenu_);
+    addComponentMenu_->installEventFilter(this);
+
+    addComponentBtn_->setStyleSheet(
+                   //正常状态样式
+                   "QPushButton{"
+                   "background-color:rgba(100,225,100,30);"//背景色（也可以设置图片）
+                   "border-style:outset;"                  //边框样式（inset/outset）
+                   "border-width:4px;"                     //边框宽度像素
+                   "border-radius:10px;"                   //边框圆角半径像素
+                   "border-color:rgba(255,255,255,30);"    //边框颜色
+                   "font:bold 10px;"                       //字体，字体大小
+                   "color:rgba(0,0,0,100);"                //字体颜色
+                   "padding:6px;"                          //填衬
+                   "}"
+                   //鼠标按下样式
+                   "QPushButton:pressed{"
+                   "background-color:rgba(100,255,100,200);"
+                   "border-color:rgba(255,255,255,30);"
+                   "border-style:inset;"
+                   "color:rgba(0,0,0,100);"
+                   "}"
+                   //鼠标悬停样式
+                   "QPushButton:hover{"
+                   "background-color:rgba(100,255,100,100);"
+                   "border-color:rgba(255,255,255,200);"
+                   "color:rgba(0,0,0,200);"
+                   "}"
+                   "QPushButton::menu-indicator{image:none}");
+
+
+    connect(triangle, &QWidgetAction::triggered,[=](){
+        // 弹出窗口
+        this->onAddComponent(triangle);
     });
+}
+
+bool MainWindow::eventFilter(QObject* obj, QEvent* event){
+    if(event->type() == QEvent::Show && obj == addComponentBtn_->menu()){
+        int x = addComponentBtn_->menu()->pos().x();
+        int width = addComponentBtn_->menu()->width();
+        int height = addComponentBtn_->menu()->height();
+        int buttonWidth = addComponentBtn_->width();
+        int buttonHeight = addComponentBtn_->height();
+
+        QPoint pos = QPoint(x + (buttonWidth-width)/2, addComponentBtn_->menu()->y() - height - buttonHeight);
+
+        addComponentBtn_->menu()->move(pos);
+        return true;
+    }
+    return false;
 }
 
 void MainWindow::constructEntityPanel(){
@@ -233,12 +283,14 @@ void MainWindow::onAddComponent(QObject* sender) {
     QTreeWidgetItem* curItem = ui->entityTreeWidget->currentItem();
     auto entity = curItem->data(0,Qt::UserRole).value<CFEntity*>();
 
-    QPushButton *pButton = qobject_cast<QPushButton *>(sender);
+    QWidgetAction *action = qobject_cast<QWidgetAction*>(sender);
 
     // 获取第一个用户数据
-    AddComponentWidget::User *pUser = (AddComponentWidget::User *)(pButton->userData(Qt::UserRole+1));
+    CFEngineRender::ComponentType type;
+    if(action->text() == "Triangle")
+        type = CFEngineRender::ComponentType::kTriangle;
 
-    switch(pUser->type_){
+    switch(type){
         case CFEngineRender::ComponentType::kTriangle:
             entity->addComponent<CFEngineRender::Triangle>();
             break;

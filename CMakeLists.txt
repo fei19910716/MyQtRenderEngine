@@ -21,7 +21,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "bin/")
 
 include(tool)
 
-set_local_qt_path(C:/Qt/Qt5.13.0/5.13.0) #这里需要填入自己安装的路径
+set_local_qt_path(C:/Qt5.13.0/5.13.0) #这里需要填入自己安装的路径
 include(qt_config)
 
 set(QT_libs

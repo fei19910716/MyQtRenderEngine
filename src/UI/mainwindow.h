@@ -8,6 +8,7 @@
 #include "Entity/CFEntity.h"
 
 class QListWidgetItem;
+class QPushButton;
 class AddComponentWidget;
 
 namespace Ui {
@@ -64,6 +65,8 @@ public:
 
     void rebuildEntityTree();
 
+    bool eventFilter(QObject* obj, QEvent* event);
+
 private slots:
     void on_listWidget_itemClicked(QListWidgetItem *item);
 
@@ -86,6 +89,9 @@ private:
     QMenu* treeContextMenu_;
 
     QMenu* treeItemContextMenu_;
+
+    QMenu* addComponentMenu_;
+    QPushButton* addComponentBtn_;
 
     AddComponentWidget* addComponentWidget_ = nullptr;
 };
