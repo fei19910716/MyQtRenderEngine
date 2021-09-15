@@ -28,9 +28,6 @@ public:
     void resizeGL(int w, int h);
     void paintGL();
     void initRenderThread();
-    void genTextureFromQImage(const QString& path);
-    void genTextureFromStbImage(const QString& path);
-    void saveFBOToPNG(QString& path);
 
     void requestRender();
 

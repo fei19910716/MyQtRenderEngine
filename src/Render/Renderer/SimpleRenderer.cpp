@@ -56,6 +56,10 @@ void CFEngineRender::SimpleRenderer::render() {
     bindOutput();
     renderInternal();
     postRender();
+    /**
+     * 调用glFinish()非常重要，否则可能画面没有渲染
+     */
+    glFinish();
 }
 
 /**

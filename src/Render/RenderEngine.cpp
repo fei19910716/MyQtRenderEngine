@@ -35,10 +35,6 @@ void CFEngineRender::RenderEngine::update(float dt){
         renderer = system->update(ENTT::registry, dt);
     }
     renderer->render();
-    /**
-     * 调用glFinish()非常重要，否则可能画面没有渲染
-     */
-    glFinish();
 
 //    unsigned int value = textureToDisplay_->handle();
 //    textureToDisplay_->setHandle(textureToRender_->handle());
@@ -54,7 +50,6 @@ void CFEngineRender::RenderEngine::setRenderSize(int width,int height){
     }
     m_width = width;
     m_height = height;
-    initializeOpenGLFunctions();
 //    initializeOpenGLFunctions();
 
 //    // 创建纹理

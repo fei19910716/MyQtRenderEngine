@@ -2,16 +2,7 @@
 #include <QDebug>
 
 #include "Entity/EntityManager.h"
-
-#ifndef STB_IMAGE_IMPLEMENTATION
-#define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
-#endif
-
-#ifndef STB_IMAGE_WRITE_IMPLEMENTATION
-#define STB_IMAGE_WRITE_IMPLEMENTATION
-#include "stb_image_write.h"
-#endif
+#include "Utils/RenderUtils.h"
 
 static float vertices[] = {
 //     ---- 位置 ----       ---- 颜色 ----     - 纹理坐标 -
@@ -111,7 +102,7 @@ void RenderView::initializeGL()
     glEnableVertexAttribArray(2);
 
     //! 加载纹理
-    genTextureFromStbImage("D:\\GameEngine\\CFRenderEngine\\test.png");
+    Utils::genTextureFromStbImage(this->context(),"D:\\GameEngine\\CFRenderEngine\\test.png");
 
     glBindVertexArray(0);
 
@@ -146,76 +137,6 @@ void RenderView::paintGL()
 void RenderView::requestRender() {
     QMutexLocker locker(&lock_);
     m_thread->m_condition.wakeOne();
-}
-
-void RenderView::saveFBOToPNG(QString& path){
-    //! save the opengl result to image
-     unsigned char * data1 = new unsigned char[width()*height()*4];
-     glReadPixels(0,0,width(),height(),GL_RGBA,GL_UNSIGNED_BYTE,data1);
-     stbi_write_png("",width(),height(),4,data1,0);
-
-    // save the texture to image, we should first bind it to a fbo
-//    GLuint fbo;
-//    glGenFramebuffers(1, &fbo);
-//    glBindFramebuffer(GL_FRAMEBUFFER, fbo);
-//    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_textureID, 0);
-//    unsigned char * data = new unsigned char[texture_w*texture_h*4];
-//    // transfer the bind fbo image data, here is the texture data
-//    glReadPixels(0, 0, texture_w, texture_h, GL_RGBA, GL_UNSIGNED_BYTE, data);
-//    stbi_write_png("/Users/xxx/Desktop/out.png",texture_w,texture_h,4,data,0);
-//    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-//    glDeleteFramebuffers(1, &fbo);
-
-//    // save the texture to image, the second method, just use glGetTexImage()
-//    unsigned char * data2 = new unsigned char[texture_w*texture_h*4];
-//    glBindTexture(GL_TEXTURE_2D, m_textureID);
-//    glGetTexImage(GL_TEXTURE_2D,0,GL_RGBA,GL_UNSIGNED_BYTE,data2);
-//    stbi_write_png("/Users/fordchen/Desktop/out2.png",texture_w,texture_h,4,data2,0);
-}
-
-void RenderView::genTextureFromQImage(const QString &path)
-{
-
-    glGenTextures(1, &m_textureID);
-    glBindTexture(GL_TEXTURE_2D, m_textureID);
-    // 为当前绑定的纹理对象设置环绕、过滤方式
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    // 加载并生成纹理
-    QImage texImage, tempImage;
-    bool isLoadOK = tempImage.load(path);
-    if(isLoadOK){
-        // texImage = QGLWidget::convertToGLFormat(tempImage);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, tempImage.width(), tempImage.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, tempImage.bits());
-        glGenerateMipmap(GL_TEXTURE_2D);
-        glBindTexture(GL_TEXTURE_2D, 0);
-    }
-}
-
-void RenderView::genTextureFromStbImage(const QString &path)
-{
-    glGenTextures(1, &m_textureID);
-    glBindTexture(GL_TEXTURE_2D, m_textureID);
-    // 为当前绑定的纹理对象设置环绕、过滤方式
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-    // 加载并生成纹理
-    int width, height, nrChannels;
-    unsigned char *data = stbi_load(path.toStdString().c_str(), &width, &height, &nrChannels,0);
-    if (data)
-    {
-        texture_w = width;
-        texture_h = height;
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-        glGenerateMipmap(GL_TEXTURE_2D);
-    }
-    stbi_image_free(data);
-    glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void RenderView::initRenderThread()

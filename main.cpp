@@ -1,11 +1,19 @@
 
 #include "mainwindow.h"
 #include <QApplication>
+#include <QSurfaceFormat>
 
 #include "Components/ComponentManager.h"
-#ifndef WIN32
-#include <QSurfaceFormat>
+#ifndef STB_IMAGE_IMPLEMENTATION
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
 #endif
+
+#ifndef STB_IMAGE_WRITE_IMPLEMENTATION
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include "stb_image_write.h"
+#endif
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);

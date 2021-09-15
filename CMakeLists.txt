@@ -45,6 +45,7 @@ file(GLOB_RECURSE CORE_SOURCE_FILES
     src/Systems/*.*
     src/UI/*.*
     src/Core/*.*
+    src/Utils/*.*
     ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
 )
 
