@@ -64,11 +64,6 @@ std::shared_ptr<CFEngineRender::Renderer> CFEngineRender::TriangleSystem::update
         // glDrawArrays(GL_TRIANGLES, 0, 3);
         //glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
 
-//! 调试用，保存渲染结果
-//        unsigned char * data1 = new unsigned char[400*600*4];
-//        // transfer the bind fbo image data, here is the opengl result data
-//        glReadPixels(0,0,400,600,GL_RGBA,GL_UNSIGNED_BYTE,data1);
-//        stbi_write_png("D:\\GameEngine\\CFRenderEngine\\out1.png",400,600,4,data1,0);
 
 //        vao->release();
 //        vertexBuffer->release();

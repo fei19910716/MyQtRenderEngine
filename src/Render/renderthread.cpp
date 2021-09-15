@@ -36,7 +36,7 @@ void CFEngineRender::RenderThread::run(){
 
     m_renderContext->makeCurrent(m_renderSurface);
 
-    // TextureBuffer::instance()->createTexture(m_renderContext);
+    TextureBuffer::instance()->createTexture(m_renderContext);
     while (m_running){
         if(!m_requestRender){
             QMutexLocker lock(&m_mutex);
@@ -47,11 +47,11 @@ void CFEngineRender::RenderThread::run(){
         m_renderEngine->update(QDateTime::currentDateTime().time().msec());
 
         // TextureBuffer::instance()->updateTexture(m_renderContext,m_renderEngine->textureToDisplay_->handle());
-        TextureBuffer::instance()->updateTexture(m_renderContext,m_width,m_height);
+        TextureBuffer::instance()->updateTexture(m_renderContext,m_width,m_height); // TODO 使用深拷贝texture时，createTexture必须要调用
         emit imageReady();
         m_requestRender = false;
     }
-    // TextureBuffer::instance()->deleteTexture(m_renderContext);
+    TextureBuffer::instance()->deleteTexture(m_renderContext);
 }
 
 void CFEngineRender::RenderThread::setRenderSize(int width, int height)

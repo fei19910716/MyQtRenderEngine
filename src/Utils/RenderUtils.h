@@ -22,9 +22,9 @@ namespace Utils {
 
     void saveFBOToImage(QOpenGLContext *context, unsigned int fbo, QSize size, std::string path) ;
 
-    unsigned int genTextureFromQImage(QOpenGLContext *context, const QString &path);
+    unsigned int genTextureFromQImage(QOpenGLContext *context, const QString &path, int* width, int* height);
 
-    unsigned int genTextureFromStbImage(QOpenGLContext *context, const QString &path);
+    unsigned int genTextureFromStbImage(QOpenGLContext *context, const QString &path, int* width, int* height);
 }
 
 #endif //CFRENDERENGINE_RENDERUTILS_H

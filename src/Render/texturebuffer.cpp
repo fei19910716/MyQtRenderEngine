@@ -36,10 +36,12 @@ void CFEngineRender::TextureBuffer::updateTexture(QOpenGLContext *context, int w
     f->glBindTexture(GL_TEXTURE_2D,0);
     f->glFinish();
 
-    //! 调试用，保存渲染结果
-    Utils::saveCurrentFBOToImage(context,QSize(400,600),"D:\\GameEngine\\CFRenderEngine\\out2.png");
+    {
+        //! 调试用，保存渲染结果
+        // Utils::saveCurrentFBOToImage(context,QSize(400,600),"D:\\GameEngine\\CFRenderEngine\\out12.png");
 
-    // Utils::saveTextureToImage(context,m_texture,QSize(400,600),"D:\\GameEngine\\CFRenderEngine\\out1.png");
+        // Utils::saveTextureToImage(context,m_texture,QSize(400,600),"D:\\GameEngine\\CFRenderEngine\\out11.png");
+    }
 }
 
 void CFEngineRender::TextureBuffer::updateTexture(QOpenGLContext *context, int textureID) {
@@ -61,12 +63,13 @@ void CFEngineRender::TextureBuffer::drawTexture(QOpenGLContext *context, int ver
     f->glActiveTexture(GL_TEXTURE0);
     f->glDrawElements(GL_TRIANGLES, vertexCount, GL_UNSIGNED_INT, 0);
     f->glBindTexture(GL_TEXTURE_2D, 0);
-    f->glFinish();
 
-    //! 调试用，保存渲染结果
-    Utils::saveCurrentFBOToImage(context,QSize(400,600),"D:\\GameEngine\\CFRenderEngine\\out1.png");
+    {
+        //! 调试用，保存渲染结果
+        // Utils::saveCurrentFBOToImage(context,QSize(400,600),"D:\\GameEngine\\CFRenderEngine\\out21.png");
 
-    // Utils::saveTextureToImage(context,m_texture,QSize(400,600),"D:\\GameEngine\\CFRenderEngine\\out2.png");
+        // Utils::saveTextureToImage(context,m_texture,QSize(400,600),"D:\\GameEngine\\CFRenderEngine\\out22.png");
+    }
 }
 
 CFEngineRender::TextureBuffer::TextureBuffer():m_texture(0) {

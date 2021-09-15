@@ -101,8 +101,10 @@ void RenderView::initializeGL()
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
     glEnableVertexAttribArray(2);
 
-    //! 加载纹理
-    Utils::genTextureFromStbImage(this->context(),"D:\\GameEngine\\CFRenderEngine\\test.png");
+    {
+        //! 调试用，加载纹理
+        // m_textureID = Utils::genTextureFromStbImage(this->context(),"D:\\GameEngine\\CFRenderEngine\\asset\\image\\test.png", &texture_w, &texture_h);
+    }
 
     glBindVertexArray(0);
 
@@ -122,10 +124,15 @@ void RenderView::paintGL()
 
     m_program->bind();
     glBindVertexArray(m_vao);
-//! 调试用，渲染一张图片
-//    glBindTexture(GL_TEXTURE_2D, m_textureID);
-//    glActiveTexture(GL_TEXTURE0);
-//    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+    {
+        //! 调试用，渲染一张图片
+//        glBindTexture(GL_TEXTURE_2D, m_textureID);
+//        glActiveTexture(GL_TEXTURE0);
+//        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+//
+//        Utils::saveTextureToImage(this->context(),m_textureID,QSize(texture_w,texture_h),"D:\\GameEngine\\CFRenderEngine\\test_out.png"); // TODO 为什么这句中的f->glGetTexImage会crash？ 而下一句中不会crash？ ans: 因为传入的size和图片的size不一致
+    }
 
     CFEngineRender::TextureBuffer::instance()->drawTexture(this->context(), 6);
 
