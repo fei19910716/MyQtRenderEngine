@@ -2,6 +2,7 @@
 #include "mainwindow.h"
 #include <QApplication>
 #include <QSurfaceFormat>
+#include <QFile>
 
 #include "Components/ComponentManager.h"
 #ifndef STB_IMAGE_IMPLEMENTATION
@@ -17,6 +18,15 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+
+    QFile file(":/qss/css/qss.css");
+    if (!file.open(QIODevice::ReadOnly))
+        exit(0);
+
+    QTextStream in(&file);
+    QString css = in.readAll();
+    qApp->setStyleSheet(css);
+
 #ifndef WIN32
     QSurfaceFormat glFormat;
     glFormat.setVersion(3,3);

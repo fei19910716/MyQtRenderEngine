@@ -65,6 +65,12 @@ public:
 
     void rebuildEntityTree();
 
+    /**
+     * 被委托处理其他对象的事件
+     * @param obj 委托对象
+     * @param event 处理的事件
+     * @return 是否处理结束， 如果返回true，则委托对象不需要进行进一步处理
+     */
     bool eventFilter(QObject* obj, QEvent* event);
 
 private slots:
@@ -90,7 +96,6 @@ private:
 
     QMenu* treeItemContextMenu_;
 
-    QMenu* addComponentMenu_;
     QPushButton* addComponentBtn_;
 
     AddComponentWidget* addComponentWidget_ = nullptr;

@@ -81,6 +81,7 @@ void ComponentWidget::constructColor(std::shared_ptr<CFEngineRender::ComponentPr
     // 拿到component存储的值
     QVariant value = component_->property(property->name_.c_str());
     QPushButton* btn = new QPushButton;
+    btn->setFixedWidth(80);
     // 设置button的背景色
     auto setButtonColor = [=](QColor color){
         QPalette pal = btn->palette();

@@ -1,0 +1,48 @@
+
+/*QPushButton{*/
+/*    background-color:rgba(100,225,100,30);*/
+/*    border-style:outset;*/
+/*    border-width:2px;*/
+/*    border-radius:10px;*/
+/*    border-color:rgba(255,255,255,30);*/
+/*    font-size: 10px;*/
+/*    font-family:Microsoft YaHei;*/
+/*    color:rgba(0,0,0,200);*/
+/*    padding:6px;*/
+/*}*/
+
+/*QPushButton:pressed{*/
+/*    background-color:rgba(100,255,100,200);*/
+/*    border-color:rgba(255,255,255,30);*/
+/*    border-style:inset;*/
+/*    color:rgba(0,0,0,100);*/
+/*}*/
+
+/*QPushButton:hover{*/
+/*    background-color:rgba(100,255,100,100);*/
+/*    border-color:rgba(255,255,255,200);*/
+/*    color:rgba(0,0,0,200);*/
+/*}*/
+
+QDockWidget > QWidget {
+
+}
+
+QLabel{
+    color:rgba(0, 0, 0, 200);
+    font-size:8pt;
+    font-family:Microsoft YaHei;
+}
+
+QHeaderView::section{
+    font-size:12px;
+    alignment: center;
+    font-family:Microsoft YaHei;
+    color:rgba(0, 0, 0, 200);
+    background-color: #c4c5cb;
+}
+
+
+AddComponentWidget{
+    background-color: rgb(241, 238, 238);
+}
