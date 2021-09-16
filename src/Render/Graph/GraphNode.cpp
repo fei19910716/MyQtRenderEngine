@@ -19,18 +19,11 @@ void CFEngineRender::GraphNode::addNext(std::shared_ptr<GraphNode> next_node) {
 }
 
 void CFEngineRender::GraphNode::addInput(std::shared_ptr<CFEngineRender::FrameBuffer> frame_buffer) {
-    auto input = renderer_->input();
-    auto it = std::find(input.begin(),input.end(),frame_buffer);
-    if(it != input.end()){
-        return; // 已经添加
-    }
-    input.push_back(frame_buffer);
+    renderer_->setInput(frame_buffer);
 }
 
-void CFEngineRender::GraphNode::addInput(std::vector<std::shared_ptr<CFEngineRender::FrameBuffer>> frame_buffers) {
-    auto input = renderer_->input();
-    input.clear();
-    input.insert(input.end(), frame_buffers.begin(),frame_buffers.end());
+void CFEngineRender::GraphNode::addInput(std::vector<std::shared_ptr<CFEngineRender::FrameBuffer>>& frame_buffers) {
+    renderer_->setInput(frame_buffers);
 }
 
 std::vector<std::shared_ptr<CFEngineRender::GraphNode>> &CFEngineRender::GraphNode::nextNodes() {

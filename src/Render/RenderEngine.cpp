@@ -4,6 +4,8 @@
 
 #include "Render/Graph/RenderQueue.h"
 
+#include "Utils/RenderUtils.h"
+
 CFEngineRender::RenderEngine::RenderEngine():textureToRender_(nullptr),textureToDisplay_(nullptr),textureToDelete_(nullptr){
   m_systems.push_back(new TriangleSystem());
 }
@@ -32,14 +34,16 @@ void CFEngineRender::RenderEngine::update(float dt){
 //    }
 
     auto input = std::make_shared<CFEngineRender::FrameBuffer>(400,600);
+    auto output = std::make_shared<CFEngineRender::FrameBuffer>(400,600);
 
-    std::shared_ptr<CFEngineRender::RenderQueue> renderQueue = std::make_shared<CFEngineRender::RenderQueue>();
+    renderQueue = std::make_shared<CFEngineRender::RenderQueue>();
     renderQueue->setInput(input);
+    renderQueue->setOutput(output);
     for (System *system : m_systems) {
         renderQueue->addRenderer(system->update(ENTT::registry, dt), "01");
     }
     renderQueue->render();
-
+    // Utils::saveFBOToImage( renderQueue->output()->handle(),QSize(400,600), "D:\\GameEngine\\CFRenderEngine\\" + renderQueue->id() + ".png", QOpenGLContext::currentContext());
 //    unsigned int value = textureToDisplay_->handle();
 //    textureToDisplay_->setHandle(textureToRender_->handle());
 //    textureToRender_->setHandle(value);

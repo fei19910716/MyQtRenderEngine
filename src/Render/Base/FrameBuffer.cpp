@@ -15,14 +15,13 @@ CFEngineRender::FrameBuffer::FrameBuffer(bool validFBO): GLResource() {
 }
 
 CFEngineRender::FrameBuffer::FrameBuffer(unsigned int width, unsigned int height) {
+    glGenFramebuffers(1, &handle_);
+
     auto texture = std::make_shared<CFEngineRender::Texture>(width,height);
-    // 创建FBO
-    auto fbo_ = std::make_shared<CFEngineRender::FrameBuffer>();
-    // 创建rbo
     auto rbo_ = std::make_shared<CFEngineRender::RenderBuffer>(width,height);
 
-    fbo_->bindRenderBuffer(rbo_);
-    fbo_->bindTexture(texture);
+    this->bindRenderBuffer(rbo_);
+    this->bindTexture(texture);
 }
 
 

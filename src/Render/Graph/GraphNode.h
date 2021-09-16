@@ -40,7 +40,7 @@ public:
    * @param frame_buffers 输入 frame buffers
    *
    */
-    void addInput(std::vector<std::shared_ptr<CFEngineRender::FrameBuffer>> frame_buffers);
+    void addInput(std::vector<std::shared_ptr<CFEngineRender::FrameBuffer>>& frame_buffers);
 
     std::vector<std::shared_ptr<GraphNode>>& nextNodes();
     std::shared_ptr<Renderer> renderer();

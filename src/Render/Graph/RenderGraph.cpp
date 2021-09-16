@@ -97,10 +97,8 @@ std::shared_ptr<CFEngineRender::FrameBuffer> CFEngineRender::RenderGraph::render
         if (node->enable()) {
             // TODO 更新当前节点的output，非终结节点从pool里获取FB，终结节点直接使用output_
             if (!node->nextNodes().empty()) {
-                auto fbo = std::make_shared<CFEngineRender::FrameBuffer>();
-                fbo->bindTexture(std::make_shared<CFEngineRender::Texture>(400,600));
-                fbo->bindRenderBuffer(std::make_shared<CFEngineRender::RenderBuffer>(400,600));
-                node->renderer()->setOutput(std::make_shared<CFEngineRender::FrameBuffer>());
+                auto fbo = std::make_shared<CFEngineRender::FrameBuffer>(400,600);
+                node->renderer()->setOutput(fbo);
             } else if (output_ != nullptr) {
                 node->renderer()->setOutput(output_);
             }

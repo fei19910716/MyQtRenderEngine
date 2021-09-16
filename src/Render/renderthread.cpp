@@ -3,6 +3,8 @@
 
 #include <QDateTime>
 
+#include "Utils/RenderUtils.h"
+#include "Render/Graph/RenderQueue.h"
 CFEngineRender::RenderThread::~RenderThread() {
 
 }
@@ -46,6 +48,7 @@ void CFEngineRender::RenderThread::run(){
         m_renderEngine->setRenderSize(m_width, m_height);
         m_renderEngine->update(QDateTime::currentDateTime().time().msec());
 
+        m_renderContext->functions()->glBindFramebuffer(GL_FRAMEBUFFER,m_renderEngine->renderQueue->output()->handle()); // TODO 这里需要绑定最终的输出FBO到context上
         // TextureBuffer::instance()->updateTexture(m_renderContext,m_renderEngine->textureToDisplay_->handle());
         TextureBuffer::instance()->updateTexture(m_renderContext,m_width,m_height); // TODO 使用深拷贝texture时，createTexture必须要调用
         emit imageReady();

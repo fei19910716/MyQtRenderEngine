@@ -38,9 +38,9 @@ void CFEngineRender::TextureBuffer::updateTexture(QOpenGLContext *context, int w
 
     {
         //! 调试用，保存渲染结果
-        Utils::saveCurrentFBOToImage(QSize(400,600),"D:\\GameEngine\\CFRenderEngine\\out12.png",context);
+        // Utils::saveCurrentFBOToImage(QSize(400,600),"D:\\GameEngine\\CFRenderEngine\\out12.png",context);
 
-        // Utils::saveTextureToImage(context,m_texture,QSize(400,600),"D:\\GameEngine\\CFRenderEngine\\out11.png");
+        Utils::saveTextureToImage(m_texture,QSize(400,600),"D:\\GameEngine\\CFRenderEngine\\out11.png", context);
     }
 }
 

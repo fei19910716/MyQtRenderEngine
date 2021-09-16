@@ -13,7 +13,7 @@
 #include "Render/Base/Texture.h"
 
 CFENGINE_RENDER_START
-
+class RenderQueue;
 class RenderEngine : public QObject ,public QOpenGLFunctions_3_3_Core{
   Q_OBJECT
 public:
@@ -31,7 +31,7 @@ public:
     std::vector<System*> m_systems;
 
     int m_width,m_height;
-
+    std::shared_ptr<RenderQueue> renderQueue;
     std::shared_ptr<RenderBuffer> rbo_;
     std::shared_ptr<FrameBuffer> fbo_;
     std::shared_ptr<Texture> textureToDisplay_,textureToRender_,textureToDelete_;

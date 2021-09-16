@@ -31,7 +31,7 @@ public:
      * 添加一个输入
      * @param frame_buffer 输入 frame buffer
      */
-    void setInput(std::shared_ptr<CFEngineRender::FrameBuffer>& frame_buffer);
+    void setInput(std::shared_ptr<CFEngineRender::FrameBuffer> frame_buffer);
     /**
      * 添加一组输入
      * @param frame_buffers 输入 frame buffers

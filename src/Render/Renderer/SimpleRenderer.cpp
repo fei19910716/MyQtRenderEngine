@@ -32,6 +32,9 @@ bool CFEngineRender::SimpleRenderer::init() {
 }
 
 void CFEngineRender::SimpleRenderer::render() {
+    if(!shader_ || !vao_)
+        return;
+
     bindInput();
     bindOutput();
     renderInternal();
@@ -72,7 +75,6 @@ void CFEngineRender::SimpleRenderer::bindOutput() {
 }
 
 void CFEngineRender::SimpleRenderer::renderInternal() {
-    if(!shader_ || !vao_) return;
     shader_->use();
     vao_->use();
 

@@ -36,7 +36,7 @@ std::vector<std::shared_ptr<CFEngineRender::FrameBuffer>> &CFEngineRender::Rende
     return input_;
 }
 
-void CFEngineRender::Renderer::setInput(std::shared_ptr<CFEngineRender::FrameBuffer>& frame_buffer) {
+void CFEngineRender::Renderer::setInput(std::shared_ptr<CFEngineRender::FrameBuffer> frame_buffer) {
     input_.clear();
     input_.push_back(frame_buffer);
 }
