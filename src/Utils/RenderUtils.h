@@ -25,6 +25,8 @@ namespace Utils {
     unsigned int genTextureFromQImage( const QString &path, int* width, int* height, QOpenGLContext *context = nullptr);
 
     unsigned int genTextureFromStbImage(const QString &path, int* width, int* height, QOpenGLContext *context = nullptr);
+
+    std::string readShaderSource(QString path);
 }
 
 #endif //CFRENDERENGINE_RENDERUTILS_H

@@ -16,28 +16,17 @@
 #include "Render/Base/RenderBuffer.h"
 
 #include "Render/Renderer/SimpleRenderer.h"
+#include "Utils/RenderUtils.h"
 
 std::shared_ptr<CFEngineRender::Renderer> CFEngineRender::TriangleSystem::update(entt::registry &registry, float dt){
     initializeOpenGLFunctions();
 
     auto renderer_  = std::make_shared<CFEngineRender::SimpleRenderer>();
-
-    QFile file(":/shader/simple/simple.vert");
-    if (!file.open(QIODevice::ReadOnly))
-        qDebug() << "read vert shader fail----";
-
-    QTextStream in(&file);
-    QString vert = in.readAll();
-
-    QFile file2(":/shader/simple/simple.frag");
-    if (!file2.open(QIODevice::ReadOnly))
-        qDebug() << "read frag shader fail----";
-
-    QTextStream in2(&file2);
-    QString frag = in2.readAll();
-    auto shaderProgram = std::make_shared<CFEngineRender::ShaderProgram>(vert.toStdString(),frag.toStdString(),false);
-
+    auto vert = Utils::readShaderSource(":/shader/simple/simple.vert");
+    auto frag = Utils::readShaderSource(":/shader/simple/simple.frag");
+    auto shaderProgram = std::make_shared<CFEngineRender::ShaderProgram>(vert,frag,false);
     shaderProgram->clearColor();
+    
     renderer_->setShaderProgram(shaderProgram);
 
     auto view = registry.view<CFEngineRender::Triangle>();

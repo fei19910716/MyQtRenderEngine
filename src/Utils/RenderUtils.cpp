@@ -4,6 +4,9 @@
 
 #include "RenderUtils.h"
 
+#include <QFile>
+#include <QTextStream>
+
 void Utils::saveTextureToImage(unsigned int texture, QSize size, std::string path,QOpenGLContext *context) {
     auto f = context->versionFunctions<QOpenGLFunctions_3_3_Core>();
 
@@ -85,5 +88,15 @@ unsigned int Utils::genTextureFromStbImage(const QString &path, int* width, int*
     f->glBindTexture(GL_TEXTURE_2D, 0);
 
     return m_textureID;;
+}
+
+std::string Utils::readShaderSource(QString path){
+    QFile file(path);
+    if (!file.open(QIODevice::ReadOnly))
+        assert(false);
+
+    QTextStream in(&file);
+    QString content = in.readAll();
+    return content.toStdString();
 }
 
