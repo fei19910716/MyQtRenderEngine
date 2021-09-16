@@ -16,15 +16,15 @@
 #include "stb_image_write.h"
 
 namespace Utils {
-    void saveTextureToImage(QOpenGLContext *context, unsigned int texture, QSize size, std::string path) ;
+    void saveTextureToImage(unsigned int texture, QSize size, std::string path,QOpenGLContext *context = nullptr) ;
 
-    void saveCurrentFBOToImage(QOpenGLContext *context, QSize size, std::string path);
+    void saveCurrentFBOToImage(QSize size, std::string path, QOpenGLContext *context = nullptr);
 
-    void saveFBOToImage(QOpenGLContext *context, unsigned int fbo, QSize size, std::string path) ;
+    void saveFBOToImage(unsigned int fbo, QSize size, std::string path, QOpenGLContext *context = nullptr) ;
 
-    unsigned int genTextureFromQImage(QOpenGLContext *context, const QString &path, int* width, int* height);
+    unsigned int genTextureFromQImage( const QString &path, int* width, int* height, QOpenGLContext *context = nullptr);
 
-    unsigned int genTextureFromStbImage(QOpenGLContext *context, const QString &path, int* width, int* height);
+    unsigned int genTextureFromStbImage(const QString &path, int* width, int* height, QOpenGLContext *context = nullptr);
 }
 
 #endif //CFRENDERENGINE_RENDERUTILS_H

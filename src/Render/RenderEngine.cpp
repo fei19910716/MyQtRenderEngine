@@ -2,7 +2,7 @@
 
 #include <QDebug>
 
-#include "Render/Renderer/SimpleRenderer.h"
+#include "Render/Graph/RenderQueue.h"
 
 CFEngineRender::RenderEngine::RenderEngine():textureToRender_(nullptr),textureToDisplay_(nullptr),textureToDelete_(nullptr){
   m_systems.push_back(new TriangleSystem());
@@ -30,11 +30,15 @@ void CFEngineRender::RenderEngine::update(float dt){
 //    if(textureToDelete_ && textureToDelete_->valid()){
 //        textureToDelete_->release();
 //    }
-    std::shared_ptr<CFEngineRender::Renderer> renderer;
+
+    auto input = std::make_shared<CFEngineRender::FrameBuffer>(400,600);
+
+    std::shared_ptr<CFEngineRender::RenderQueue> renderQueue = std::make_shared<CFEngineRender::RenderQueue>();
+    renderQueue->setInput(input);
     for (System *system : m_systems) {
-        renderer = system->update(ENTT::registry, dt);
+        renderQueue->addRenderer(system->update(ENTT::registry, dt), "01");
     }
-    renderer->render();
+    renderQueue->render();
 
 //    unsigned int value = textureToDisplay_->handle();
 //    textureToDisplay_->setHandle(textureToRender_->handle());

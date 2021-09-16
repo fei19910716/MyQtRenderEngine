@@ -13,6 +13,9 @@ class VertexArray;
 class ShaderProgram;
 class Texture;
 
+/**
+ * 使用shader进行渲染的renderer
+ */
 class SimpleRenderer: public Renderer {
 public:
     SimpleRenderer();
@@ -22,22 +25,15 @@ public:
 
     bool init() override;
 
-    void setInput(std::shared_ptr<CFEngineRender::FrameBuffer> frame_buffer) override;
-
-    void setInput(std::vector<std::shared_ptr<CFEngineRender::FrameBuffer>> frame_buffers) override;
-
-    void setOutput(std::shared_ptr<CFEngineRender::FrameBuffer> frame_buffer) override;
-
-    std::shared_ptr<CFEngineRender::FrameBuffer> output() override;
-
     void render() override;
 
     void postRender() override;
 
     void release() override;
 
-    void bindInput();
-    void bindOutput();
+    virtual void bindInput();
+    virtual void bindOutput();
+
     void renderInternal();
 
     /**
@@ -81,11 +77,9 @@ public:
    */
     void setUniformMat4(std::string key, std::vector<float>& value);
 
-public:
+protected:
     std::shared_ptr<VertexArray> vao_;
     std::shared_ptr<CFEngineRender::ShaderProgram> shader_;
-    std::vector<std::shared_ptr<CFEngineRender::FrameBuffer>> input_;
-    std::shared_ptr<CFEngineRender::FrameBuffer> output_;
 
     const std::string DEFAULT_INPUT_TEXTURE_NAME = "u_texture";
 };

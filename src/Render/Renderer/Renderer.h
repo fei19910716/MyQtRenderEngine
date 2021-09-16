@@ -16,6 +16,9 @@
 
 CFENGINE_RENDER_START
 
+/**
+ * 渲染基类，抽象renderer的特征： id, parent_id_, 输入， 输出，具体怎样渲染，用shader渲染还是... 由子类实现
+ */
 class Renderer: public std::enable_shared_from_this<Renderer>, public QOpenGLFunctions_3_3_Core {
 public:
     Renderer();
@@ -28,22 +31,23 @@ public:
      * 添加一个输入
      * @param frame_buffer 输入 frame buffer
      */
-    virtual void setInput(std::shared_ptr<CFEngineRender::FrameBuffer> frame_buffer) = 0;
+    void setInput(std::shared_ptr<CFEngineRender::FrameBuffer>& frame_buffer);
     /**
      * 添加一组输入
      * @param frame_buffers 输入 frame buffers
      */
-    virtual void setInput(std::vector<std::shared_ptr<CFEngineRender::FrameBuffer>> frame_buffers) = 0;
+    void setInput(std::vector<std::shared_ptr<CFEngineRender::FrameBuffer>> frame_buffers);
     /**
      * 设置输出
      * @param frame_buffer 输出 frame_buffer
      */
-    virtual void setOutput(std::shared_ptr<CFEngineRender::FrameBuffer> frame_buffer) = 0;
+    void setOutput(std::shared_ptr<CFEngineRender::FrameBuffer> frame_buffer);
     /**
      * 获取输出
      * @return 输出 frame buffer
      */
-    virtual std::shared_ptr<CFEngineRender::FrameBuffer> output() = 0;
+    std::shared_ptr<CFEngineRender::FrameBuffer> output();
+    std::vector<std::shared_ptr<CFEngineRender::FrameBuffer>>& input();
     /**
      * 渲染
      */
@@ -78,6 +82,9 @@ protected:
     std::string id_;
     std::string parent_id_;
     bool enable_ = true;
+
+    std::vector<std::shared_ptr<CFEngineRender::FrameBuffer>> input_;
+    std::shared_ptr<CFEngineRender::FrameBuffer> output_;
 };
 
 CFENGINE_RENDER_END

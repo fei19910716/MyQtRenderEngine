@@ -11,8 +11,7 @@
 CFEngineRender::SimpleRenderer::SimpleRenderer()
         : Renderer(),
           shader_(nullptr),
-          vao_(nullptr),
-          output_(nullptr)
+          vao_(nullptr)
 {
     initializeOpenGLFunctions();
 }
@@ -20,8 +19,7 @@ CFEngineRender::SimpleRenderer::SimpleRenderer()
 CFEngineRender::SimpleRenderer::SimpleRenderer(const std::string &vertex_shader, const std::string &fragment_shader)
         : Renderer(),
           shader_(nullptr),
-          vao_(nullptr),
-          output_(nullptr)
+          vao_(nullptr)
 {
     initializeOpenGLFunctions();
     shader_ = std::make_shared<CFEngineRender::ShaderProgram>(vertex_shader,fragment_shader,false);
@@ -31,24 +29,6 @@ CFEngineRender::SimpleRenderer::~SimpleRenderer() {}
 
 bool CFEngineRender::SimpleRenderer::init() {
     return true;
-}
-
-void CFEngineRender::SimpleRenderer::setInput(std::shared_ptr<CFEngineRender::FrameBuffer> frame_buffer) {
-    input_.clear();
-    input_.push_back(frame_buffer);
-}
-
-void CFEngineRender::SimpleRenderer::setInput(std::vector<std::shared_ptr<CFEngineRender::FrameBuffer>> frame_buffers) {
-    input_.clear();
-    input_.insert(this->input_.end(), frame_buffers.begin(), frame_buffers.end());
-}
-
-void CFEngineRender::SimpleRenderer::setOutput(std::shared_ptr<CFEngineRender::FrameBuffer> frame_buffer) {
-    output_ = frame_buffer;
-}
-
-std::shared_ptr<CFEngineRender::FrameBuffer> CFEngineRender::SimpleRenderer::output() {
-    return output_;
 }
 
 void CFEngineRender::SimpleRenderer::render() {

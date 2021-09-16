@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include <QFrame>
+#include <QWidget>
 #include <QObjectUserData>
 
 #include "Components/Base/Component.h"
@@ -8,7 +8,7 @@
 /**
  * 自定义添加Component的窗口，当点击添加组件按钮时在按钮上方弹出该窗口，点击其他区域时关闭窗口
  */
-class AddComponentWidget : public QFrame
+class AddComponentWidget : public QWidget
 {
     Q_OBJECT
 public:

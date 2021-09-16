@@ -4,7 +4,7 @@
 
 #include "RenderUtils.h"
 
-void Utils::saveTextureToImage(QOpenGLContext *context, unsigned int texture, QSize size, std::string path) {
+void Utils::saveTextureToImage(unsigned int texture, QSize size, std::string path,QOpenGLContext *context) {
     auto f = context->versionFunctions<QOpenGLFunctions_3_3_Core>();
 
     unsigned char *data2 = new unsigned char[size.width() * size.height() * 4];
@@ -13,7 +13,7 @@ void Utils::saveTextureToImage(QOpenGLContext *context, unsigned int texture, QS
     stbi_write_png(path.c_str(), size.width(), size.height(), 4, data2, 0);
 }
 
-void Utils::saveCurrentFBOToImage(QOpenGLContext *context, QSize size, std::string path) {
+void Utils::saveCurrentFBOToImage( QSize size, std::string path,QOpenGLContext *context) {
     auto f = context->versionFunctions<QOpenGLFunctions_3_3_Core>();
 
     unsigned char *data = new unsigned char[size.width() * size.height() * 4];
@@ -22,7 +22,7 @@ void Utils::saveCurrentFBOToImage(QOpenGLContext *context, QSize size, std::stri
     stbi_write_png(path.c_str(), size.width(), size.height(), 4, data, 0);
 }
 
-void Utils::saveFBOToImage(QOpenGLContext *context, unsigned int fbo, QSize size, std::string path) {
+void Utils::saveFBOToImage(unsigned int fbo, QSize size, std::string path,QOpenGLContext *context) {
     auto f = context->versionFunctions<QOpenGLFunctions_3_3_Core>();
 
     f->glBindFramebuffer(GL_FRAMEBUFFER, fbo);
@@ -33,7 +33,7 @@ void Utils::saveFBOToImage(QOpenGLContext *context, unsigned int fbo, QSize size
     f->glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-unsigned int Utils::genTextureFromQImage(QOpenGLContext *context, const QString &path, int* width, int* height) {
+unsigned int Utils::genTextureFromQImage(const QString &path, int* width, int* height,QOpenGLContext *context) {
     auto f = context->versionFunctions<QOpenGLFunctions_3_3_Core>();
 
     unsigned int m_textureID;
@@ -60,7 +60,7 @@ unsigned int Utils::genTextureFromQImage(QOpenGLContext *context, const QString 
     return m_textureID;
 }
 
-unsigned int Utils::genTextureFromStbImage(QOpenGLContext *context, const QString &path, int* width, int* height) {
+unsigned int Utils::genTextureFromStbImage(const QString &path, int* width, int* height, QOpenGLContext *context) {
     auto f = context->versionFunctions<QOpenGLFunctions_3_3_Core>();
 
     unsigned int m_textureID;

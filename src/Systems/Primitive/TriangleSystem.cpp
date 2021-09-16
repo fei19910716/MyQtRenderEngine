@@ -26,20 +26,6 @@ std::shared_ptr<CFEngineRender::Renderer> CFEngineRender::TriangleSystem::update
     shaderProgram->clearColor();
     renderer_->setShaderProgram(shaderProgram);
 
-    auto texture = std::make_shared<CFEngineRender::Texture>(400,600);
-
-    // 创建FBO
-    auto fbo_ = std::make_shared<CFEngineRender::FrameBuffer>();
-
-
-    // 创建rbo
-    auto rbo_ = std::make_shared<CFEngineRender::RenderBuffer>(400,600);
-
-    fbo_->bindRenderBuffer(rbo_);
-    fbo_->bindTexture(texture);
-
-    renderer_->setOutput(fbo_);
-
     auto view = registry.view<CFEngineRender::Triangle>();
     for(auto entity: view) {
         auto &triangle = view.get<CFEngineRender::Triangle>(entity);

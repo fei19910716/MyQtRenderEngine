@@ -9,7 +9,7 @@
 #include "Components/ComponentManager.h"
 #include <QGraphicsDropShadowEffect>
 AddComponentWidget::AddComponentWidget(QWidget *parent)
-    : QFrame(parent)
+    : QWidget(parent)
 {
     QHBoxLayout *pMainLayout = new QHBoxLayout(this);
     pMainLayout->setAlignment(Qt::AlignTop);
@@ -29,8 +29,8 @@ AddComponentWidget::AddComponentWidget(QWidget *parent)
                 "border-width:2px;"                     //边框宽度像素
                 "border-radius:10px;"                   //边框圆角半径像素
                 "border-color:rgba(255,255,255,30);"    //边框颜色
-                "font:bold 10px;"                       //字体，字体大小
-                "color:rgba(0,0,0,100);"                //字体颜色
+                "font-size: 10px;"                       //字体，字体大小
+                "color:rgba(0,0,0,200);"                //字体颜色
                 "padding:6px;"                          //填衬
                 "}"
                 //鼠标按下样式

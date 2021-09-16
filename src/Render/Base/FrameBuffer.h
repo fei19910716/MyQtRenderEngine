@@ -17,6 +17,7 @@ class RenderBuffer;
 class FrameBuffer : public GLResource{
 public:
     FrameBuffer(bool validFBO = true);
+    FrameBuffer(unsigned int width, unsigned int height);
 
     void use();
     void release() override;

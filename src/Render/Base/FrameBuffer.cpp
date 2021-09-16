@@ -14,6 +14,17 @@ CFEngineRender::FrameBuffer::FrameBuffer(bool validFBO): GLResource() {
         handle_ = 0;
 }
 
+CFEngineRender::FrameBuffer::FrameBuffer(unsigned int width, unsigned int height) {
+    auto texture = std::make_shared<CFEngineRender::Texture>(width,height);
+    // 创建FBO
+    auto fbo_ = std::make_shared<CFEngineRender::FrameBuffer>();
+    // 创建rbo
+    auto rbo_ = std::make_shared<CFEngineRender::RenderBuffer>(width,height);
+
+    fbo_->bindRenderBuffer(rbo_);
+    fbo_->bindTexture(texture);
+}
+
 
 std::shared_ptr<CFEngineRender::Texture> CFEngineRender::FrameBuffer::texture() {
     return texture_;
@@ -47,4 +58,5 @@ void CFEngineRender::FrameBuffer::release() {
     glDeleteFramebuffers(1, &handle_);
     handle_ = 0;
 }
+
 

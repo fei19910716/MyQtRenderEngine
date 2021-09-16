@@ -79,10 +79,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->menuBar->addMenu(edit_menu);
     ui->menuBar->addMenu(help_menu);
 
-    //把动作添加到工具栏，QAction就会自动变成工具
-    ui->mainToolBar->addAction(new_action);
-    ui->mainToolBar->addAction(open_action);
-    ui->mainToolBar->addAction(save_action);
+
+    setWindowTitle("render engine");
 }
 
 void MainWindow::constructInspectorPanel(){
@@ -126,8 +124,8 @@ void MainWindow::constructInspectorPanel(){
             "border-width:2px;"                     //边框宽度像素
             "border-radius:10px;"                   //边框圆角半径像素
             "border-color:rgba(255,255,255,30);"    //边框颜色
-            "font:bold 10px;"                       //字体，字体大小
-            "color:rgba(0,0,0,100);"                //字体颜色
+            "font-size: 10px;"                       //字体，字体大小
+            "color:rgba(0,0,0,200);"                //字体颜色
             "padding:6px;"                          //填衬
             "}"
             //鼠标按下样式
