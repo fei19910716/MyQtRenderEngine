@@ -21,7 +21,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "bin/")
 
 include(tool)
 
-set_local_qt_path(C:/Qt/Qt5.13.0/5.13.0) #这里需要填入自己安装的路径
+set_local_qt_path(C:/Qt5.13.0/5.13.0) #这里需要填入自己安装的路径
 include(qt_config)
 
 set(QT_libs
@@ -49,7 +49,9 @@ file(GLOB_RECURSE CORE_SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
 )
 
-qt5_add_resources(QRC_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/asset/qss/qss.qrc)
+qt5_add_resources(QRC_SOURCES 
+    ${CMAKE_CURRENT_SOURCE_DIR}/asset/qss/qss.qrc 
+    ${CMAKE_CURRENT_SOURCE_DIR}/asset/shader/shader.qrc)
 
 add_subdirectory(vendor)
 

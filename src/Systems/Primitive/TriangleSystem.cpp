@@ -5,6 +5,7 @@
 #include "TriangleSystem.h"
 
 #include <QDebug>
+#include <QFile>
 
 #include "stb_image_write.h"
 #include "Render/Base/ShaderProgram.h"
@@ -21,7 +22,20 @@ std::shared_ptr<CFEngineRender::Renderer> CFEngineRender::TriangleSystem::update
 
     auto renderer_  = std::make_shared<CFEngineRender::SimpleRenderer>();
 
-    auto shaderProgram = std::make_shared<CFEngineRender::ShaderProgram>(m_vertexShader,m_fragmentShader,false);
+    QFile file(":/shader/simple/simple.vert");
+    if (!file.open(QIODevice::ReadOnly))
+        qDebug() << "read vert shader fail----";
+
+    QTextStream in(&file);
+    QString vert = in.readAll();
+
+    QFile file2(":/shader/simple/simple.frag");
+    if (!file2.open(QIODevice::ReadOnly))
+        qDebug() << "read frag shader fail----";
+
+    QTextStream in2(&file2);
+    QString frag = in2.readAll();
+    auto shaderProgram = std::make_shared<CFEngineRender::ShaderProgram>(vert.toStdString(),frag.toStdString(),false);
 
     shaderProgram->clearColor();
     renderer_->setShaderProgram(shaderProgram);
