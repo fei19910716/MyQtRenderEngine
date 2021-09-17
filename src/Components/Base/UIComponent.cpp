@@ -7,3 +7,11 @@
 CFEngineRender::UIComponent::~UIComponent() noexcept {
 
 }
+
+CFEngineRender::UIComponent::UIComponent() {
+    this->MakeComponentPropertyDescriptions();
+}
+
+CFEngineRender::UIComponent::UIComponent(int componentId, int entityId):Component(componentId,entityId){
+    this->MakeComponentPropertyDescriptions();
+}

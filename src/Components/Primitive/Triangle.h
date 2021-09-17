@@ -20,18 +20,12 @@ public:
     COMPONENT_PROPERTY(QColor, Color, color, QColor(255, 0, 0, 127))
     COMPONENT_PROPERTY(Priority, Priority, priority, Priority::Low)
 
-    Triangle(){
-        this->MakeComponentPropertyDescriptions();
-
+    Triangle():UIComponent(){
         REGISTER_COMPONENT_DESCRIPTION(Triangle)
     }
     Triangle(int componentId, int entityId):UIComponent(componentId,entityId){
-        this->MakeComponentPropertyDescriptions();
-
         REGISTER_COMPONENT_DESCRIPTION(Triangle)
     }
-
-    ~Triangle() = default;
 
     static std::shared_ptr<ComponentDescription> MakeComponentDescription(){
         auto triangle_ = std::make_shared<ComponentDescription>();
@@ -67,10 +61,7 @@ public:
         enable->label_ = "enable";
         enable->type_ = ComponentPropertyType::kBool;
 
-        this->propertyDescriptions_.emplace_back(name);
-        this->propertyDescriptions_.emplace_back(priority);
-        this->propertyDescriptions_.emplace_back(color);
-        this->propertyDescriptions_.emplace_back(enable);
+        ADD_COMPONENT_PROPERTY_DESCRIPTION(name,priority,color,enable)
     }
 
 

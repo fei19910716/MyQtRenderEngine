@@ -16,19 +16,13 @@ public:
     COMPONENT_PROPERTY(QString, Name, name, "Quad")
     COMPONENT_PROPERTY(QColor, Color, color, QColor(255, 0, 0, 127))
 
-    Quad(){
-        this->MakeComponentPropertyDescriptions();
-
-        componentDescription_ = ComponentManager::componentDescriptionWithType(CFEngineRender::ComponentType::kQuad);
+    Quad():UIComponent(){
+        REGISTER_COMPONENT_DESCRIPTION(Quad)
 
     }
     Quad(int componentId, int entityId):UIComponent(componentId,entityId){
-        this->MakeComponentPropertyDescriptions();
-
-        componentDescription_ = ComponentManager::componentDescriptionWithType(CFEngineRender::ComponentType::kQuad);
+        REGISTER_COMPONENT_DESCRIPTION(Quad)
     }
-
-    ~Quad() = default;
 
     static std::shared_ptr<ComponentDescription> MakeComponentDescription(){
         auto quad_ = std::make_shared<CFEngineRender::ComponentDescription>();
@@ -42,18 +36,18 @@ public:
 
     void MakeComponentPropertyDescriptions() override{
         //
-        ComponentPropertyDescription* name = new ComponentPropertyDescription;
+        auto name = new ComponentPropertyDescription;
         name->name_ = "name";
         name->label_ = "name";
         name->type_ = ComponentPropertyType::kString;
         name->editable_ = false;
 
-        ComponentPropertyDescription* color = new ComponentPropertyDescription;
+        auto color = new ComponentPropertyDescription;
         color->name_ = "color";
         color->label_ = "color";
         color->type_ = ComponentPropertyType::kColor;
 
-        ComponentPropertyDescription* enable = new ComponentPropertyDescription;
+        auto enable = new ComponentPropertyDescription;
         enable->name_ = "enable";
         enable->label_ = "enable";
         enable->type_ = ComponentPropertyType::kBool;
