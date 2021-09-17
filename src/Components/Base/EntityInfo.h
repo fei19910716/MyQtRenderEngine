@@ -8,14 +8,11 @@ class EntityInfo: public Component
 {
     Q_OBJECT
 public:
-    /**
-     * 记录entity的id
-     */
-    QString entityId_;
-    QString label_;
+
+    COMPONENT_PROPERTY(QString, EntityId, entityId, "")
+    COMPONENT_PROPERTY(QString, Label, label, "")
 
 public:
-    EntityInfo(){}
     EntityInfo(QString entityId, QString label):
         entityId_(entityId),
         label_(label)

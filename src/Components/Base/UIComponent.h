@@ -10,11 +10,18 @@
 
 CFENGINE_RENDER_START
 
+#define REGISTER_COMPONENT_DESCRIPTION(ClassName)\
+componentDescription_ = ComponentManager::componentDescriptionWithType(CFEngineRender::ComponentType::k##ClassName);
+
+#define ADD_COMPONENT_PROPERTY_DESCRIPTION(...)\
+
+
 class UIComponent: public Component {
     Q_OBJECT
-    Q_PROPERTY(std::vector<std::shared_ptr<ComponentPropertyDescription>> propertyDescriptions READ propertyDescriptions WRITE setPropertyDescriptions)
-    Q_PROPERTY(std::shared_ptr<ComponentDescription> componentDescription READ componentDescription WRITE setComponentDescription)
 public:
+    COMPONENT_PROPERTY(std::vector<std::shared_ptr<ComponentPropertyDescription>>, PropertyDescriptions, propertyDescriptions, {})
+    COMPONENT_PROPERTY(std::shared_ptr<ComponentDescription>, ComponentDescription, componentDescription, nullptr)
+
     UIComponent() = default;
     UIComponent(int componentId, int entityId):Component(componentId,entityId){}
 
@@ -22,29 +29,6 @@ public:
 
     virtual void MakeComponentPropertyDescriptions() = 0;
 
-
-    std::vector<std::shared_ptr<ComponentPropertyDescription>> propertyDescriptions_;
-    std::shared_ptr<ComponentDescription> componentDescription_;
-
-public:
-
-    std::shared_ptr<ComponentDescription> componentDescription() const
-    {
-        return componentDescription_;
-    }
-    void setComponentDescription(std::shared_ptr<ComponentDescription> componentDescription)
-    {
-        componentDescription_ = componentDescription;
-    }
-
-    std::vector<std::shared_ptr<ComponentPropertyDescription>> propertyDescriptions() const
-    {
-        return propertyDescriptions_;
-    }
-    void setPropertyDescriptions(std::vector<std::shared_ptr<ComponentPropertyDescription>> propertyDescriptions)
-    {
-        propertyDescriptions_ = propertyDescriptions;
-    }
 };
 
 CFENGINE_RENDER_END

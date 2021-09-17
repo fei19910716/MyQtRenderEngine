@@ -11,25 +11,24 @@ CFENGINE_RENDER_START
 
 class Triangle: public UIComponent{
     Q_OBJECT
-
-    Q_PROPERTY(QString name READ name)
-    Q_PROPERTY(QColor color READ color)
-    Q_PROPERTY(Priority priority READ priority)
-
 public:
     enum Priority { High, Low, VeryHigh, VeryLow };
     Q_ENUM(Priority)
 
+
+    COMPONENT_PROPERTY(QString, Name, name, "Triangle")
+    COMPONENT_PROPERTY(QColor, Color, color, QColor(255, 0, 0, 127))
+    COMPONENT_PROPERTY(Priority, Priority, priority, Priority::Low)
+
     Triangle(){
         this->MakeComponentPropertyDescriptions();
 
-        componentDescription_ = ComponentManager::componentDescriptionWithType(CFEngineRender::ComponentType::kTriangle);
-        
+        REGISTER_COMPONENT_DESCRIPTION(Triangle)
     }
     Triangle(int componentId, int entityId):UIComponent(componentId,entityId){
         this->MakeComponentPropertyDescriptions();
 
-        componentDescription_ = ComponentManager::componentDescriptionWithType(CFEngineRender::ComponentType::kTriangle);
+        REGISTER_COMPONENT_DESCRIPTION(Triangle)
     }
 
     ~Triangle() = default;
@@ -84,24 +83,6 @@ public:
     std::vector<unsigned int> indices = {
             0, 1, 2,  // first Triangle
     };
-
-public:
-
-    QString name_ = "Triangle";
-    QString name(){
-        return name_;
-    }
-
-
-    QColor color_ = QColor(255, 0, 0, 127);
-    QColor color(){
-        return color_;
-    }
-
-    Priority priority_ = Priority::Low;
-    Priority priority(){
-        return priority_;
-    }
 
 signals:
 };

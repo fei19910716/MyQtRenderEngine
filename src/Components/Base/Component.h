@@ -100,49 +100,34 @@ struct ComponentDescription{
     std::optional<bool> isGlobalUnique_;
 };
 
+
+#define COMPONENT_PROPERTY(Type,fname,name,value) \
+Q_PROPERTY(Type name READ name WRITE set##fname)\
+Type name() const\
+{\
+    return name##_;\
+}\
+void set##fname(Type name)\
+{\
+    name##_ = name;\
+}\
+Type name##_ = value;                             \
+
+
 class Component: public QObject{
     Q_OBJECT
-    Q_PROPERTY(int componentId READ componentId WRITE setComponentId)
-    Q_PROPERTY(int entityId READ entityId WRITE setEntityId)
-    Q_PROPERTY(bool enable READ enable WRITE setEnable)
 public:
+    COMPONENT_PROPERTY(int, ComponentId, componentId, 0)
+    COMPONENT_PROPERTY(int, EntityId, entityId, 0)
+    COMPONENT_PROPERTY(bool, Enable, enable, true)
+
+
     Component &operator =(const Component &);
     Component() = default;
     Component(int componentId, int entityId);
     Component(const Component& com);
 
     virtual ~Component();
-
-    int componentId_;
-    int entityId_;
-
-public:
-    int componentId() const
-    {
-        return componentId_;
-    }
-    void setComponentId(int componentId)
-    {
-        componentId_ = componentId;
-    }
-
-    bool enable_ = true;
-    bool enable(){
-        return enable_;
-    }
-    void setEnable(bool enable){
-        enable_ = enable;
-    }
-
-
-    int entityId() const
-    {
-        return entityId_;
-    }
-    void setEntityId(int entityId)
-    {
-        entityId_ = entityId;
-    }
 
 };
 

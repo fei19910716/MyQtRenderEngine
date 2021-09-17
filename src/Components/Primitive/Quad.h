@@ -11,11 +11,10 @@ CFENGINE_RENDER_START
 
 class Quad: public UIComponent{
 Q_OBJECT
-
-    Q_PROPERTY(QString name READ name)
-    Q_PROPERTY(QColor color READ color)
-
 public:
+
+    COMPONENT_PROPERTY(QString, Name, name, "Quad")
+    COMPONENT_PROPERTY(QColor, Color, color, QColor(255, 0, 0, 127))
 
     Quad(){
         this->MakeComponentPropertyDescriptions();
@@ -59,9 +58,7 @@ public:
         enable->label_ = "enable";
         enable->type_ = ComponentPropertyType::kBool;
 
-        this->propertyDescriptions_.emplace_back(name);
-        this->propertyDescriptions_.emplace_back(color);
-        this->propertyDescriptions_.emplace_back(enable);
+        ADD_COMPONENT_PROPERTY_DESCRIPTION(name,color,enable)
     }
 
 
@@ -76,19 +73,6 @@ public:
             0, 1, 3, // first triangle
             1, 2, 3  // second triangle
     };
-
-public:
-
-    QString name_ = "Quad";
-    QString name(){
-        return name_;
-    }
-
-
-    QColor color_ = QColor(255, 0, 0, 127);
-    QColor color(){
-        return color_;
-    }
 
 signals:
 };
