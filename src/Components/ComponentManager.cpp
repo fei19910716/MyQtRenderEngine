@@ -14,7 +14,7 @@ void CFEngineRender::ComponentManager::registerComponentDescriptions() {
     allComponentDescriptions_.insert(triangle);
 
 
-    auto quad = std::make_pair(ComponentType::kQuad,CFEngineRender::Triangle::MakeComponentDescription());
+    auto quad = std::make_pair(ComponentType::kQuad,CFEngineRender::Quad::MakeComponentDescription());
     allComponentDescriptions_.insert(quad);
 }
 

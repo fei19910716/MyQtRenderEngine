@@ -162,6 +162,7 @@ void CFEngineRender::RenderGraph::traverseLayer(const std::function<void(std::sh
 }
 
 void CFEngineRender::RenderGraph::addRenderer(std::shared_ptr<Renderer> renderer, std::string id) {
+    if(renderer == nullptr) return;
     renderer->setId(id);
 
     std::shared_ptr<GraphNode> node = std::make_shared<GraphNode>(renderer);

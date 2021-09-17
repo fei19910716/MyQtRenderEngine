@@ -13,6 +13,7 @@ CFEngineRender::RenderQueue::~RenderQueue() {
 }
 
 void CFEngineRender::RenderQueue::addRenderer(std::shared_ptr<Renderer> renderer, std::string id) {
+    if(renderer == nullptr) return;
     CFEngineRender::RenderGraph::addRenderer(renderer,id);
 
     if(!tail_renderer_id_.empty()) {
@@ -23,6 +24,7 @@ void CFEngineRender::RenderQueue::addRenderer(std::shared_ptr<Renderer> renderer
 }
 
 void CFEngineRender::RenderQueue::addRenderer(std::shared_ptr<Renderer> renderer, std::string id, std::string parent_id) {
+    if(renderer == nullptr) return;
     CFEngineRender::RenderGraph::addRenderer(renderer,id,parent_id);
 
     this->connectRenderer(parent_id, id);

@@ -4,6 +4,9 @@
 
 #include "Texture.h"
 
+#include "Utils/RenderUtils.h"
+#include <QOpenGLContext>
+
 CFEngineRender::Texture::Texture(unsigned int width, unsigned int height): GLResource() {
 
     glGenTextures(1, &handle_);
@@ -15,8 +18,8 @@ CFEngineRender::Texture::Texture(unsigned int width, unsigned int height): GLRes
 }
 
 void CFEngineRender::Texture::use(int unit) {
-    glActiveTexture(GL_TEXTURE0 + unit);
-    glBindTexture(GL_TEXTURE_2D, handle_);
+    GLCALL(glActiveTexture(GL_TEXTURE0 + unit))
+    GLCALL(glBindTexture(GL_TEXTURE_2D, handle_))
 }
 
 void CFEngineRender::Texture::release() {
@@ -26,4 +29,9 @@ void CFEngineRender::Texture::release() {
 
 void CFEngineRender::Texture::setHandle(unsigned int value) {
     handle_ = value;
+}
+
+CFEngineRender::Texture::Texture(QString path) {
+    int width,height;
+    handle_ = Utils::genTextureFromStbImage(path,&width,&height,QOpenGLContext::currentContext());
 }

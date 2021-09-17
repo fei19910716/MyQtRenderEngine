@@ -3,6 +3,7 @@
 //
 
 #include "ShaderProgram.h"
+#include <QDebug>
 
 CFEngineRender::ShaderProgram::ShaderProgram(std::string vertex, std::string fragment, bool fromPath): GLResource(){
     if(fromPath)
@@ -188,7 +189,7 @@ void CFEngineRender::ShaderProgram::setMat4(const std::string &name, const std::
 }
 
 void CFEngineRender::ShaderProgram::setTexture2D(const std::string &name, int textureUnit) {
-    glUniform1i(glGetUniformLocation(handle_, name.c_str()), textureUnit);
+    GLCALL(glUniform1i(glGetUniformLocation(handle_, name.c_str()), textureUnit))
 }
 
 void CFEngineRender::ShaderProgram::clearColor() {

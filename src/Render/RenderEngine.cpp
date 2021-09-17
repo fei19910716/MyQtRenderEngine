@@ -14,8 +14,11 @@
 #include "Systems/Primitive/QuadSystem.h"
 
 CFEngineRender::RenderEngine::RenderEngine():textureToRender_(nullptr),textureToDisplay_(nullptr),textureToDelete_(nullptr){
-  m_systems.push_back(new CFEngineRender::TriangleSystem());
-  m_systems.push_back(new CFEngineRender::QuadSystem());
+
+    m_systems.push_back(new CFEngineRender::QuadSystem());
+    m_systems.push_back(new CFEngineRender::TriangleSystem());
+
+
 }
 
 CFEngineRender::RenderEngine::~RenderEngine() noexcept {
@@ -41,7 +44,9 @@ void CFEngineRender::RenderEngine::update(float dt){
 //        textureToDelete_->release();
 //    }
 
-    auto input = std::make_shared<CFEngineRender::FrameBuffer>(400,600);
+    auto input = std::make_shared<CFEngineRender::FrameBuffer>();
+    input->bindRenderBuffer(std::make_shared<CFEngineRender::RenderBuffer>(400,600));
+    input->bindTexture(std::make_shared<CFEngineRender::Texture>("D:\\GameEngine\\CFRenderEngine\\asset\\image\\test.png"));
     auto output = std::make_shared<CFEngineRender::FrameBuffer>(400,600);
 
     renderQueue = std::make_shared<CFEngineRender::RenderQueue>();

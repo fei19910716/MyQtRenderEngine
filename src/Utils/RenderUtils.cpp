@@ -77,6 +77,7 @@ unsigned int Utils::genTextureFromStbImage(const QString &path, int* width, int*
 
     // 加载并生成纹理
     int nrChannels;
+    stbi_set_flip_vertically_on_load(true);
     unsigned char *data = stbi_load(path.toStdString().c_str(), width, height, &nrChannels, 0);
     if (data) {
 //            texture_w = width;

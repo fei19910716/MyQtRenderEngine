@@ -7,6 +7,7 @@
 #include "Render/Base/VertexArray.h"
 #include "Render/Base/ShaderProgram.h"
 #include "Render/Base/Texture.h"
+#include "Utils/RenderUtils.h"
 
 CFEngineRender::SimpleRenderer::SimpleRenderer()
         : Renderer(),
@@ -63,6 +64,8 @@ void CFEngineRender::SimpleRenderer::bindInput() {
 
     for(int i = 0; i < input_.size(); i++){
         if (input_[i] == nullptr) continue;
+        Utils::saveFBOToImage( input_[i]->handle(),QSize(400,600), "D:\\GameEngine\\CFRenderEngine\\" + this->id() + "__.png", QOpenGLContext::currentContext());
+
         std::string textureKey = DEFAULT_INPUT_TEXTURE_NAME;
         textureKey += std::to_string(i);
         setUniformTexture2D(textureKey,input_[i]->texture(),i);
@@ -85,6 +88,7 @@ void CFEngineRender::SimpleRenderer::renderInternal() {
 }
 
 void CFEngineRender::SimpleRenderer::setUniformTexture2D(std::string key, std::shared_ptr<Texture> texture, int index) {
+    shader_->use();
     shader_->setTexture2D(key,index);
     texture->use(index);
 }

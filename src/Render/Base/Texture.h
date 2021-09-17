@@ -12,6 +12,7 @@ CFENGINE_RENDER_START
 class Texture : public GLResource{
 public:
     Texture(unsigned int width, unsigned int height);
+    Texture(QString path);
 
     void setHandle(unsigned int value);
     void use(int unit);
