@@ -9,54 +9,45 @@
 
 CFENGINE_RENDER_START
 
-class Triangle: public UIComponent{
-    Q_OBJECT
+class Quad: public UIComponent{
+Q_OBJECT
 
     Q_PROPERTY(QString name READ name)
     Q_PROPERTY(QColor color READ color)
-    Q_PROPERTY(Priority priority READ priority)
 
 public:
-    enum Priority { High, Low, VeryHigh, VeryLow };
-    Q_ENUM(Priority)
 
-    Triangle(){
+    Quad(){
         this->MakeComponentPropertyDescriptions();
 
-        componentDescription_ = ComponentManager::componentDescriptionWithType(CFEngineRender::ComponentType::kTriangle);
-        
+        componentDescription_ = ComponentManager::componentDescriptionWithType(CFEngineRender::ComponentType::kQuad);
+
     }
-    Triangle(int componentId, int entityId):UIComponent(componentId,entityId){
+    Quad(int componentId, int entityId):UIComponent(componentId,entityId){
         this->MakeComponentPropertyDescriptions();
 
-        componentDescription_ = ComponentManager::componentDescriptionWithType(CFEngineRender::ComponentType::kTriangle);
+        componentDescription_ = ComponentManager::componentDescriptionWithType(CFEngineRender::ComponentType::kQuad);
     }
 
-    ~Triangle() = default;
+    ~Quad() = default;
 
     static std::shared_ptr<ComponentDescription> MakeComponentDescription(){
-        auto triangle_ = std::make_shared<ComponentDescription>();
-        triangle_->type_ = ComponentType::kTriangle;
-        triangle_->group_ = ComponentGroup::kPrimitive;
-        triangle_->label_ = "Triangle";
-        triangle_->isHiddenInList_ = false;
+        auto quad_ = std::make_shared<CFEngineRender::ComponentDescription>();
+        quad_->type_ = ComponentType::kQuad;
+        quad_->group_ = ComponentGroup::kPrimitive;
+        quad_->label_ = "Quad";
+        quad_->isHiddenInList_ = false;
 
-        return triangle_;
+        return quad_;
     }
 
     void MakeComponentPropertyDescriptions() override{
-        // 
+        //
         ComponentPropertyDescription* name = new ComponentPropertyDescription;
         name->name_ = "name";
         name->label_ = "name";
         name->type_ = ComponentPropertyType::kString;
         name->editable_ = false;
-
-        ComponentPropertyDescription* priority = new ComponentPropertyDescription;
-        priority->name_ = "priority";
-        priority->label_ = "priority";
-        priority->type_ = ComponentPropertyType::kEnum;
-        priority->enums_ = {"High","Low","VeryHigh","VeryLow"};
 
         ComponentPropertyDescription* color = new ComponentPropertyDescription;
         color->name_ = "color";
@@ -69,25 +60,27 @@ public:
         enable->type_ = ComponentPropertyType::kBool;
 
         this->propertyDescriptions_.emplace_back(name);
-        this->propertyDescriptions_.emplace_back(priority);
         this->propertyDescriptions_.emplace_back(color);
         this->propertyDescriptions_.emplace_back(enable);
     }
 
 
     std::vector<float> vertices = {
-            -0.5f, 0.5f, 0.0f, // left
-            0.5f, 0.5f, 0.0f, // right
-            0.0f,  0.0f, 0.0f  // top
+            // positions
+            0.5f,  0.5f, 0.0f,
+            0.5f, -0.5f, 0.0f,
+            -0.5f, -0.5f, 0.0f,
+            -0.5f,  0.5f, 0.0f,
     };
 
     std::vector<unsigned int> indices = {
-            0, 1, 2,  // first Triangle
+            0, 1, 3, // first triangle
+            1, 2, 3  // second triangle
     };
 
 public:
 
-    QString name_ = "Triangle";
+    QString name_ = "Quad";
     QString name(){
         return name_;
     }
@@ -96,11 +89,6 @@ public:
     QColor color_ = QColor(255, 0, 0, 127);
     QColor color(){
         return color_;
-    }
-
-    Priority priority_ = Priority::Low;
-    Priority priority(){
-        return priority_;
     }
 
 signals:

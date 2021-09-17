@@ -1,20 +1,19 @@
 #pragma once
 #include <QObject>
 #include <QSize>
-#include <QOpenGLFunctions_3_3_Core>
 
 #include <vector>
 
 #include "Core/Core.h"
-#include "Systems/Primitive/TriangleSystem.h"
 #include "Components/ComponentManager.h"
-#include "Render/Base/RenderBuffer.h"
-#include "Render/Base/FrameBuffer.h"
-#include "Render/Base/Texture.h"
 
 CFENGINE_RENDER_START
 class RenderQueue;
-class RenderEngine : public QObject ,public QOpenGLFunctions_3_3_Core{
+class System;
+class FrameBuffer;
+class Texture;
+class RenderBuffer;
+class RenderEngine : public QObject {
   Q_OBJECT
 public:
   explicit RenderEngine();

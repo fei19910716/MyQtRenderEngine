@@ -11,7 +11,7 @@
 AddComponentWidget::AddComponentWidget(QWidget *parent)
     : QWidget(parent)
 {
-    QHBoxLayout *pMainLayout = new QHBoxLayout(this);
+    QVBoxLayout *pMainLayout = new QVBoxLayout(this);
     pMainLayout->setAlignment(Qt::AlignTop);
     setWindowFlags(windowFlags() | Qt::FramelessWindowHint);
 

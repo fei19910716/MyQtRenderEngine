@@ -2,17 +2,18 @@
 #pragma once
 
 #include "Core/entityx.h"
-#include <QOpenGLFunctions_3_3_Core>
-
+#include "Core/GL.h"
 #include "Render/Renderer/Renderer.h"
 
 CFENGINE_RENDER_START
 
-class System: public QOpenGLFunctions_3_3_Core{
+class System:public GL{
 public:
 
-    virtual void configure(entt::registry &registry){}
-    virtual std::shared_ptr<Renderer> update(entt::registry &registry, float dt){return nullptr;}
+    System();
+
+    virtual void configure(entt::registry &registry);
+    virtual std::shared_ptr<Renderer> update(entt::registry &registry, float dt);
 
 };
 

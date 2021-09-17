@@ -1,16 +1,10 @@
-//
-// Created by fordchen on 2021/9/14.
-//
-
 #ifndef CFRENDERENGINE_GLRESOURCE_H
 #define CFRENDERENGINE_GLRESOURCE_H
 
-#include "Core/Core.h"
-
-#include <QOpenGLFunctions_3_3_Core>
+#include "Core/GL.h"
 
 CFENGINE_RENDER_START
-class GLResource : public QOpenGLFunctions_3_3_Core{
+class GLResource : public GL{
 public:
     GLResource();
     unsigned int handle() const;

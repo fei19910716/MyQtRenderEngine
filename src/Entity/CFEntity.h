@@ -47,23 +47,6 @@ public:
     void removeComponent(){
         ENTT::registry.remove<T>(entity_);
     }
-
-
-    std::vector<CFEngineRender::Component*> allComponents();
-
-private:
-    template<typename... Args>
-    void allComponentsGetter(std::vector<CFEngineRender::Component*>& components, std::tuple<Args...> tup){
-        //    cout << get<0>(tup) << ((tuple_size<decltype(tup)>::value > 1) ? ", " : "");
-        //    cout << tup._Myfirst._Val << ((tuple_size<decltype(tup)>::value > 1) ? ", " : "");
-        auto com = tup._Myfirst._Val;
-        components.push_back(com);
-        allComponentsGetter(components, tup._Get_rest());  //对除头1项之外的tup递归调用
-    }
-    template<>
-    void allComponentsGetter(std::vector<CFEngineRender::Component*>& components, std::tuple<> tup){
-
-    }
 public:
     ENTTEntity entity_;
 

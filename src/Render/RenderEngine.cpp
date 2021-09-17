@@ -3,11 +3,19 @@
 #include <QDebug>
 
 #include "Render/Graph/RenderQueue.h"
-
 #include "Utils/RenderUtils.h"
 
+#include "Render/Base/RenderBuffer.h"
+#include "Render/Base/FrameBuffer.h"
+#include "Render/Base/Texture.h"
+
+
+#include "Systems/Primitive/TriangleSystem.h"
+#include "Systems/Primitive/QuadSystem.h"
+
 CFEngineRender::RenderEngine::RenderEngine():textureToRender_(nullptr),textureToDisplay_(nullptr),textureToDelete_(nullptr){
-  m_systems.push_back(new TriangleSystem());
+  m_systems.push_back(new CFEngineRender::TriangleSystem());
+  m_systems.push_back(new CFEngineRender::QuadSystem());
 }
 
 CFEngineRender::RenderEngine::~RenderEngine() noexcept {
@@ -39,8 +47,9 @@ void CFEngineRender::RenderEngine::update(float dt){
     renderQueue = std::make_shared<CFEngineRender::RenderQueue>();
     renderQueue->setInput(input);
     renderQueue->setOutput(output);
+    int i = 1;
     for (System *system : m_systems) {
-        renderQueue->addRenderer(system->update(ENTT::registry, dt), "01");
+        renderQueue->addRenderer(system->update(ENTT::registry, dt),std::to_string( i++));
     }
     renderQueue->render();
     // Utils::saveFBOToImage( renderQueue->output()->handle(),QSize(400,600), "D:\\GameEngine\\CFRenderEngine\\" + renderQueue->id() + ".png", QOpenGLContext::currentContext());

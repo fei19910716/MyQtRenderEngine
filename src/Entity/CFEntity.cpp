@@ -2,10 +2,9 @@
 // Created by fordchen on 2021/9/13.
 //
 
-#include "CFEntity.h"
 
+#include "CFEntity.h"
 #include "Components/Base/EntityInfo.h"
-#include "Components/Primitive/Triangle.h"
 
 CFEntity::CFEntity() {
 
@@ -44,11 +43,4 @@ void CFEntity::removeChild(CFEntity* child){
             return;
         }
     }
-}
-
-std::vector<CFEngineRender::Component*> CFEntity::allComponents(){
-    auto com = ENTT::registry.try_get<CFEngineRender::EntityInfo,CFEngineRender::Triangle>(entity_); //TODO 这里需要注册所有的component
-    std::vector<CFEngineRender::Component*> components;
-    allComponentsGetter(components,com);
-    return components;
 }

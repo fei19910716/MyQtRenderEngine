@@ -13,16 +13,18 @@ CFEngineRender::RenderQueue::~RenderQueue() {
 }
 
 void CFEngineRender::RenderQueue::addRenderer(std::shared_ptr<Renderer> renderer, std::string id) {
-    if(tail_renderer_id_.empty()) {
-        RenderGraph::addRenderer(renderer, id);
-        tail_renderer_id_ = id;
-    } else{
-        this->addRenderer(renderer,id, tail_renderer_id_);
+    CFEngineRender::RenderGraph::addRenderer(renderer,id);
+
+    if(!tail_renderer_id_.empty()) {
+        this->connectRenderer(tail_renderer_id_, id);
+        renderer->setParentId(tail_renderer_id_);
     }
+    tail_renderer_id_ = id;
 }
 
 void CFEngineRender::RenderQueue::addRenderer(std::shared_ptr<Renderer> renderer, std::string id, std::string parent_id) {
-    RenderGraph::addRenderer(renderer, id, parent_id);
+    CFEngineRender::RenderGraph::addRenderer(renderer,id,parent_id);
+
     this->connectRenderer(parent_id, id);
 }
 

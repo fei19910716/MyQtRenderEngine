@@ -7,6 +7,8 @@
 
 #include "Render/Renderer/Renderer.h"
 
+#include "Core/GL.h"
+
 CFENGINE_RENDER_START
 
 class VertexArray;
@@ -16,7 +18,7 @@ class Texture;
 /**
  * 使用shader进行渲染的renderer
  */
-class SimpleRenderer: public Renderer {
+class SimpleRenderer: public Renderer , public GL{
 public:
     SimpleRenderer();
     SimpleRenderer(const std::string &vertex_shader, const std::string &fragment_shader);

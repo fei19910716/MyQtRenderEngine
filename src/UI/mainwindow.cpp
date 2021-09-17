@@ -13,7 +13,8 @@
 #include <QLabel>
 #include <QPainter>
 #include <QBitmap>
-#include <QHeaderView>
+#include <Components/Primitive/Quad.h>
+#include "Components/Primitive/Triangle.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -349,12 +350,8 @@ void MainWindow::onAddComponent(QObject* sender) {
     QPushButton *btn = qobject_cast<QPushButton*>(sender);
 
     AddComponentWidget::User* pUser = (AddComponentWidget::User *)btn->userData(Qt::UserRole+1);
-    // 获取第一个用户数据
-    switch(pUser->type_){
-        case CFEngineRender::ComponentType::kTriangle:
-            entity->addComponent<CFEngineRender::Triangle>();
-            break;
-    }
+    EntityManager::addComponentWithType(entity,pUser->type_);
+
     this->onDisplayComponents(entity);
     // render
     ui->renderView->requestRender();
@@ -365,7 +362,7 @@ void MainWindow::onDisplayComponents(CFEntity* entity){
     if(!entity->valid())
         return;
     ui->componentListWidget->clear();
-    for(auto& com : entity->allComponents()){
+    for(auto& com : EntityManager::allComponents(entity)){
         if(com == nullptr)
             continue;
         auto uiCom = dynamic_cast<CFEngineRender::UIComponent*>(com);

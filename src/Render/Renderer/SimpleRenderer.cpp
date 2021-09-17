@@ -10,14 +10,16 @@
 
 CFEngineRender::SimpleRenderer::SimpleRenderer()
         : Renderer(),
+          GL(),
           shader_(nullptr),
           vao_(nullptr)
 {
-    initializeOpenGLFunctions();
+
 }
 
 CFEngineRender::SimpleRenderer::SimpleRenderer(const std::string &vertex_shader, const std::string &fragment_shader)
         : Renderer(),
+          GL(),
           shader_(nullptr),
           vao_(nullptr)
 {

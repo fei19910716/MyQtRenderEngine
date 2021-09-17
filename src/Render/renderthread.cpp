@@ -30,14 +30,16 @@ CFEngineRender::RenderThread::RenderThread(QOffscreenSurface *surface, QOpenGLCo
     m_renderContext->create();
     m_renderContext->moveToThread(this);
 
-    m_renderEngine=new CFEngineRender::RenderEngine;
-    m_renderEngine->moveToThread(this);
+    // TODO 在RenderEngine的构造函数中会调用gl函数，如果在这里构造m_renderEngine会导致initializeOpenGLFunctions()失败，因为线程还没有构造成功，因此该线程没有context，需要移到run函数
+    // m_renderEngine=new CFEngineRender::RenderEngine;
+
 }
 
 void CFEngineRender::RenderThread::run(){
 
     m_renderContext->makeCurrent(m_renderSurface);
 
+    m_renderEngine=new CFEngineRender::RenderEngine;
     TextureBuffer::instance()->createTexture(m_renderContext);
     while (m_running){
         if(!m_requestRender){

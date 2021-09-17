@@ -20,7 +20,7 @@ public:
 
     virtual ~UIComponent();
 
-    virtual void createComponentPropertyDescriptions() = 0;
+    virtual void MakeComponentPropertyDescriptions() = 0;
 
 
     std::vector<std::shared_ptr<ComponentPropertyDescription>> propertyDescriptions_;

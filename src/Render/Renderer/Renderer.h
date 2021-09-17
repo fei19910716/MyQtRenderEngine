@@ -10,8 +10,6 @@
 #include <unordered_map>
 #include <vector>
 
-#include <QOpenGLFunctions_3_3_Core>
-
 #include "Render/Base/FrameBuffer.h"
 
 CFENGINE_RENDER_START
@@ -19,7 +17,7 @@ CFENGINE_RENDER_START
 /**
  * 渲染基类，抽象renderer的特征： id, parent_id_, 输入， 输出，具体怎样渲染，用shader渲染还是... 由子类实现
  */
-class Renderer: public std::enable_shared_from_this<Renderer>, public QOpenGLFunctions_3_3_Core {
+class Renderer: public std::enable_shared_from_this<Renderer> {
 public:
     Renderer();
     /**

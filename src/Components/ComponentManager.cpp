@@ -3,18 +3,19 @@
 //
 
 #include "ComponentManager.h"
+#include "Components/Primitive/Triangle.h"
+#include "Components/Primitive/Quad.h"
 
 std::unordered_map<CFEngineRender::ComponentType,std::shared_ptr<CFEngineRender::ComponentDescription>> CFEngineRender::ComponentManager::allComponentDescriptions_;
 
 void CFEngineRender::ComponentManager::registerComponentDescriptions() {
-    auto componentDescription_ = std::make_shared<CFEngineRender::ComponentDescription>();
-    componentDescription_->type_ = ComponentType::kTriangle;
-    componentDescription_->group_ = ComponentGroup::kPrimitive;
-    componentDescription_->label_ = "Triangle";
-    componentDescription_->isHiddenInList_ = false;
 
-    auto pair = std::make_pair(ComponentType::kTriangle,componentDescription_);
-    allComponentDescriptions_.insert(pair);
+    auto triangle = std::make_pair(ComponentType::kTriangle,CFEngineRender::Triangle::MakeComponentDescription());
+    allComponentDescriptions_.insert(triangle);
+
+
+    auto quad = std::make_pair(ComponentType::kQuad,CFEngineRender::Triangle::MakeComponentDescription());
+    allComponentDescriptions_.insert(quad);
 }
 
 std::shared_ptr<CFEngineRender::ComponentDescription> CFEngineRender::ComponentManager::componentDescriptionWithType(CFEngineRender::ComponentType type){

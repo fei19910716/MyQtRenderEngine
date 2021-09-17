@@ -25,6 +25,7 @@ enum ComponentPropertyType{
 
 enum ComponentType{
     kTriangle,
+    kQuad,
 };
 
 struct ComponentPropertyDescription{
