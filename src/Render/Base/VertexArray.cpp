@@ -35,5 +35,5 @@ void CFEngineRender::VertexArray::release() {
 }
 
 unsigned int CFEngineRender::VertexArray::vertexCount() {
-    return vbo_->vertexCount();
+    return ibo_->vertexCount();
 }

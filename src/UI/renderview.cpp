@@ -5,36 +5,31 @@
 #include "Utils/RenderUtils.h"
 
 static float vertices[] = {
-//     ---- 位置 ----       ---- 颜色 ----     - 纹理坐标 -
-     1.0f,  0.8f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // 右上
-     1.0f, -0.8f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // 右下
-    -1.0f, -0.8f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // 左下
-    -1.0f,  0.8f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // 左上
+//     ---- 位置 ----           - 纹理坐标 -
+        -1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
+        -1.0f, 1.0f,  0.0f, 0.0f, 1.0f,
+        1.0f,  1.0f,  0.0f, 1.0f, 1.0f,
+        1.0f,  -1.0f, 0.0f, 1.0f, 0.0f,
 };
 
 static unsigned int indices[] = {
-        0, 1, 3, // first triangle
-        1, 2, 3  // second triangle
+        0, 1, 2, 2, 3, 0,
 };
 
 static const char* vertexShaderSource =
         "#version 330 core\n"
         "layout (location = 0) in vec3 aPos;\n"
-        "layout (location = 1) in vec3 aColor;\n"
-        "layout (location = 2) in vec2 aTexCoord;\n"
-        "out vec3 ourColor;\n"
+        "layout (location = 1) in vec2 aTexCoord;\n"
         "out vec2 TexCoord;\n"
         "void main()\n"
         "{\n"
         "    gl_Position = vec4(aPos, 1.0);\n"
-        "    ourColor = aColor;\n"
         "    TexCoord = aTexCoord;\n"
         "}\n";
 static const char* fragmentShaderSource =
         "#version 330 core\n"
         "out vec4 FragColor;\n"
 
-        "in vec3 ourColor;\n"
         "in vec2 TexCoord;\n"
         "uniform sampler2D ourTexture;\n"
         "void main()\n"
@@ -92,18 +87,15 @@ void RenderView::initializeGL()
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
     // position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
-    // color attribute
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
     // texture coord attribute
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-    glEnableVertexAttribArray(2);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
 
     {
         //! 调试用，加载纹理
-        // m_textureID = Utils::genTextureFromStbImage(this->context(),"D:\\GameEngine\\CFRenderEngine\\asset\\image\\test.png", &texture_w, &texture_h);
+        // m_textureID = Utils::genTextureFromStbImage("D:\\GameEngine\\CFRenderEngine\\asset\\image\\test.png", &texture_w, &texture_h,this->context());
     }
 
     glBindVertexArray(0);

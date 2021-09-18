@@ -114,7 +114,7 @@ std::shared_ptr<CFEngineRender::FrameBuffer> CFEngineRender::RenderGraph::render
             }
             // TODO 保存每个render的渲染结果
             if (debug_) {
-                Utils::saveFBOToImage( intermediateOutput->handle(),QSize(400,600), "D:\\GameEngine\\CFRenderEngine\\" + node->renderer()->id() + ".png", QOpenGLContext::currentContext());
+                Utils::saveFBOToImage( intermediateOutput->handle(),QSize(400,600), "D:\\GameEngine\\CFRenderEngine\\" + node->renderer()->id() + "__after_render.png", QOpenGLContext::currentContext());
             }
         } else {  // 节点透传
             intermediateOutput = node->input().front();

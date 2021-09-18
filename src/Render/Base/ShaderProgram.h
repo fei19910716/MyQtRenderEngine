@@ -49,6 +49,8 @@ public:
 
     void setTexture2D(const std::string &name, int textureUnit);
 
+
+    std::string id_;
 private:
     void checkCompileErrors(unsigned int shader, std::string type);
 

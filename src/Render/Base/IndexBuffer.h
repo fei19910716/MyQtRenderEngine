@@ -16,7 +16,10 @@ public:
     IndexBuffer(std::vector<unsigned int>& indices);
 
     void release() override;
+    unsigned int vertexCount();
+
 private:
+    unsigned int vertex_count_;
 
 };
 

@@ -21,8 +21,8 @@ CFEngineRender::Texture::Texture(unsigned int width, unsigned int height): GLRes
 }
 
 void CFEngineRender::Texture::use(int unit) {
-    GLCALL(glActiveTexture(GL_TEXTURE0 + unit))
-    GLCALL(glBindTexture(GL_TEXTURE_2D, handle_))
+    glActiveTexture(GL_TEXTURE0 + unit);
+    glBindTexture(GL_TEXTURE_2D, handle_);
 }
 
 void CFEngineRender::Texture::release() {

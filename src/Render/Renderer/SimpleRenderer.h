@@ -6,8 +6,9 @@
 #define CFRENDERENGINE_SIMPLERENDERER_H
 
 #include "Render/Renderer/Renderer.h"
-
 #include "Core/GL.h"
+
+#include <vector>
 
 CFENGINE_RENDER_START
 
@@ -80,8 +81,11 @@ public:
     void setUniformMat4(std::string key, std::vector<float>& value);
 
 protected:
-    std::shared_ptr<VertexArray> vao_;
-    std::shared_ptr<CFEngineRender::ShaderProgram> shader_;
+//    std::shared_ptr<VertexArray> vao_;
+//    std::shared_ptr<CFEngineRender::ShaderProgram> shader_;
+//
+    std::vector<std::shared_ptr<VertexArray>> vao_;
+    std::vector<std::shared_ptr<CFEngineRender::ShaderProgram>> shader_;
 
     const std::string DEFAULT_INPUT_TEXTURE_NAME = "u_texture";
 };

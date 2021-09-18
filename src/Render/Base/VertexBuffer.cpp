@@ -5,10 +5,9 @@
 #include "VertexBuffer.h"
 #include <QDebug>
 CFEngineRender::VertexBuffer::VertexBuffer(std::vector<float>& vertices, std::shared_ptr<VertexLayout> layout): GLResource(){
-    vertex_count_ = vertices.size();
     glGenBuffers(1, &handle_);
     glBindBuffer(GL_ARRAY_BUFFER, handle_);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vertex_count_, vertices.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vertices.size(), vertices.data(), GL_STATIC_DRAW);
 
     auto stride = layout->m_stride;
     for(auto ite = layout->m_attribute.begin(); ite != layout->m_attribute.end(); ite++){
@@ -21,9 +20,5 @@ CFEngineRender::VertexBuffer::VertexBuffer(std::vector<float>& vertices, std::sh
 
 void CFEngineRender::VertexBuffer::release() {
     glDeleteBuffers(1, &handle_);
-}
-
-unsigned int CFEngineRender::VertexBuffer::vertexCount() {
-    return vertex_count_;
 }
 

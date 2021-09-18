@@ -15,7 +15,7 @@
 
 CFEngineRender::RenderEngine::RenderEngine():textureToRender_(nullptr),textureToDisplay_(nullptr),textureToDelete_(nullptr){
     m_systems.push_back(new CFEngineRender::TriangleSystem());
-    m_systems.push_back(new CFEngineRender::QuadSystem());
+    //m_systems.push_back(new CFEngineRender::QuadSystem());
 
 
 

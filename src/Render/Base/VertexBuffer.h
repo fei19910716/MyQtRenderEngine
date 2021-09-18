@@ -86,10 +86,8 @@ public:
 
     void release() override;
 
-    unsigned int vertexCount();
 
-private:
-    unsigned int vertex_count_;
+
 };
 
 CFENGINE_RENDER_END

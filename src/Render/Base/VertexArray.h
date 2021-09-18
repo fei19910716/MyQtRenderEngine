@@ -26,9 +26,13 @@ public:
 
     unsigned int vertexCount();
 
+
+    std::string id_;
+
 private:
     std::shared_ptr<VertexBuffer> vbo_;
     std::shared_ptr<IndexBuffer> ibo_;
+
 };
 
 CFENGINE_RENDER_END
