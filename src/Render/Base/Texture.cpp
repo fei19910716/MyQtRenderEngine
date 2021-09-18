@@ -25,15 +25,15 @@ void CFEngineRender::Texture::use(int unit) {
     glBindTexture(GL_TEXTURE_2D, handle_);
 }
 
-void CFEngineRender::Texture::release() {
-    glDeleteTextures(1, &handle_);
-    handle_ = 0;
-}
-
 void CFEngineRender::Texture::setHandle(unsigned int value) {
     handle_ = value;
 }
 
 CFEngineRender::Texture::Texture(QString path) {
     handle_ = Utils::genTextureFromStbImage(path,&texture_width_,&texture_height_,QOpenGLContext::currentContext());
+}
+
+CFEngineRender::Texture::~Texture() {
+    glDeleteTextures(1, &handle_);
+    handle_ = 0;
 }

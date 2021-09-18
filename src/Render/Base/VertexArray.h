@@ -22,7 +22,7 @@ public:
     void bindVertexBuffer(std::shared_ptr<VertexBuffer> vertexBuffer);
     void bindIndexBuffer(std::shared_ptr<IndexBuffer> indexBuffer);
 
-    void release() override;
+    ~VertexArray();
 
     unsigned int vertexCount();
 

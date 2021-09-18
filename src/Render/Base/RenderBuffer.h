@@ -14,7 +14,7 @@ class RenderBuffer : public GLResource{
 public:
     RenderBuffer(unsigned int width, unsigned int height);
 
-    void release() override;
+    ~RenderBuffer();
 
 private:
 

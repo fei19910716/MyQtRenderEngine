@@ -15,7 +15,7 @@ class IndexBuffer: public GLResource {
 public:
     IndexBuffer(std::vector<unsigned int>& indices);
 
-    void release() override;
+    ~IndexBuffer();
     unsigned int vertexCount();
 
 private:

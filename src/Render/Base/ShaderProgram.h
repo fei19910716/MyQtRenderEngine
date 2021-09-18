@@ -29,7 +29,7 @@ public:
     void fromPath(std::string vertexPath, std::string fragmentPath);
 
     void use();
-    void release() override;
+    ~ShaderProgram();
     /**
      * TODO 移到renderer中
      */

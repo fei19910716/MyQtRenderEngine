@@ -137,10 +137,6 @@ void CFEngineRender::ShaderProgram::use() {
 }
 
 
-void CFEngineRender::ShaderProgram::release() {
-    glDeleteProgram(handle_);
-}
-
 void CFEngineRender::ShaderProgram::setBool(const std::string &name, bool value)
 {
     glUniform1i(glGetUniformLocation(handle_, name.c_str()), (int)value);
@@ -205,6 +201,11 @@ void CFEngineRender::ShaderProgram::setTexture2D(const std::string &name, int te
 void CFEngineRender::ShaderProgram::clearColor() {
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
+}
+
+CFEngineRender::ShaderProgram::~ShaderProgram() {
+    glDeleteProgram(handle_);
+    handle_=0;
 }
 
 

@@ -85,7 +85,7 @@ class VertexBuffer: public GLResource {
 public:
     VertexBuffer(std::vector<float>& vertices, std::shared_ptr<VertexLayout> layout);
 
-    void release() override;
+    ~VertexBuffer();
 
 
 

@@ -16,7 +16,7 @@ public:
 
     void setHandle(unsigned int value);
     void use(int unit);
-    void release() override;
+    ~Texture();
 
 public:
     int texture_width_;

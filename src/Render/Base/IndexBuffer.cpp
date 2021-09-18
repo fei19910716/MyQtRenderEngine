@@ -12,10 +12,11 @@ CFEngineRender::IndexBuffer::IndexBuffer(std::vector<unsigned int>& indices) : G
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(int) * indices.size(), indices.data(), GL_STATIC_DRAW);
 }
 
-void CFEngineRender::IndexBuffer::release() {
-    glDeleteBuffers(1, &handle_);
-}
-
 unsigned int CFEngineRender::IndexBuffer::vertexCount() {
     return vertex_count_;
+}
+
+CFEngineRender::IndexBuffer::~IndexBuffer() {
+    glDeleteBuffers(1, &handle_);
+    handle_ = 0;
 }

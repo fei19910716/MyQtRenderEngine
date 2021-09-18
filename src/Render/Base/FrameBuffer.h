@@ -19,8 +19,9 @@ public:
     FrameBuffer(bool validFBO = true);
     FrameBuffer(unsigned int width, unsigned int height);
 
+    ~FrameBuffer();
+
     void use();
-    void release() override;
     void bindTexture(std::shared_ptr<Texture> texture);
     void bindRenderBuffer(std::shared_ptr<RenderBuffer> renderBuffer);
 

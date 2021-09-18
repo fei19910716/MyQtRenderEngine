@@ -51,14 +51,6 @@ std::shared_ptr<CFEngineRender::Renderer> CFEngineRender::QuadSystem::update(ent
         glm::mat4 trans = glm::mat4(1.0f);
         shaderProgram->setMat4("m_model",trans);
         return renderer_;
-        // glDrawArrays(GL_TRIANGLES, 0, 3);
-        // glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
-
-
-        //        vao->release();
-        //        vertexBuffer->release();
-        //        indexBuffer->release();
-        //        shaderProgram->release();
     }
     return nullptr;
 }

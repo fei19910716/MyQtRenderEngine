@@ -30,10 +30,11 @@ void CFEngineRender::VertexArray::bindIndexBuffer(std::shared_ptr<IndexBuffer> i
     glBindVertexArray(0);
 }
 
-void CFEngineRender::VertexArray::release() {
-    glDeleteVertexArrays(1, &handle_);
-}
-
 unsigned int CFEngineRender::VertexArray::vertexCount() {
     return ibo_->vertexCount();
+}
+
+CFEngineRender::VertexArray::~VertexArray() {
+    glDeleteVertexArrays(1, &handle_);
+    handle_ = 0;
 }

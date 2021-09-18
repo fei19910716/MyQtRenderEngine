@@ -53,7 +53,7 @@ void CFEngineRender::FrameBuffer::bindRenderBuffer(std::shared_ptr<RenderBuffer>
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-void CFEngineRender::FrameBuffer::release() {
+CFEngineRender::FrameBuffer::~FrameBuffer() {
     glDeleteFramebuffers(1, &handle_);
     handle_ = 0;
 }

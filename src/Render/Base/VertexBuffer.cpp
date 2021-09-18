@@ -17,7 +17,8 @@ CFEngineRender::VertexBuffer::VertexBuffer(std::vector<float>& vertices, std::sh
     }
 }
 
-void CFEngineRender::VertexBuffer::release() {
+CFEngineRender::VertexBuffer::~VertexBuffer() {
     glDeleteBuffers(1, &handle_);
+    handle_ =0 ;
 }
 

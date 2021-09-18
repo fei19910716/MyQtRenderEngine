@@ -9,7 +9,6 @@ public:
     GLResource();
     unsigned int handle() const;
 
-    virtual void release() = 0;
     virtual bool valid();
 protected:
     unsigned int handle_;
