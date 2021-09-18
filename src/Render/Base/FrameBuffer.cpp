@@ -12,6 +12,8 @@ CFEngineRender::FrameBuffer::FrameBuffer(bool validFBO): GLResource() {
         glGenFramebuffers(1, &handle_);
     else
         handle_ = 0;
+
+    std::cout << "----------FrameBuffer()--" << handle_ << std::endl;
 }
 
 CFEngineRender::FrameBuffer::FrameBuffer(unsigned int width, unsigned int height) {
@@ -22,6 +24,8 @@ CFEngineRender::FrameBuffer::FrameBuffer(unsigned int width, unsigned int height
 
     this->bindRenderBuffer(rbo_);
     this->bindTexture(texture);
+
+    std::cout << "----------FrameBuffer()--" << handle_ << std::endl;
 }
 
 
@@ -54,8 +58,8 @@ void CFEngineRender::FrameBuffer::bindRenderBuffer(std::shared_ptr<RenderBuffer>
 }
 
 CFEngineRender::FrameBuffer::~FrameBuffer() {
+    std::cout << "~FrameBuffer()--" << handle_<< std::endl;
     glDeleteFramebuffers(1, &handle_);
-    handle_ = 0;
 }
 
 

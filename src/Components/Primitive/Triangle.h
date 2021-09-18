@@ -39,26 +39,18 @@ public:
 
     void MakeComponentPropertyDescriptions() override{
         // 
-        ComponentPropertyDescription* name = new ComponentPropertyDescription;
-        name->name_ = "name";
-        name->label_ = "name";
+        ComponentPropertyDescription* name = new ComponentPropertyDescription("name","name");
         name->type_ = ComponentPropertyType::kString;
         name->editable_ = false;
 
-        ComponentPropertyDescription* priority = new ComponentPropertyDescription;
-        priority->name_ = "priority";
-        priority->label_ = "priority";
+        ComponentPropertyDescription* priority = new ComponentPropertyDescription("priority","priority");
         priority->type_ = ComponentPropertyType::kEnum;
         priority->enums_ = {"High","Low","VeryHigh","VeryLow"};
 
-        ComponentPropertyDescription* color = new ComponentPropertyDescription;
-        color->name_ = "color";
-        color->label_ = "color";
+        ComponentPropertyDescription* color = new ComponentPropertyDescription("color","color");
         color->type_ = ComponentPropertyType::kColor;
 
-        ComponentPropertyDescription* enable = new ComponentPropertyDescription;
-        enable->name_ = "enable";
-        enable->label_ = "enable";
+        ComponentPropertyDescription* enable = new ComponentPropertyDescription("enable","enable");
         enable->type_ = ComponentPropertyType::kBool;
 
         ADD_COMPONENT_PROPERTY_DESCRIPTION(name,priority,color,enable)

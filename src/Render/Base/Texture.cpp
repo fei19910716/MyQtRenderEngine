@@ -18,6 +18,8 @@ CFEngineRender::Texture::Texture(unsigned int width, unsigned int height): GLRes
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glBindTexture(GL_TEXTURE_2D, 0);
+
+    std::cout << "----------Texture()--" << handle_ << std::endl;
 }
 
 void CFEngineRender::Texture::use(int unit) {
@@ -31,9 +33,11 @@ void CFEngineRender::Texture::setHandle(unsigned int value) {
 
 CFEngineRender::Texture::Texture(QString path) {
     handle_ = Utils::genTextureFromStbImage(path,&texture_width_,&texture_height_,QOpenGLContext::currentContext());
+
+    std::cout << "----------Texture()--" << handle_ << std::endl;
 }
 
 CFEngineRender::Texture::~Texture() {
+    std::cout << "~Texture()--" << handle_ << std::endl;
     glDeleteTextures(1, &handle_);
-    handle_ = 0;
 }

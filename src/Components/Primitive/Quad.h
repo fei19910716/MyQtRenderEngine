@@ -36,20 +36,14 @@ public:
 
     void MakeComponentPropertyDescriptions() override{
         //
-        auto name = new ComponentPropertyDescription;
-        name->name_ = "name";
-        name->label_ = "name";
+        auto name = new ComponentPropertyDescription("name","name");
         name->type_ = ComponentPropertyType::kString;
         name->editable_ = false;
 
-        auto color = new ComponentPropertyDescription;
-        color->name_ = "color";
-        color->label_ = "color";
+        auto color = new ComponentPropertyDescription("color","color");
         color->type_ = ComponentPropertyType::kColor;
 
-        auto enable = new ComponentPropertyDescription;
-        enable->name_ = "enable";
-        enable->label_ = "enable";
+        auto enable = new ComponentPropertyDescription("enable","enable");
         enable->type_ = ComponentPropertyType::kBool;
 
         ADD_COMPONENT_PROPERTY_DESCRIPTION(name,color,enable)

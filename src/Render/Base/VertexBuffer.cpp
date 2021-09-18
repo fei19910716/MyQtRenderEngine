@@ -15,10 +15,12 @@ CFEngineRender::VertexBuffer::VertexBuffer(std::vector<float>& vertices, std::sh
         glVertexAttribPointer(i, info.num, info.type, GL_FALSE, stride * info.typeSize, (void*)(info.offset * info.typeSize));
         glEnableVertexAttribArray(i);
     }
+
+    std::cout << "----------VertexBuffer()--" << handle_ << std::endl;
 }
 
 CFEngineRender::VertexBuffer::~VertexBuffer() {
+    std::cout << "~VertexBuffer()--" << handle_ << std::endl;
     glDeleteBuffers(1, &handle_);
-    handle_ =0 ;
 }
 

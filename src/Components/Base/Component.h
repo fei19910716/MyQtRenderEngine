@@ -46,6 +46,8 @@ enum ComponentType{
 };
 
 struct ComponentPropertyDescription{
+    public:
+    ComponentPropertyDescription(std::string name,QString label ):name_(name),label_(label){}
     /**
      * 表示组件属性的类型，比如：enum，bool等
      */

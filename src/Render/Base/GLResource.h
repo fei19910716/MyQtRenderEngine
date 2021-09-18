@@ -2,6 +2,7 @@
 #define CFRENDERENGINE_GLRESOURCE_H
 
 #include "Core/GL.h"
+#include <iostream>
 
 CFENGINE_RENDER_START
 class GLResource : public GL{

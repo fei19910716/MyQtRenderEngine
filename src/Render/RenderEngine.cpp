@@ -45,15 +45,20 @@ void CFEngineRender::RenderEngine::update(float dt){
 //        textureToDelete_->release();
 //    }
 
+    renderQueue = std::make_shared<CFEngineRender::RenderQueue>();
+
     auto input = std::make_shared<CFEngineRender::FrameBuffer>();
     //auto texture = std::make_shared<CFEngineRender::Texture>("D:\\GameEngine\\CFRenderEngine\\asset\\image\\out1.png");
     auto texture = std::make_shared<CFEngineRender::Texture>(400,600);
     this->setRenderSize(texture->texture_width_,texture->texture_height_);
     input->bindRenderBuffer(std::make_shared<CFEngineRender::RenderBuffer>(width_,height_));
     input->bindTexture(texture);
-    auto output = std::make_shared<CFEngineRender::FrameBuffer>(width_,height_);
 
-    renderQueue = std::make_shared<CFEngineRender::RenderQueue>();
+    /**
+     * fixme 为啥output的创建放在renderQueue的创建之前就会导致渲染空白的问题？
+     */
+    auto output = std::make_shared<CFEngineRender::FrameBuffer>(width_,height_);
+    
     renderQueue->setInput(input);
     renderQueue->setOutput(output);
     int i = 1;

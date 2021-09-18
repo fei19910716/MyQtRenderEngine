@@ -9,7 +9,7 @@ CFEngineRender::RenderQueue::RenderQueue() {
 }
 
 CFEngineRender::RenderQueue::~RenderQueue() {
-
+    std::cout << "---------~RenderQueue()--------" << std::endl;
 }
 
 void CFEngineRender::RenderQueue::addRenderer(std::shared_ptr<Renderer> renderer, std::string id) {

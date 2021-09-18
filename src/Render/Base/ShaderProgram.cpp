@@ -106,6 +106,8 @@ void CFEngineRender::ShaderProgram::fromSource(std::string vertexShaderSource, s
     }
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
+
+    std::cout << "----------ShaderProgram()--" << handle_ << std::endl;
 }
 
 void CFEngineRender::ShaderProgram::checkCompileErrors(unsigned int shader, std::string type)
@@ -204,8 +206,8 @@ void CFEngineRender::ShaderProgram::clearColor() {
 }
 
 CFEngineRender::ShaderProgram::~ShaderProgram() {
+    std::cout << "~ShaderProgram()--" << handle_ << std::endl;
     glDeleteProgram(handle_);
-    handle_=0;
 }
 
 
