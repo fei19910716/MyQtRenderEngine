@@ -17,11 +17,11 @@ public:
     COMPONENT_PROPERTY(QColor, Color, color, QColor(255, 0, 0, 127))
 
     Quad():UIComponent(){
-        REGISTER_COMPONENT_DESCRIPTION(Quad)
+        REGISTER_COMPONENT_AND_PROPERTY_DESCRIPTION(Quad)
 
     }
     Quad(int componentId, int entityId):UIComponent(componentId,entityId){
-        REGISTER_COMPONENT_DESCRIPTION(Quad)
+        REGISTER_COMPONENT_AND_PROPERTY_DESCRIPTION(Quad)
     }
 
     static std::shared_ptr<ComponentDescription> MakeComponentDescription(){

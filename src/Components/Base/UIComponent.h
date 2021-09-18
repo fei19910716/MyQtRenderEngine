@@ -11,9 +11,9 @@
 
 CFENGINE_RENDER_START
 
-#define REGISTER_COMPONENT_DESCRIPTION(ClassName)\
-componentDescription_ = ComponentManager::componentDescriptionWithType(CFEngineRender::ComponentType::k##ClassName);
-
+#define REGISTER_COMPONENT_AND_PROPERTY_DESCRIPTION(ClassName)\
+componentDescription_ = ComponentManager::componentDescriptionWithType(CFEngineRender::ComponentType::k##ClassName); \
+this->MakeComponentPropertyDescriptions();
 
 #define ARG_COUNTX(...)  A1X(__VA_ARGS__)
 #define A3X(x) x
@@ -46,10 +46,10 @@ public:
     COMPONENT_PROPERTY(std::vector<std::shared_ptr<ComponentPropertyDescription>>, PropertyDescriptions, propertyDescriptions, {})
     COMPONENT_PROPERTY(std::shared_ptr<ComponentDescription>, ComponentDescription, componentDescription, nullptr)
 
-    UIComponent();
-    UIComponent(int componentId, int entityId);
+    UIComponent() = default;
+    UIComponent(int componentId, int entityId):Component(componentId,entityId){}
 
-    virtual ~UIComponent();
+    virtual ~UIComponent(){}
 
     virtual void MakeComponentPropertyDescriptions() {}
 

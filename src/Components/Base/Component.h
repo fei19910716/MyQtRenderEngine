@@ -12,6 +12,23 @@
 
 CFENGINE_RENDER_START
 
+#define COMPONENT_PROPERTY(Type,fname,name,value) \
+Q_PROPERTY(Type name READ name WRITE set##fname)\
+Type name() const\
+{\
+    return name##_;\
+}\
+void set##fname(Type name)\
+{\
+    name##_ = name;\
+}\
+Type name##_ = value;
+
+
+#define REGISTER_COMPONENT_DESCRIPTION(x) \
+auto x##_ptr = std::make_pair(ComponentType::k##x,CFEngineRender::x::MakeComponentDescription());\
+allComponentDescriptions_.insert(x##_ptr);
+
 enum ComponentGroup{
     kPrimitive,
 };
@@ -100,20 +117,6 @@ struct ComponentDescription{
     std::optional<bool> isGlobalUnique_;
 };
 
-
-#define COMPONENT_PROPERTY(Type,fname,name,value) \
-Q_PROPERTY(Type name READ name WRITE set##fname)\
-Type name() const\
-{\
-    return name##_;\
-}\
-void set##fname(Type name)\
-{\
-    name##_ = name;\
-}\
-Type name##_ = value;                             \
-
-
 class Component: public QObject{
     Q_OBJECT
 public:
@@ -122,12 +125,19 @@ public:
     COMPONENT_PROPERTY(bool, Enable, enable, true)
 
 
-    Component &operator =(const Component &);
     Component() = default;
-    Component(int componentId, int entityId);
-    Component(const Component& com);
+    Component(int componentId, int entityId):componentId_(componentId),entityId_(entityId){}
+    Component(const Component& com){
+        this->componentId_ = com.componentId();
+        this->entityId_ = com.entityId();
+    }
+    Component &operator =(const Component &com){
+        this->componentId_ = com.componentId();
+        this->entityId_ = com.entityId();
+        return *this;
+    }
 
-    virtual ~Component();
+    virtual ~Component(){}
 
 };
 

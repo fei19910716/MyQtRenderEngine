@@ -21,10 +21,10 @@ public:
     COMPONENT_PROPERTY(Priority, Priority, priority, Priority::Low)
 
     Triangle():UIComponent(){
-        REGISTER_COMPONENT_DESCRIPTION(Triangle)
+        REGISTER_COMPONENT_AND_PROPERTY_DESCRIPTION(Triangle)
     }
     Triangle(int componentId, int entityId):UIComponent(componentId,entityId){
-        REGISTER_COMPONENT_DESCRIPTION(Triangle)
+        REGISTER_COMPONENT_AND_PROPERTY_DESCRIPTION(Triangle)
     }
 
     static std::shared_ptr<ComponentDescription> MakeComponentDescription(){
