@@ -18,8 +18,9 @@ public:
     void use(int unit);
     void release() override;
 
-private:
-
+public:
+    int texture_width_;
+    int texture_height_;
 };
 
 CFENGINE_RENDER_END

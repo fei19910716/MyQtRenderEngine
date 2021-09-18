@@ -98,7 +98,7 @@ void CFEngineRender::SimpleRenderer::setUniformVec4(std::string key, std::vector
 }
 
 void CFEngineRender::SimpleRenderer::setUniformMat4(std::string key, std::vector<float> &value) {
-    shader_->setMat4(key,value);
+    shader_->setMat4(key,value.data(),value.size());
 }
 
 void CFEngineRender::SimpleRenderer::setShaderProgram(std::shared_ptr<ShaderProgram> shaderProgram) {

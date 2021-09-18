@@ -9,6 +9,9 @@
 
 CFEngineRender::Texture::Texture(unsigned int width, unsigned int height): GLResource() {
 
+    texture_width_ = width;
+    texture_height_ = height;
+
     glGenTextures(1, &handle_);
     glBindTexture(GL_TEXTURE_2D, handle_);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
@@ -32,6 +35,5 @@ void CFEngineRender::Texture::setHandle(unsigned int value) {
 }
 
 CFEngineRender::Texture::Texture(QString path) {
-    int width,height;
-    handle_ = Utils::genTextureFromStbImage(path,&width,&height,QOpenGLContext::currentContext());
+    handle_ = Utils::genTextureFromStbImage(path,&texture_width_,&texture_height_,QOpenGLContext::currentContext());
 }

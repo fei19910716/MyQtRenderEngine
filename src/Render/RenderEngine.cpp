@@ -14,9 +14,9 @@
 #include "Systems/Primitive/QuadSystem.h"
 
 CFEngineRender::RenderEngine::RenderEngine():textureToRender_(nullptr),textureToDisplay_(nullptr),textureToDelete_(nullptr){
-
-    m_systems.push_back(new CFEngineRender::QuadSystem());
     m_systems.push_back(new CFEngineRender::TriangleSystem());
+    m_systems.push_back(new CFEngineRender::QuadSystem());
+
 
 
 }
@@ -45,9 +45,11 @@ void CFEngineRender::RenderEngine::update(float dt){
 //    }
 
     auto input = std::make_shared<CFEngineRender::FrameBuffer>();
-    input->bindRenderBuffer(std::make_shared<CFEngineRender::RenderBuffer>(400,600));
-    input->bindTexture(std::make_shared<CFEngineRender::Texture>("D:\\GameEngine\\CFRenderEngine\\asset\\image\\test.png"));
-    auto output = std::make_shared<CFEngineRender::FrameBuffer>(400,600);
+    auto texture = std::make_shared<CFEngineRender::Texture>("D:\\GameEngine\\CFRenderEngine\\asset\\image\\test.png");
+    this->setRenderSize(texture->texture_width_,texture->texture_height_);
+    input->bindRenderBuffer(std::make_shared<CFEngineRender::RenderBuffer>(width_,height_));
+    input->bindTexture(texture);
+    auto output = std::make_shared<CFEngineRender::FrameBuffer>(width_,height_);
 
     renderQueue = std::make_shared<CFEngineRender::RenderQueue>();
     renderQueue->setInput(input);
@@ -57,7 +59,7 @@ void CFEngineRender::RenderEngine::update(float dt){
         renderQueue->addRenderer(system->update(ENTT::registry, dt),std::to_string( i++));
     }
     renderQueue->render();
-    // Utils::saveFBOToImage( renderQueue->output()->handle(),QSize(400,600), "D:\\GameEngine\\CFRenderEngine\\" + renderQueue->id() + ".png", QOpenGLContext::currentContext());
+    // Utils::saveFBOToImage( renderQueue->output()->handle(),QSize(width_,height_), "D:\\GameEngine\\CFRenderEngine\\" + renderQueue->id() + ".png", QOpenGLContext::currentContext());
 //    unsigned int value = textureToDisplay_->handle();
 //    textureToDisplay_->setHandle(textureToRender_->handle());
 //    textureToRender_->setHandle(value);
@@ -67,11 +69,11 @@ void CFEngineRender::RenderEngine::update(float dt){
 }
 
 void CFEngineRender::RenderEngine::setRenderSize(int width,int height){
-    if(m_width == width && m_height == height){
+    if(width_ == width && height_ == height){
        return;
     }
-    m_width = width;
-    m_height = height;
+    width_ = width;
+    height_ = height;
 //    initializeOpenGLFunctions();
 
 //    // 创建纹理

@@ -13,8 +13,6 @@
 
 std::shared_ptr<CFEngineRender::Renderer> CFEngineRender::QuadSystem::update(entt::registry &registry, float dt) {
 
-
-
     auto view = registry.view<CFEngineRender::Quad>();
     for(auto entity: view) {
         auto &quad = view.get<CFEngineRender::Quad>(entity);
@@ -31,7 +29,10 @@ std::shared_ptr<CFEngineRender::Renderer> CFEngineRender::QuadSystem::update(ent
 
         auto vao = std::make_shared<CFEngineRender::VertexArray>();
         auto vboLayout = std::make_shared<VertexLayout>();
-        vboLayout->begin().add(Attribute::Enum::Position,3,AttribType::Enum::Float).add(Attribute::Enum::Color,3,AttribType::Enum::Float).add(Attribute::Enum::TextureCoord,2,AttribType::Enum::Int).end();
+        vboLayout->begin().add(Attribute::Enum::Position,3,AttribType::Enum::Float)
+                          .add(Attribute::Enum::Color,3,AttribType::Enum::Float)
+                          .add(Attribute::Enum::TextureCoord,2,AttribType::Enum::Int)
+                          .end();
         auto vertexBuffer = std::make_shared<CFEngineRender::VertexBuffer>(quad.vertices,vboLayout);
         auto indexBuffer = std::make_shared<CFEngineRender::IndexBuffer>(quad.indices);
 
@@ -43,12 +44,12 @@ std::shared_ptr<CFEngineRender::Renderer> CFEngineRender::QuadSystem::update(ent
 
         shaderProgram->use();
         vao->use();
-        shaderProgram->setVec4("u_color",0.0,1.0,0.0,1.0);
+        shaderProgram->setVec4("u_color",1.0,1.0,0.0,1.0);
 
         renderer_->setVertexArray(vao);
         return renderer_;
         // glDrawArrays(GL_TRIANGLES, 0, 3);
-        //glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
+        // glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
 
 
         //        vao->release();

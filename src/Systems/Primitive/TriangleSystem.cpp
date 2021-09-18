@@ -1,7 +1,7 @@
 #include "TriangleSystem.h"
 
 #include <QDebug>
-#include <QFile>
+#include <QTime>
 
 #include "stb_image_write.h"
 #include "Render/Base/ShaderProgram.h"
@@ -13,9 +13,9 @@
 
 #include "Render/Renderer/SimpleRenderer.h"
 #include "Utils/RenderUtils.h"
+#include "Core/glm.h"
 
 std::shared_ptr<CFEngineRender::Renderer> CFEngineRender::TriangleSystem::update(entt::registry &registry, float dt){
-
 
     auto view = registry.view<CFEngineRender::Triangle>();
     for(auto entity: view) {
@@ -33,7 +33,10 @@ std::shared_ptr<CFEngineRender::Renderer> CFEngineRender::TriangleSystem::update
 
         auto vao = std::make_shared<CFEngineRender::VertexArray>();
         auto vboLayout = std::make_shared<VertexLayout>();
-        vboLayout->begin().add(Attribute::Enum::Position,3,AttribType::Enum::Float).add(Attribute::Enum::Color,3,AttribType::Enum::Float).add(Attribute::Enum::TextureCoord,2,AttribType::Enum::Float).end();
+        vboLayout->begin().add(Attribute::Enum::Position,3,AttribType::Enum::Float)
+                          .add(Attribute::Enum::Color,3,AttribType::Enum::Float)
+                          .add(Attribute::Enum::TextureCoord,2,AttribType::Enum::Float)
+                          .end();
 
         auto vertexBuffer = std::make_shared<CFEngineRender::VertexBuffer>(triangle.vertices,vboLayout);
         auto indexBuffer = std::make_shared<CFEngineRender::IndexBuffer>(triangle.indices);
@@ -46,7 +49,12 @@ std::shared_ptr<CFEngineRender::Renderer> CFEngineRender::TriangleSystem::update
 
         shaderProgram->use();
         vao->use();
+
+        glm::mat4 trans;
+        trans = glm::rotate(trans, (float)QTime::currentTime().second(), glm::vec3(0.0f, 0.0f, 1.0f));
+
         shaderProgram->setVec4("u_color",1.0,1.0,0.0,1.0);
+        shaderProgram->setMat4("u_transform",glm::value_ptr(trans),1);
 
         renderer_->setVertexArray(vao);
         return renderer_;

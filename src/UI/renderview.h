@@ -64,12 +64,6 @@ public:
      */
     CFEngineRender::RenderThread* m_thread=nullptr;
 
-    /**
-     * 子线程初始的渲染尺寸
-     */
-    const int WIDTH = 400;
-    const int HEIGHT = 600;
-
     QMutex lock_;
 };
 

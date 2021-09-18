@@ -29,7 +29,12 @@ public:
 public:
     std::vector<System*> m_systems;
 
-    int m_width,m_height;
+    /**
+     * 子线程初始的渲染尺寸
+     */
+    int width_ = 960;
+    int height_ = 1280;
+
     std::shared_ptr<RenderQueue> renderQueue;
     std::shared_ptr<RenderBuffer> rbo_;
     std::shared_ptr<FrameBuffer> fbo_;

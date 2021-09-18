@@ -1,6 +1,7 @@
 set(vendor_libs
     EnTT
     stb
+    glm
 )
 
 foreach(vendor_lib ${vendor_libs})

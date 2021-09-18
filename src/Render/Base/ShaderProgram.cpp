@@ -184,8 +184,8 @@ void CFEngineRender::ShaderProgram::setMat3(const std::string &name, const std::
     glUniformMatrix3fv(glGetUniformLocation(handle_, name.c_str()), 1, GL_FALSE, value.data());
 }
 
-void CFEngineRender::ShaderProgram::setMat4(const std::string &name, const std::vector<float> &value) {
-    glUniformMatrix4fv(glGetUniformLocation(handle_, name.c_str()), 1, GL_FALSE, value.data());
+void CFEngineRender::ShaderProgram::setMat4(const std::string &name, float* value, unsigned int count) {
+    glUniformMatrix4fv(glGetUniformLocation(handle_, name.c_str()), count, GL_FALSE, value);
 }
 
 void CFEngineRender::ShaderProgram::setTexture2D(const std::string &name, int textureUnit) {

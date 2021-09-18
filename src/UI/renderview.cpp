@@ -161,7 +161,6 @@ void RenderView::initRenderThread()
     context->makeCurrent(mainSurface);
 
     connect(m_thread,&CFEngineRender::RenderThread::imageReady, this, [this]() { update(); },Qt::QueuedConnection);
-    m_thread->setRenderSize(WIDTH,HEIGHT);
     m_thread->start();
 
     qDebug() << "GLWidget::initRenderThread() end";

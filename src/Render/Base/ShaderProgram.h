@@ -45,7 +45,7 @@ public:
 
     void setMat2(const std::string &name, const std::vector<float> &value);
     void setMat3(const std::string &name, const std::vector<float> &value);
-    void setMat4(const std::string &name, const std::vector<float> &value);
+    void setMat4(const std::string &name, float* value, unsigned int count);
 
     void setTexture2D(const std::string &name, int textureUnit);
 
