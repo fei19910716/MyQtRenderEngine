@@ -14,8 +14,9 @@
 #include "Systems/Primitive/QuadSystem.h"
 
 CFEngineRender::RenderEngine::RenderEngine():textureToRender_(nullptr),textureToDisplay_(nullptr),textureToDelete_(nullptr){
+
+    m_systems.push_back(new CFEngineRender::QuadSystem());
     m_systems.push_back(new CFEngineRender::TriangleSystem());
-    //m_systems.push_back(new CFEngineRender::QuadSystem());
 
 
 
@@ -45,7 +46,8 @@ void CFEngineRender::RenderEngine::update(float dt){
 //    }
 
     auto input = std::make_shared<CFEngineRender::FrameBuffer>();
-    auto texture = std::make_shared<CFEngineRender::Texture>("D:\\GameEngine\\CFRenderEngine\\asset\\image\\test.png");
+    //auto texture = std::make_shared<CFEngineRender::Texture>("D:\\GameEngine\\CFRenderEngine\\asset\\image\\out1.png");
+    auto texture = std::make_shared<CFEngineRender::Texture>(400,600);
     this->setRenderSize(texture->texture_width_,texture->texture_height_);
     input->bindRenderBuffer(std::make_shared<CFEngineRender::RenderBuffer>(width_,height_));
     input->bindTexture(texture);

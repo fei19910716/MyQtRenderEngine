@@ -64,6 +64,8 @@ public:
      */
     bool enable();
 
+    void setRenderSize(unsigned int width, unsigned int height);
+
     virtual void postRender() = 0;
     /**
      * 释放资源
@@ -79,6 +81,9 @@ protected:
     std::string id_;
     std::string parent_id_;
     bool enable_ = true;
+
+    unsigned int render_width_;
+    unsigned int render_height_;
 
     std::vector<std::shared_ptr<CFEngineRender::FrameBuffer>> input_;
     std::shared_ptr<CFEngineRender::FrameBuffer> output_;

@@ -22,31 +22,34 @@ std::shared_ptr<CFEngineRender::Renderer> CFEngineRender::QuadSystem::update(ent
 
         auto vert = Utils::readShaderSource(vertexShader_);
         auto frag = Utils::readShaderSource(fragmentShader_);
-
         auto shaderProgram = std::make_shared<CFEngineRender::ShaderProgram>(vert,frag,false);
         shaderProgram->clearColor();
+        shaderProgram->id_ = "primitive";
         renderer_->setShaderProgram(shaderProgram);
 
         auto vao = std::make_shared<CFEngineRender::VertexArray>();
         auto vboLayout = std::make_shared<VertexLayout>();
         vboLayout->begin().add(Attribute::Enum::Position,3,AttribType::Enum::Float)
-                          .add(Attribute::Enum::Color,3,AttribType::Enum::Float)
-                          .add(Attribute::Enum::TextureCoord,2,AttribType::Enum::Int)
-                          .end();
+                .add(Attribute::Enum::Color,3,AttribType::Enum::Float)
+                .end();
+
         auto vertexBuffer = std::make_shared<CFEngineRender::VertexBuffer>(quad.vertices,vboLayout);
         auto indexBuffer = std::make_shared<CFEngineRender::IndexBuffer>(quad.indices);
 
         vao->bindVertexBuffer(vertexBuffer);
         vao->bindIndexBuffer(indexBuffer);
+
+        vao->id_ = "primitive";
+        renderer_->setVertexArray(vao);
         //! 线框模式
         //         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 
         shaderProgram->use();
-        vao->use();
-        shaderProgram->setVec4("u_color",1.0,1.0,0.0,1.0);
 
-        renderer_->setVertexArray(vao);
+        shaderProgram->setVec3("u_color",1.0,0.0,0.0);
+        glm::mat4 trans = glm::mat4(1.0f);
+        shaderProgram->setMat4("m_model",trans);
         return renderer_;
         // glDrawArrays(GL_TRIANGLES, 0, 3);
         // glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);

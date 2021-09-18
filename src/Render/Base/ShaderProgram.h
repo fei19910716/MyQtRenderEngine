@@ -11,8 +11,15 @@
 #include <iostream>
 
 #include "GLResource.h"
+#include "Core/glm.h"
 
 CFENGINE_RENDER_START
+
+    /**
+    * 1、如果设置了mat uniform，但是没有传值，会导致渲染空白
+    * 2、如果设置了color uniform，但是没有传值，会导致黑屏
+    * 2、如果给uniform传递了数值，但是类型不对，会导致黑屏（比如vec3，传递了vec4)
+    */
 
 class ShaderProgram: public GLResource {
 public:
@@ -29,23 +36,26 @@ public:
     void clearColor();
 
 
-
-    void setBool(const std::string &name, bool value);
-    void setInt(const std::string &name, int value);
-    void setFloat(const std::string &name, float value);
-
-    void setVec2(const std::string &name, const std::vector<float> &value);
-    void setVec2(const std::string &name, float x, float y);
-
-    void setVec3(const std::string &name, const std::vector<float> &value);
-    void setVec3(const std::string &name, float x, float y, float z);
-
-    void setVec4(const std::string &name, const std::vector<float> &value);
+    void setBool(const std::string &name, bool value) ;
+// ------------------------------------------------------------------------
+    void setInt(const std::string &name, int value) ;
+// ------------------------------------------------------------------------
+    void setFloat(const std::string &name, float value) ;
+// ------------------------------------------------------------------------
+    void setVec2(const std::string &name, const glm::vec2 &value) ;
+    void setVec2(const std::string &name, float x, float y) ;
+// ------------------------------------------------------------------------
+    void setVec3(const std::string &name, const glm::vec3 &value) ;
+    void setVec3(const std::string &name, float x, float y, float z) ;
+// ------------------------------------------------------------------------
+    void setVec4(const std::string &name, const glm::vec4 &value) ;
     void setVec4(const std::string &name, float x, float y, float z, float w);
-
-    void setMat2(const std::string &name, const std::vector<float> &value);
-    void setMat3(const std::string &name, const std::vector<float> &value);
-    void setMat4(const std::string &name, float* value, unsigned int count);
+// ------------------------------------------------------------------------
+    void setMat2(const std::string &name, const glm::mat2 &mat) ;
+// ------------------------------------------------------------------------
+    void setMat3(const std::string &name, const glm::mat3 &mat) ;
+// ------------------------------------------------------------------------
+    void setMat4(const std::string &name, const glm::mat4 &mat) ;
 
     void setTexture2D(const std::string &name, int textureUnit);
 

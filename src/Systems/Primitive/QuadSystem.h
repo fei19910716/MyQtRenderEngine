@@ -11,8 +11,8 @@ public:
     std::shared_ptr<Renderer> update(entt::registry &registry, float dt) override;
 
 private:
-    QString vertexShader_ = ":/shader/simple/simple.vert";
+    QString vertexShader_ = ":/shader/primitive/primitive.vert";
 
-    QString fragmentShader_ = ":/shader/simple/simple.frag";
+    QString fragmentShader_ = ":/shader/primitive/primitive.frag";
 };
 CFENGINE_RENDER_END

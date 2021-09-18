@@ -109,7 +109,7 @@ void CFEngineRender::SimpleRenderer::bindInput() {
 
     for(int i = 0; i < input_.size(); i++){
         if (input_[i] == nullptr) continue;
-        Utils::saveFBOToImage( input_[i]->handle(),QSize(400,600), "D:\\GameEngine\\CFRenderEngine\\" + this->id() + "__bindInput.png", QOpenGLContext::currentContext());
+        //Utils::saveFBOToImage( input_[i]->handle(),QSize(400,600), "D:\\GameEngine\\CFRenderEngine\\" + this->id() + "__bindInput.png", QOpenGLContext::currentContext());
 
         std::string textureKey = DEFAULT_INPUT_TEXTURE_NAME;
         textureKey += std::to_string(i);
@@ -136,25 +136,24 @@ void CFEngineRender::SimpleRenderer::renderInternal() {
 
         GLCALL(glDrawElements(GL_TRIANGLES, vao->vertexCount(), GL_UNSIGNED_INT, 0);)
         GLCALL(glFinish();)
-        Utils::saveFBOToImage( output_->handle(),QSize(400,600), "D:\\GameEngine\\CFRenderEngine\\" + shader->id_ + ".png", QOpenGLContext::currentContext());
+        //Utils::saveFBOToImage( output_->handle(),QSize(400,600), "D:\\GameEngine\\CFRenderEngine\\" + shader->id_ + ".png", QOpenGLContext::currentContext());
     }
 
 }
 
 void CFEngineRender::SimpleRenderer::setUniformTexture2D(std::string key, std::shared_ptr<Texture> texture, int index) {
     auto shader = shader_.front();
-    std::cout << "shader -----id: " <<shader->id_ << std::endl;
     shader->use();
     shader->setTexture2D(key,index);
     texture->use(index);
 }
 
-void CFEngineRender::SimpleRenderer::setUniformVec4(std::string key, std::vector<float> &value) {
+void CFEngineRender::SimpleRenderer::setUniformVec4(std::string key, glm::vec4& value) {
     shader_.back()->setVec4(key,value);
 }
 
-void CFEngineRender::SimpleRenderer::setUniformMat4(std::string key, std::vector<float> &value) {
-    shader_.back()->setMat4(key,value.data(),value.size());
+void CFEngineRender::SimpleRenderer::setUniformMat4(std::string key, glm::mat4& value) {
+    shader_.back()->setMat4(key,value);
 }
 
 void CFEngineRender::SimpleRenderer::setShaderProgram(std::shared_ptr<ShaderProgram> shaderProgram) {

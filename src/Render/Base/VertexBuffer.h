@@ -12,8 +12,8 @@ CFENGINE_RENDER_START
 struct Attribute{
     enum Enum{
         Position,
-        Color,
         TextureCoord,
+        Color,
     };
 };
 struct AttribType // 顶点属性数据类型
@@ -35,6 +35,7 @@ struct AttribType // 顶点属性数据类型
 class VertexLayout{
 public:
     struct AttribInfo{
+        Attribute::Enum attrib;
         AttribType::Enum type;
         unsigned char typeSize;
         unsigned int num;
@@ -50,7 +51,7 @@ public:
 
     VertexLayout& add(Attribute::Enum attrib, uint8_t num, AttribType::Enum type)
     {
-        m_attribute[attrib] = {type,attribTypeSize(type),num,m_stride};
+        m_attribute.push_back({attrib,type,attribTypeSize(type),num,m_stride}) ;
         m_stride += num;
 
         return *this;
@@ -78,7 +79,7 @@ private:
 
 public:
     unsigned int m_stride = 0;
-    std::map<Attribute::Enum,AttribInfo> m_attribute;
+    std::vector<AttribInfo> m_attribute;
 };
 class VertexBuffer: public GLResource {
 public:

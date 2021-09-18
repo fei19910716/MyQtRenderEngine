@@ -53,3 +53,8 @@ void CFEngineRender::Renderer::setOutput(std::shared_ptr<CFEngineRender::FrameBu
 std::shared_ptr<CFEngineRender::FrameBuffer> CFEngineRender::Renderer::output() {
     return output_;
 }
+
+void CFEngineRender::Renderer::setRenderSize(unsigned int width, unsigned int height) {
+    render_width_ = width;
+    render_height_ = height;
+}

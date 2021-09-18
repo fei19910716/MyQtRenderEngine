@@ -24,12 +24,13 @@ std::shared_ptr<CFEngineRender::Renderer> CFEngineRender::TriangleSystem::update
         if(!triangle.enable()) continue;
 
         auto renderer_  = std::make_shared<CFEngineRender::SimpleRenderer>();
+
         auto vert = Utils::readShaderSource(vertexShader_);
         auto frag = Utils::readShaderSource(fragmentShader_);
         auto shaderProgram = std::make_shared<CFEngineRender::ShaderProgram>(vert,frag,false);
         shaderProgram->clearColor();
         shaderProgram->id_ = "primitive";
-        //renderer_->setShaderProgram(shaderProgram);
+        renderer_->setShaderProgram(shaderProgram);
 
         auto vao = std::make_shared<CFEngineRender::VertexArray>();
         auto vboLayout = std::make_shared<VertexLayout>();
@@ -44,19 +45,18 @@ std::shared_ptr<CFEngineRender::Renderer> CFEngineRender::TriangleSystem::update
         vao->bindIndexBuffer(indexBuffer);
 
         vao->id_ = "primitive";
+        renderer_->setVertexArray(vao);
 //! 线框模式
 //         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 
         shaderProgram->use();
-        vao->use();
+        glm::mat4 trans = glm::mat4(1.0f);
+        trans = glm::translate(trans, glm::vec3(0.1f, 0.1f, 0.0f));
+        trans = glm::rotate(trans, glm::radians(10.0f), glm::vec3(0.0, 0.0, 1.0));
+        shaderProgram->setVec3("u_color",glm::vec3(0.6,0.3,0.2));
+        shaderProgram->setMat4("m_model",trans);
 
-        glm::mat4 trans;
-        //trans = glm::rotate(trans, (float)QTime::currentTime().second(), glm::vec3(0.0f, 0.0f, 1.0f));
-
-        shaderProgram->setVec4("u_color",1.0,1.0,0.0,1.0);
-
-        //renderer_->setVertexArray(vao);
         return renderer_;
         // glDrawArrays(GL_TRIANGLES, 0, 3);
         //glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);

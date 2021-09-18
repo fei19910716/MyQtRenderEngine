@@ -136,56 +136,66 @@ void CFEngineRender::ShaderProgram::use() {
     glUseProgram(handle_);
 }
 
-void CFEngineRender::ShaderProgram::setBool(const std::string &name, bool value) {
-    glUniform1i(glGetUniformLocation(handle_, name.c_str()), (int)value);
-}
-
-void CFEngineRender::ShaderProgram::setInt(const std::string &name, int value) {
-    glUniform1i(glGetUniformLocation(handle_, name.c_str()), value);
-}
-
-void CFEngineRender::ShaderProgram::setFloat(const std::string &name, float value) {
-    glUniform1f(glGetUniformLocation(handle_, name.c_str()), value);
-}
 
 void CFEngineRender::ShaderProgram::release() {
     glDeleteProgram(handle_);
 }
 
-void CFEngineRender::ShaderProgram::setVec2(const std::string &name, const std::vector<float> &value) {
-    glUniform2fv(glGetUniformLocation(handle_, name.c_str()), 1, value.data());
+void CFEngineRender::ShaderProgram::setBool(const std::string &name, bool value)
+{
+    glUniform1i(glGetUniformLocation(handle_, name.c_str()), (int)value);
 }
-
-void CFEngineRender::ShaderProgram::setVec2(const std::string &name, float x, float y) {
+// ------------------------------------------------------------------------
+void CFEngineRender::ShaderProgram::setInt(const std::string &name, int value)
+{
+    glUniform1i(glGetUniformLocation(handle_, name.c_str()), value);
+}
+// ------------------------------------------------------------------------
+void CFEngineRender::ShaderProgram::setFloat(const std::string &name, float value)
+{
+    glUniform1f(glGetUniformLocation(handle_, name.c_str()), value);
+}
+// ------------------------------------------------------------------------
+void CFEngineRender::ShaderProgram::setVec2(const std::string &name, const glm::vec2 &value)
+{
+    glUniform2fv(glGetUniformLocation(handle_, name.c_str()), 1, &value[0]);
+}
+void CFEngineRender::ShaderProgram::setVec2(const std::string &name, float x, float y)
+{
     glUniform2f(glGetUniformLocation(handle_, name.c_str()), x, y);
 }
-
-void CFEngineRender::ShaderProgram::setVec3(const std::string &name, const std::vector<float> &value) {
-    glUniform3fv(glGetUniformLocation(handle_, name.c_str()), 1, value.data());
+// ------------------------------------------------------------------------
+void CFEngineRender::ShaderProgram::setVec3(const std::string &name, const glm::vec3 &value)
+{
+    glUniform3fv(glGetUniformLocation(handle_, name.c_str()), 1, &value[0]);
 }
-
-void CFEngineRender::ShaderProgram::setVec3(const std::string &name, float x, float y, float z) {
+void CFEngineRender::ShaderProgram::setVec3(const std::string &name, float x, float y, float z)
+{
     glUniform3f(glGetUniformLocation(handle_, name.c_str()), x, y, z);
 }
-
-void CFEngineRender::ShaderProgram::setVec4(const std::string &name, const std::vector<float> &value) {
-    glUniform4fv(glGetUniformLocation(handle_, name.c_str()), 1, value.data());
+// ------------------------------------------------------------------------
+void CFEngineRender::ShaderProgram::setVec4(const std::string &name, const glm::vec4 &value)
+{
+    glUniform4fv(glGetUniformLocation(handle_, name.c_str()), 1, &value[0]);
 }
-
-void CFEngineRender::ShaderProgram::setVec4(const std::string &name, float x, float y, float z, float w) {
+void CFEngineRender::ShaderProgram::setVec4(const std::string &name, float x, float y, float z, float w)
+{
     glUniform4f(glGetUniformLocation(handle_, name.c_str()), x, y, z, w);
 }
-
-void CFEngineRender::ShaderProgram::setMat2(const std::string &name, const std::vector<float> &value) {
-    glUniformMatrix2fv(glGetUniformLocation(handle_, name.c_str()), 1, GL_FALSE, value.data());
+// ------------------------------------------------------------------------
+void CFEngineRender::ShaderProgram::setMat2(const std::string &name, const glm::mat2 &mat)
+{
+    glUniformMatrix2fv(glGetUniformLocation(handle_, name.c_str()), 1, GL_FALSE, &mat[0][0]);
 }
-
-void CFEngineRender::ShaderProgram::setMat3(const std::string &name, const std::vector<float> &value) {
-    glUniformMatrix3fv(glGetUniformLocation(handle_, name.c_str()), 1, GL_FALSE, value.data());
+// ------------------------------------------------------------------------
+void CFEngineRender::ShaderProgram::setMat3(const std::string &name, const glm::mat3 &mat)
+{
+    glUniformMatrix3fv(glGetUniformLocation(handle_, name.c_str()), 1, GL_FALSE, &mat[0][0]);
 }
-
-void CFEngineRender::ShaderProgram::setMat4(const std::string &name, float* value, unsigned int count) {
-    glUniformMatrix4fv(glGetUniformLocation(handle_, name.c_str()), count, GL_FALSE, value);
+// ------------------------------------------------------------------------
+void CFEngineRender::ShaderProgram::setMat4(const std::string &name, const glm::mat4 &mat)
+{
+    glUniformMatrix4fv(glGetUniformLocation(handle_, name.c_str()), 1, GL_FALSE, &mat[0][0]);
 }
 
 void CFEngineRender::ShaderProgram::setTexture2D(const std::string &name, int textureUnit) {

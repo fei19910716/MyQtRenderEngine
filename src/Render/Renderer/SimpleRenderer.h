@@ -7,6 +7,7 @@
 
 #include "Render/Renderer/Renderer.h"
 #include "Core/GL.h"
+#include "Core/glm.h"
 
 #include <vector>
 
@@ -68,7 +69,7 @@ public:
    * @param count vec4个数
    *
    */
-    void setUniformVec4(std::string key, std::vector<float>& value);
+    void setUniformVec4(std::string key, glm::vec4& value);
 
     /**
    *
@@ -78,12 +79,15 @@ public:
    * @param value mat4数据，每个mat4是16个float
    *
    */
-    void setUniformMat4(std::string key, std::vector<float>& value);
+    void setUniformMat4(std::string key, glm::mat4& value);
 
 protected:
 //    std::shared_ptr<VertexArray> vao_;
 //    std::shared_ptr<CFEngineRender::ShaderProgram> shader_;
 //
+    /**
+     * 两个shader和两个vao，一个用于渲染input,一个渲染三角形等 TODO合并成一个draw call
+     */
     std::vector<std::shared_ptr<VertexArray>> vao_;
     std::vector<std::shared_ptr<CFEngineRender::ShaderProgram>> shader_;
 

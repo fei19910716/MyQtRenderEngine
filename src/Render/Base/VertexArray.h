@@ -26,7 +26,6 @@ public:
 
     unsigned int vertexCount();
 
-
     std::string id_;
 
 private:

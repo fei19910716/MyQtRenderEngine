@@ -10,11 +10,10 @@ CFEngineRender::VertexBuffer::VertexBuffer(std::vector<float>& vertices, std::sh
     glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vertices.size(), vertices.data(), GL_STATIC_DRAW);
 
     auto stride = layout->m_stride;
-    for(auto ite = layout->m_attribute.begin(); ite != layout->m_attribute.end(); ite++){
-        auto key = (*ite).first;
-        auto info = (*ite).second;
-        glVertexAttribPointer(key, info.num, info.type, GL_FALSE, stride * info.typeSize, (void*)(info.offset * info.typeSize));
-        glEnableVertexAttribArray(key);
+    for(int i = 0; i < layout->m_attribute.size(); i++){
+        auto info = layout->m_attribute[i];
+        glVertexAttribPointer(i, info.num, info.type, GL_FALSE, stride * info.typeSize, (void*)(info.offset * info.typeSize));
+        glEnableVertexAttribArray(i);
     }
 }
 
