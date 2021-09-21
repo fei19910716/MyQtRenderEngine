@@ -372,18 +372,19 @@ void MainWindow::onDisplayComponents(CFEntity* entity){
         if(count == 0)
             continue;
         QListWidgetItem* item = new QListWidgetItem(ui->componentListWidget);
-        ComponentWidget* cw = new ComponentWidget(this,uiCom);
-        item->setSizeHint(QSize(200,count*40));
+        ComponentWidget* cw = new ComponentWidget(item,uiCom,this);
+        item->setSizeHint(QSize(200,(count+1)*30));
         ui->componentListWidget->addItem(item);
         ui->componentListWidget->setSpacing(2);
         item->setBackgroundColor(QColor(230,230,230));
         ui->componentListWidget->setItemWidget(item,cw);
 
+
         connect(cw, &ComponentWidget::componentChanged,[=](CFEngineRender::Component* component){
             QTreeWidgetItem* curItem = ui->entityTreeWidget->currentItem();
             auto entity = curItem->data(0,Qt::UserRole).value<CFEntity*>();
             
-            this->onDisplayComponents(entity);
+            // this->onDisplayComponents(entity);
             ui->renderView->requestRender();
         });
     }

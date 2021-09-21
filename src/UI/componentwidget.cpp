@@ -9,12 +9,36 @@
 #include <QColorDialog>
 #include <QPushButton>
 #include <QCheckBox>
+#include <QListWidgetItem>
 
-ComponentWidget::ComponentWidget(QWidget *parent, CFEngineRender::UIComponent* component) : QWidget(parent), component_(component)
+#include "ComponentHeaderButton.h"
+
+ComponentWidget::ComponentWidget(QListWidgetItem* item, CFEngineRender::UIComponent* component, QWidget *parent)
+    : QWidget(parent),
+      component_(component),
+      item_(item)
 {
+
+    ComponentHeaderButton* m_headerButton = new ComponentHeaderButton;
+    m_headerButton->setObjectName("ComponentHeaderButton");
+    m_headerButton->SetTextLabel(component_->componentDescription()->label_);
+    //m_sizeButton->SetImageLabel(QPixmap(":/Dialog/Resources/Collapse.png"));
+    m_headerButton->setStyleSheet("#ComponentHeaderButton{background-color:transparent}"
+                                  "#ComponentHeaderButton:hover{background-color:rgba(195,195,195,0.4)}"
+                                  "#ComponentHeaderButton:pressed{background-color:rgba(127,127,127,0.4)}");
+
+    QWidget* m_contentWidget = new QWidget;
+    m_contentWidget->setParent(this);
+    m_contentWidget->setVisible(true);
+
+    QLabel* sizeLabel = m_headerButton->GetTextHandle();
+    sizeLabel->setStyleSheet("QLabel{color:rgba(183,71,42,1)}");
+    sizeLabel->setFont(QFont("", 10, QFont::Black));
+
+
     // 设置布局
     mainLayout_ = new QVBoxLayout;
-
+    int count = component_->propertyDescriptions_.size();
     // 遍历组件所有需要展示的属性
     for(auto& property: component_->propertyDescriptions_){
         switch (property->type_) {
@@ -32,7 +56,31 @@ ComponentWidget::ComponentWidget(QWidget *parent, CFEngineRender::UIComponent* c
                 break;
         }
     }
-    this->setLayout(mainLayout_);
+    m_contentWidget->setLayout(mainLayout_);
+
+    QVBoxLayout* vlayout = new QVBoxLayout;
+    vlayout->setAlignment(Qt::AlignTop);
+    vlayout->setMargin(0);
+    vlayout->addWidget(m_headerButton);
+    vlayout->addWidget(m_contentWidget);
+
+    this->setLayout(vlayout);
+
+    connect(m_headerButton, &ComponentHeaderButton::clicked, [=](bool) {
+        if (m_headerButton->collapse()) {
+            m_headerButton->SetImageLabel(QPixmap(":/Dialog/Resources/Expand.png"));
+            m_contentWidget->setVisible(true);
+            item->setSizeHint(QSize(200,(count+1)*30));
+            m_headerButton->setCollapse(false);
+        } else {
+            m_headerButton->SetImageLabel(QPixmap(":/Dialog/Resources/Collapse.png"));
+            //m_sizeList偶数屏蔽Size列表界面，奇数显示Size列表界面
+            m_contentWidget->setVisible(false);
+            item->setSizeHint(QSize(200,30));
+            m_headerButton->setCollapse(true);
+        }
+    });
+
 }
 
 void ComponentWidget::constructBool(std::shared_ptr<CFEngineRender::ComponentPropertyDescription> property){

@@ -8,6 +8,7 @@
 #include "Components/Base/UIComponent.h"
 
 class ComponentPropertyDescription;
+class QListWidgetItem;
 
 class ComponentWidget : public QWidget
 {
@@ -19,7 +20,7 @@ public:
      * @param component 当前需要构建UI的组件
      * @param parent 父窗口，一般为null
      */
-    explicit ComponentWidget(QWidget *parent = nullptr, CFEngineRender::UIComponent* component = nullptr);
+    explicit ComponentWidget(QListWidgetItem* item, CFEngineRender::UIComponent* component, QWidget *parent = nullptr);
 
     /**
      * 构建组件的enum属性的UI
@@ -52,6 +53,7 @@ public:
 private:
     QVBoxLayout* mainLayout_;
     CFEngineRender::UIComponent* component_;
+    QListWidgetItem* item_;
 
 signals:
     void componentChanged(CFEngineRender::UIComponent* component);
