@@ -1,13 +1,16 @@
 #include "GLResource.h"
 
-unsigned int CFEngineRender::GLResource::handle() const {
+CFENGINE_RENDER_START
+unsigned int GLResource::handle() const {
     return handle_;
 }
 
-CFEngineRender::GLResource::GLResource(): GL() {
+GLResource::GLResource(): GL() {
 
 }
 
-bool CFEngineRender::GLResource::valid() {
+bool GLResource::valid() {
     return handle_ != 0;
 }
+
+CFENGINE_RENDER_END

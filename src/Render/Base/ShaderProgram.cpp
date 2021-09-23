@@ -4,15 +4,15 @@
 
 #include "ShaderProgram.h"
 #include <QDebug>
-
-CFEngineRender::ShaderProgram::ShaderProgram(std::string vertex, std::string fragment, bool fromPath): GLResource(){
+CFENGINE_RENDER_START
+ShaderProgram::ShaderProgram(std::string vertex, std::string fragment, bool fromPath): GLResource(){
     if(fromPath)
         this->fromPath(vertex,fragment);
     else
         this->fromSource(vertex,fragment);
 }
 
-void CFEngineRender::ShaderProgram::fromPath(std::string vertexPath, std::string fragmentPath) {
+void ShaderProgram::fromPath(std::string vertexPath, std::string fragmentPath) {
     // 1. retrieve the vertex/fragment source code from filePath
     std::string vertexCode;
     std::string fragmentCode;
@@ -66,7 +66,7 @@ void CFEngineRender::ShaderProgram::fromPath(std::string vertexPath, std::string
     glDeleteShader(fragment);
 }
 
-void CFEngineRender::ShaderProgram::fromSource(std::string vertexShaderSource, std::string fragmentShaderSource) {
+void ShaderProgram::fromSource(std::string vertexShaderSource, std::string fragmentShaderSource) {
 
     unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
     const char* vss = vertexShaderSource.data();
@@ -110,7 +110,7 @@ void CFEngineRender::ShaderProgram::fromSource(std::string vertexShaderSource, s
     std::cout << "----------ShaderProgram()--" << handle_ << std::endl;
 }
 
-void CFEngineRender::ShaderProgram::checkCompileErrors(unsigned int shader, std::string type)
+void ShaderProgram::checkCompileErrors(unsigned int shader, std::string type)
 {
     int success;
     char infoLog[1024];
@@ -134,80 +134,80 @@ void CFEngineRender::ShaderProgram::checkCompileErrors(unsigned int shader, std:
     }
 }
 
-void CFEngineRender::ShaderProgram::use() {
+void ShaderProgram::use() {
     glUseProgram(handle_);
 }
 
 
-void CFEngineRender::ShaderProgram::setBool(const std::string &name, bool value)
+void ShaderProgram::setBool(const std::string &name, bool value)
 {
     glUniform1i(glGetUniformLocation(handle_, name.c_str()), (int)value);
 }
 // ------------------------------------------------------------------------
-void CFEngineRender::ShaderProgram::setInt(const std::string &name, int value)
+void ShaderProgram::setInt(const std::string &name, int value)
 {
     glUniform1i(glGetUniformLocation(handle_, name.c_str()), value);
 }
 // ------------------------------------------------------------------------
-void CFEngineRender::ShaderProgram::setFloat(const std::string &name, float value)
+void ShaderProgram::setFloat(const std::string &name, float value)
 {
     glUniform1f(glGetUniformLocation(handle_, name.c_str()), value);
 }
 // ------------------------------------------------------------------------
-void CFEngineRender::ShaderProgram::setVec2(const std::string &name, const glm::vec2 &value)
+void ShaderProgram::setVec2(const std::string &name, const glm::vec2 &value)
 {
     glUniform2fv(glGetUniformLocation(handle_, name.c_str()), 1, &value[0]);
 }
-void CFEngineRender::ShaderProgram::setVec2(const std::string &name, float x, float y)
+void ShaderProgram::setVec2(const std::string &name, float x, float y)
 {
     glUniform2f(glGetUniformLocation(handle_, name.c_str()), x, y);
 }
 // ------------------------------------------------------------------------
-void CFEngineRender::ShaderProgram::setVec3(const std::string &name, const glm::vec3 &value)
+void ShaderProgram::setVec3(const std::string &name, const glm::vec3 &value)
 {
     glUniform3fv(glGetUniformLocation(handle_, name.c_str()), 1, &value[0]);
 }
-void CFEngineRender::ShaderProgram::setVec3(const std::string &name, float x, float y, float z)
+void ShaderProgram::setVec3(const std::string &name, float x, float y, float z)
 {
     glUniform3f(glGetUniformLocation(handle_, name.c_str()), x, y, z);
 }
 // ------------------------------------------------------------------------
-void CFEngineRender::ShaderProgram::setVec4(const std::string &name, const glm::vec4 &value)
+void ShaderProgram::setVec4(const std::string &name, const glm::vec4 &value)
 {
     glUniform4fv(glGetUniformLocation(handle_, name.c_str()), 1, &value[0]);
 }
-void CFEngineRender::ShaderProgram::setVec4(const std::string &name, float x, float y, float z, float w)
+void ShaderProgram::setVec4(const std::string &name, float x, float y, float z, float w)
 {
     glUniform4f(glGetUniformLocation(handle_, name.c_str()), x, y, z, w);
 }
 // ------------------------------------------------------------------------
-void CFEngineRender::ShaderProgram::setMat2(const std::string &name, const glm::mat2 &mat)
+void ShaderProgram::setMat2(const std::string &name, const glm::mat2 &mat)
 {
     glUniformMatrix2fv(glGetUniformLocation(handle_, name.c_str()), 1, GL_FALSE, &mat[0][0]);
 }
 // ------------------------------------------------------------------------
-void CFEngineRender::ShaderProgram::setMat3(const std::string &name, const glm::mat3 &mat)
+void ShaderProgram::setMat3(const std::string &name, const glm::mat3 &mat)
 {
     glUniformMatrix3fv(glGetUniformLocation(handle_, name.c_str()), 1, GL_FALSE, &mat[0][0]);
 }
 // ------------------------------------------------------------------------
-void CFEngineRender::ShaderProgram::setMat4(const std::string &name, const glm::mat4 &mat)
+void ShaderProgram::setMat4(const std::string &name, const glm::mat4 &mat)
 {
     glUniformMatrix4fv(glGetUniformLocation(handle_, name.c_str()), 1, GL_FALSE, &mat[0][0]);
 }
 
-void CFEngineRender::ShaderProgram::setTexture2D(const std::string &name, int textureUnit) {
+void ShaderProgram::setTexture2D(const std::string &name, int textureUnit) {
     GLCALL(glUniform1i(glGetUniformLocation(handle_, name.c_str()), textureUnit))
 }
 
-void CFEngineRender::ShaderProgram::clearColor() {
+void ShaderProgram::clearColor() {
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 }
 
-CFEngineRender::ShaderProgram::~ShaderProgram() {
+ShaderProgram::~ShaderProgram() {
     std::cout << "~ShaderProgram()--" << handle_ << std::endl;
     glDeleteProgram(handle_);
 }
-
+CFENGINE_RENDER_END
 

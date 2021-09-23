@@ -4,7 +4,8 @@
 
 #include "RenderBuffer.h"
 
-CFEngineRender::RenderBuffer::RenderBuffer(unsigned int width, unsigned int height):GLResource() {
+CFENGINE_RENDER_START
+RenderBuffer::RenderBuffer(unsigned int width, unsigned int height):GLResource() {
     glGenRenderbuffers(1, &handle_);
     glBindRenderbuffer(GL_RENDERBUFFER, handle_);
     glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
@@ -12,7 +13,8 @@ CFEngineRender::RenderBuffer::RenderBuffer(unsigned int width, unsigned int heig
     std::cout << "----------RenderBuffer()--" << handle_ << std::endl;
 }
 
-CFEngineRender::RenderBuffer::~RenderBuffer() {
+RenderBuffer::~RenderBuffer() {
     std::cout << "~RenderBuffer()--" << handle_ << std::endl;
     glDeleteFramebuffers(1, &handle_);
 }
+CFENGINE_RENDER_END

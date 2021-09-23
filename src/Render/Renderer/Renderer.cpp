@@ -4,57 +4,59 @@
 
 #include "Renderer.h"
 
-CFEngineRender::Renderer::Renderer() {
+CFENGINE_RENDER_START
+Renderer::Renderer() {
 
 }
 
-bool CFEngineRender::Renderer::enable() {
+bool Renderer::enable() {
     return enable_;
 }
 
-void CFEngineRender::Renderer::setEnable(bool enable) {
+void Renderer::setEnable(bool enable) {
     enable_ = enable;
 }
 
-std::string & CFEngineRender::Renderer::id() {
+std::string & Renderer::id() {
     return id_;
 }
 
-void CFEngineRender::Renderer::setId(std::string id) {
+void Renderer::setId(std::string id) {
     id_ = id;
 }
 
-std::string & CFEngineRender::Renderer::parentId() {
+std::string & Renderer::parentId() {
     return parent_id_;
 }
 
-void CFEngineRender::Renderer::setParentId(std::string parentId) {
+void Renderer::setParentId(std::string parentId) {
     parent_id_ = parentId;
 }
 
-std::vector<std::shared_ptr<CFEngineRender::FrameBuffer>> &CFEngineRender::Renderer::input() {
+std::vector<std::shared_ptr<FrameBuffer>> &Renderer::input() {
     return input_;
 }
 
-void CFEngineRender::Renderer::setInput(std::shared_ptr<CFEngineRender::FrameBuffer> frame_buffer) {
+void Renderer::setInput(std::shared_ptr<FrameBuffer> frame_buffer) {
     input_.clear();
     input_.push_back(frame_buffer);
 }
 
-void CFEngineRender::Renderer::setInput(std::vector<std::shared_ptr<CFEngineRender::FrameBuffer>> frame_buffers) {
+void Renderer::setInput(std::vector<std::shared_ptr<FrameBuffer>> frame_buffers) {
     input_.clear();
     input_.insert(this->input_.end(), frame_buffers.begin(), frame_buffers.end());
 }
 
-void CFEngineRender::Renderer::setOutput(std::shared_ptr<CFEngineRender::FrameBuffer> frame_buffer) {
+void Renderer::setOutput(std::shared_ptr<FrameBuffer> frame_buffer) {
     output_ = frame_buffer;
 }
 
-std::shared_ptr<CFEngineRender::FrameBuffer> CFEngineRender::Renderer::output() {
+std::shared_ptr<FrameBuffer> Renderer::output() {
     return output_;
 }
 
-void CFEngineRender::Renderer::setRenderSize(unsigned int width, unsigned int height) {
+void Renderer::setRenderSize(unsigned int width, unsigned int height) {
     render_width_ = width;
     render_height_ = height;
 }
+CFENGINE_RENDER_END

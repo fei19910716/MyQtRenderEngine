@@ -1,5 +1,4 @@
-#ifndef COMPONENTWIDGET_H
-#define COMPONENTWIDGET_H
+#pragma once
 
 #include <QWidget>
 #include <QDebug>
@@ -60,5 +59,3 @@ signals:
 
 public slots:
 };
-
-#endif // COMPONENTWIDGET_H

@@ -1,16 +1,19 @@
 
 #include "GL.h"
 #include <iostream>
-CFEngineRender::GL::GL(){
+
+CFENGINE_RENDER_START
+
+GL::GL(){
     initializeOpenGLFunctions();
 }
 
-void CFEngineRender::GLClearError(QOpenGLContext *context){
+void GLClearError(QOpenGLContext *context){
     auto f = context->versionFunctions<QOpenGLFunctions_3_3_Core>();
     while(f->glGetError() != GL_NO_ERROR);
 }
 
-bool CFEngineRender::GLLogCall(const char* function, const char* file, int line, QOpenGLContext *context){
+bool GLLogCall(const char* function, const char* file, int line, QOpenGLContext *context){
     auto f = context->versionFunctions<QOpenGLFunctions_3_3_Core>();
     while(GLenum error = f->glGetError()){
         std::cout << "[opengl error] (" << error << "): " <<
@@ -19,4 +22,6 @@ bool CFEngineRender::GLLogCall(const char* function, const char* file, int line,
     }
     return true;
 }
+
+CFENGINE_RENDER_END
 

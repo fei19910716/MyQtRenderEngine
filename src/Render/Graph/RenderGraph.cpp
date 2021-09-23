@@ -11,22 +11,23 @@
 #include <queue>
 #include <unordered_set>
 
-CFEngineRender::RenderGraph::RenderGraph() {
+CFENGINE_RENDER_START
+RenderGraph::RenderGraph() {
 
 }
 
-CFEngineRender::RenderGraph::~RenderGraph() {
+RenderGraph::~RenderGraph() {
 
 }
 
-void CFEngineRender::RenderGraph::genNodeList() {
+void RenderGraph::genNodeList() {
     // 如果不为空，说明遍历过
     if (node_list_ != nullptr) {
         return;
     }
-    std::queue<std::shared_ptr<CFEngineRender::GraphNode>> traversalQueue; // 辅助遍历的queue
-    std::unordered_set<std::shared_ptr<CFEngineRender::GraphNode>> queuedNodes; // 不重复的node
-    std::vector<std::list<std::shared_ptr<CFEngineRender::GraphNode>>> layer_Nodes; // 每一层的node
+    std::queue<std::shared_ptr<GraphNode>> traversalQueue; // 辅助遍历的queue
+    std::unordered_set<std::shared_ptr<GraphNode>> queuedNodes; // 不重复的node
+    std::vector<std::list<std::shared_ptr<GraphNode>>> layer_Nodes; // 每一层的node
     // 遍历起始node
     for (auto &startNode : start_nodes_) {
         traversalQueue.push(startNode);
@@ -34,7 +35,7 @@ void CFEngineRender::RenderGraph::genNodeList() {
     }
 
     while (!traversalQueue.empty()) {
-        std::shared_ptr<CFEngineRender::GraphNode> node = traversalQueue.front();
+        std::shared_ptr<GraphNode> node = traversalQueue.front();
         traversalQueue.pop();
         // 如果是新的layer
         if (node->layer() >= layer_Nodes.size()) {
@@ -50,7 +51,7 @@ void CFEngineRender::RenderGraph::genNodeList() {
         }
     }
 
-    node_list_ = std::make_shared<std::list<std::shared_ptr<CFEngineRender::GraphNode>>>();
+    node_list_ = std::make_shared<std::list<std::shared_ptr<GraphNode>>>();
     // 根据layer一次加入列表中
     for (auto& layer_ : layer_Nodes) {
         for (auto& node : layer_) {
@@ -59,7 +60,7 @@ void CFEngineRender::RenderGraph::genNodeList() {
     }
 }
 
-bool CFEngineRender::RenderGraph::init() {
+bool RenderGraph::init() {
     bool result = true;
     this->traverseLayer([&](std::shared_ptr<GraphNode> node) {
         result = result && node->renderer()->init();
@@ -67,16 +68,16 @@ bool CFEngineRender::RenderGraph::init() {
     return result;
 }
 
-void CFEngineRender::RenderGraph::render() {
+void RenderGraph::render() {
     output_ = this->renderByLayer();
 }
 
-std::shared_ptr<CFEngineRender::FrameBuffer> CFEngineRender::RenderGraph::renderByLayer() {
+std::shared_ptr<FrameBuffer> RenderGraph::renderByLayer() {
     if (input_.empty()) {
         return nullptr;
     }
     // 取输出FBO为第一个输入
-    std::shared_ptr<CFEngineRender::FrameBuffer> intermediateOutput = input_.front();
+    std::shared_ptr<FrameBuffer> intermediateOutput = input_.front();
     // 如果没有输入节点，则将输入直接作为输出，doNothing
     if (start_nodes_.size() == 0) {
         if (output_ != nullptr && intermediateOutput != output_) {
@@ -92,12 +93,12 @@ std::shared_ptr<CFEngineRender::FrameBuffer> CFEngineRender::RenderGraph::render
         // input->IncreaseRef(start_nodes.size());
     }
     // 开始循环遍历，保证渲染节点和透传节点的inputFB的Ref不变
-    traverseLayer([&](std::shared_ptr<CFEngineRender::GraphNode> node) {
+    traverseLayer([&](std::shared_ptr<GraphNode> node) {
         // 节点需要渲染
         if (node->enable()) {
             // TODO 更新当前节点的output，非终结节点从pool里获取FB，终结节点直接使用output_
             if (!node->nextNodes().empty()) {
-                auto fbo = std::make_shared<CFEngineRender::FrameBuffer>(400,600);
+                auto fbo = std::make_shared<FrameBuffer>(400,600);
                 node->renderer()->setOutput(fbo);
             } else if (output_ != nullptr) {
                 node->renderer()->setOutput(output_);
@@ -143,25 +144,25 @@ std::shared_ptr<CFEngineRender::FrameBuffer> CFEngineRender::RenderGraph::render
     return intermediateOutput;
 }
 
-void CFEngineRender::RenderGraph::postRender() {
+void RenderGraph::postRender() {
 
 }
 
-void CFEngineRender::RenderGraph::release() {
+void RenderGraph::release() {
     this->traverseLayer([](std::shared_ptr<GraphNode> node) {
         node->renderer()->release();
     });
 }
 
-void CFEngineRender::RenderGraph::traverseLayer(const std::function<void(std::shared_ptr<CFEngineRender::GraphNode>)>& node_processor) {
+void RenderGraph::traverseLayer(const std::function<void(std::shared_ptr<GraphNode>)>& node_processor) {
     this->genNodeList();
 
-    std::for_each(this->node_list_->begin(), this->node_list_->end(), [&](std::shared_ptr<CFEngineRender::GraphNode> node){
+    std::for_each(this->node_list_->begin(), this->node_list_->end(), [&](std::shared_ptr<GraphNode> node){
         node_processor(node);
     });
 }
 
-void CFEngineRender::RenderGraph::addRenderer(std::shared_ptr<Renderer> renderer, std::string id) {
+void RenderGraph::addRenderer(std::shared_ptr<Renderer> renderer, std::string id) {
     if(renderer == nullptr) return;
     renderer->setId(id);
 
@@ -171,12 +172,12 @@ void CFEngineRender::RenderGraph::addRenderer(std::shared_ptr<Renderer> renderer
     node_list_ = nullptr; // 需要重新生成
 }
 
-void CFEngineRender::RenderGraph::addRenderer(std::shared_ptr<Renderer> renderer, std::string id, std::string parent_id) {
+void RenderGraph::addRenderer(std::shared_ptr<Renderer> renderer, std::string id, std::string parent_id) {
     this->addRenderer(renderer, id);
     renderer->setParentId(parent_id);
 }
 
-void CFEngineRender::RenderGraph::connectRenderer(std::string preId, std::string nextId) {
+void RenderGraph::connectRenderer(std::string preId, std::string nextId) {
     std::shared_ptr<GraphNode> preNode = renderer_map_[preId];
     std::shared_ptr<GraphNode> nextNode = renderer_map_[nextId];
     preNode->addNext(nextNode);
@@ -189,9 +190,10 @@ void CFEngineRender::RenderGraph::connectRenderer(std::string preId, std::string
     node_list_ = nullptr;
 }
 
-std::shared_ptr<CFEngineRender::Renderer> CFEngineRender::RenderGraph::renderer(std::string id) {
+std::shared_ptr<Renderer> RenderGraph::renderer(std::string id) {
     if (renderer_map_.find(id) != renderer_map_.end()) {
         return renderer_map_[id]->renderer();
     }
     return nullptr;
 }
+CFENGINE_RENDER_END

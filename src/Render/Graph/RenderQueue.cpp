@@ -4,17 +4,18 @@
 
 #include "RenderQueue.h"
 
-CFEngineRender::RenderQueue::RenderQueue() {
+CFENGINE_RENDER_START
+RenderQueue::RenderQueue() {
 
 }
 
-CFEngineRender::RenderQueue::~RenderQueue() {
+RenderQueue::~RenderQueue() {
     std::cout << "---------~RenderQueue()--------" << std::endl;
 }
 
-void CFEngineRender::RenderQueue::addRenderer(std::shared_ptr<Renderer> renderer, std::string id) {
+void RenderQueue::addRenderer(std::shared_ptr<Renderer> renderer, std::string id) {
     if(renderer == nullptr) return;
-    CFEngineRender::RenderGraph::addRenderer(renderer,id);
+    RenderGraph::addRenderer(renderer,id);
 
     if(!tail_renderer_id_.empty()) {
         this->connectRenderer(tail_renderer_id_, id);
@@ -23,14 +24,14 @@ void CFEngineRender::RenderQueue::addRenderer(std::shared_ptr<Renderer> renderer
     tail_renderer_id_ = id;
 }
 
-void CFEngineRender::RenderQueue::addRenderer(std::shared_ptr<Renderer> renderer, std::string id, std::string parent_id) {
+void RenderQueue::addRenderer(std::shared_ptr<Renderer> renderer, std::string id, std::string parent_id) {
     if(renderer == nullptr) return;
-    CFEngineRender::RenderGraph::addRenderer(renderer,id,parent_id);
+    RenderGraph::addRenderer(renderer,id,parent_id);
 
     this->connectRenderer(parent_id, id);
 }
 
-void CFEngineRender::RenderQueue::connectRenderer(std::string preId, std::string curId) {
+void RenderQueue::connectRenderer(std::string preId, std::string curId) {
     std::shared_ptr<GraphNode> preNode = renderer_map_[preId];
     std::shared_ptr<GraphNode> curNode = renderer_map_[curId];
 
@@ -45,6 +46,6 @@ void CFEngineRender::RenderQueue::connectRenderer(std::string preId, std::string
     }
     node_list_ = nullptr;
 }
-
+CFENGINE_RENDER_END
 
 

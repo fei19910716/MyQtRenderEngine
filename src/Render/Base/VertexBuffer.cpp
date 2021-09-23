@@ -4,7 +4,9 @@
 
 #include "VertexBuffer.h"
 #include <QDebug>
-CFEngineRender::VertexBuffer::VertexBuffer(std::vector<float>& vertices, std::shared_ptr<VertexLayout> layout): GLResource(){
+
+CFENGINE_RENDER_START
+VertexBuffer::VertexBuffer(std::vector<float>& vertices, std::shared_ptr<VertexLayout> layout): GLResource(){
     glGenBuffers(1, &handle_);
     glBindBuffer(GL_ARRAY_BUFFER, handle_);
     glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vertices.size(), vertices.data(), GL_STATIC_DRAW);
@@ -19,8 +21,8 @@ CFEngineRender::VertexBuffer::VertexBuffer(std::vector<float>& vertices, std::sh
     std::cout << "----------VertexBuffer()--" << handle_ << std::endl;
 }
 
-CFEngineRender::VertexBuffer::~VertexBuffer() {
+VertexBuffer::~VertexBuffer() {
     std::cout << "~VertexBuffer()--" << handle_ << std::endl;
     glDeleteBuffers(1, &handle_);
 }
-
+CFENGINE_RENDER_END

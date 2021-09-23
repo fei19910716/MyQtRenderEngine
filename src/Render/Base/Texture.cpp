@@ -7,7 +7,8 @@
 #include "Utils/RenderUtils.h"
 #include <QOpenGLContext>
 
-CFEngineRender::Texture::Texture(unsigned int width, unsigned int height): GLResource() {
+CFENGINE_RENDER_START
+Texture::Texture(unsigned int width, unsigned int height): GLResource() {
 
     texture_width_ = width;
     texture_height_ = height;
@@ -22,22 +23,23 @@ CFEngineRender::Texture::Texture(unsigned int width, unsigned int height): GLRes
     std::cout << "----------Texture()--" << handle_ << std::endl;
 }
 
-void CFEngineRender::Texture::use(int unit) {
+void Texture::use(int unit) {
     glActiveTexture(GL_TEXTURE0 + unit);
     glBindTexture(GL_TEXTURE_2D, handle_);
 }
 
-void CFEngineRender::Texture::setHandle(unsigned int value) {
+void Texture::setHandle(unsigned int value) {
     handle_ = value;
 }
 
-CFEngineRender::Texture::Texture(QString path) {
+Texture::Texture(QString path) {
     handle_ = Utils::genTextureFromStbImage(path,&texture_width_,&texture_height_,QOpenGLContext::currentContext());
 
     std::cout << "----------Texture()--" << handle_ << std::endl;
 }
 
-CFEngineRender::Texture::~Texture() {
+Texture::~Texture() {
     std::cout << "~Texture()--" << handle_ << std::endl;
     glDeleteTextures(1, &handle_);
 }
+CFENGINE_RENDER_END

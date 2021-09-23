@@ -6,8 +6,9 @@
 
 #include "Render/Base/Texture.h"
 #include "Render/Base/RenderBuffer.h"
+CFENGINE_RENDER_START
 
-CFEngineRender::FrameBuffer::FrameBuffer(bool validFBO): GLResource() {
+FrameBuffer::FrameBuffer(bool validFBO): GLResource() {
     if(validFBO)
         glGenFramebuffers(1, &handle_);
     else
@@ -16,11 +17,11 @@ CFEngineRender::FrameBuffer::FrameBuffer(bool validFBO): GLResource() {
     std::cout << "----------FrameBuffer()--" << handle_ << std::endl;
 }
 
-CFEngineRender::FrameBuffer::FrameBuffer(unsigned int width, unsigned int height) {
+FrameBuffer::FrameBuffer(unsigned int width, unsigned int height) {
     glGenFramebuffers(1, &handle_);
 
-    auto texture = std::make_shared<CFEngineRender::Texture>(width,height);
-    auto rbo_ = std::make_shared<CFEngineRender::RenderBuffer>(width,height);
+    auto texture = std::make_shared<Texture>(width,height);
+    auto rbo_ = std::make_shared<RenderBuffer>(width,height);
 
     this->bindRenderBuffer(rbo_);
     this->bindTexture(texture);
@@ -29,19 +30,19 @@ CFEngineRender::FrameBuffer::FrameBuffer(unsigned int width, unsigned int height
 }
 
 
-std::shared_ptr<CFEngineRender::Texture> CFEngineRender::FrameBuffer::texture() {
+std::shared_ptr<Texture> FrameBuffer::texture() {
     return texture_;
 }
 
-std::shared_ptr<CFEngineRender::RenderBuffer> CFEngineRender::FrameBuffer::renderBuffer() {
+std::shared_ptr<RenderBuffer> FrameBuffer::renderBuffer() {
     return rbo_;
 }
 
-void CFEngineRender::FrameBuffer::use() {
+void FrameBuffer::use() {
     glBindFramebuffer(GL_FRAMEBUFFER, handle_);
 }
 
-void CFEngineRender::FrameBuffer::bindTexture(std::shared_ptr<Texture> texture) {
+void FrameBuffer::bindTexture(std::shared_ptr<Texture> texture) {
     texture_ = texture;
     glBindFramebuffer(GL_FRAMEBUFFER, handle_);
     glBindTexture(GL_TEXTURE_2D,texture->handle());
@@ -49,7 +50,7 @@ void CFEngineRender::FrameBuffer::bindTexture(std::shared_ptr<Texture> texture) 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-void CFEngineRender::FrameBuffer::bindRenderBuffer(std::shared_ptr<RenderBuffer> renderBuffer) {
+void FrameBuffer::bindRenderBuffer(std::shared_ptr<RenderBuffer> renderBuffer) {
     rbo_ = renderBuffer;
 
     glBindFramebuffer(GL_FRAMEBUFFER, handle_);
@@ -57,9 +58,12 @@ void CFEngineRender::FrameBuffer::bindRenderBuffer(std::shared_ptr<RenderBuffer>
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-CFEngineRender::FrameBuffer::~FrameBuffer() {
+FrameBuffer::~FrameBuffer() {
     std::cout << "~FrameBuffer()--" << handle_<< std::endl;
     glDeleteFramebuffers(1, &handle_);
 }
+
+CFENGINE_RENDER_END
+
 
 

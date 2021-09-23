@@ -6,21 +6,24 @@
 #include "Components/Primitive/Triangle.h"
 #include "Components/Primitive/Quad.h"
 
+CFENGINE_RENDER_START
 
-std::unordered_map<CFEngineRender::ComponentType,std::shared_ptr<CFEngineRender::ComponentDescription>> CFEngineRender::ComponentManager::allComponentDescriptions_;
+std::unordered_map<ComponentType,std::shared_ptr<ComponentDescription>> ComponentManager::allComponentDescriptions_;
 
-void CFEngineRender::ComponentManager::registerComponentDescriptions() {
+void ComponentManager::registerComponentDescriptions() {
 
     REGISTER_COMPONENT_DESCRIPTION(Triangle)
 
     REGISTER_COMPONENT_DESCRIPTION(Quad)
 }
 
-std::shared_ptr<CFEngineRender::ComponentDescription> CFEngineRender::ComponentManager::componentDescriptionWithType(CFEngineRender::ComponentType type){
+std::shared_ptr<ComponentDescription> ComponentManager::componentDescriptionWithType(ComponentType type){
     return allComponentDescriptions_[type];
 }
 
-std::unordered_map<CFEngineRender::ComponentType,std::shared_ptr<CFEngineRender::ComponentDescription>>& CFEngineRender::ComponentManager::componentDescriptions(){
+std::unordered_map<ComponentType,std::shared_ptr<ComponentDescription>>& ComponentManager::componentDescriptions(){
     
     return allComponentDescriptions_;
 }
+
+CFENGINE_RENDER_END

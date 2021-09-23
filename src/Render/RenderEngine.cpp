@@ -13,16 +13,18 @@
 #include "Systems/Primitive/TriangleSystem.h"
 #include "Systems/Primitive/QuadSystem.h"
 
-CFEngineRender::RenderEngine::RenderEngine():textureToRender_(nullptr),textureToDisplay_(nullptr),textureToDelete_(nullptr){
+CFENGINE_RENDER_START
 
-    m_systems.push_back(new CFEngineRender::QuadSystem());
-    m_systems.push_back(new CFEngineRender::TriangleSystem());
+RenderEngine::RenderEngine():textureToRender_(nullptr),textureToDisplay_(nullptr),textureToDelete_(nullptr){
+
+    m_systems.push_back(new QuadSystem());
+    m_systems.push_back(new TriangleSystem());
 
 
 
 }
 
-CFEngineRender::RenderEngine::~RenderEngine() noexcept {
+RenderEngine::~RenderEngine() noexcept {
     for(auto& item: m_systems){
         delete item;
     }
@@ -35,7 +37,7 @@ CFEngineRender::RenderEngine::~RenderEngine() noexcept {
 }
 
 
-void CFEngineRender::RenderEngine::update(float dt){
+void RenderEngine::update(float dt){
 
 //    fbo_->bindTexture(textureToRender_);
 //
@@ -45,19 +47,19 @@ void CFEngineRender::RenderEngine::update(float dt){
 //        textureToDelete_->release();
 //    }
 
-    renderQueue = std::make_shared<CFEngineRender::RenderQueue>();
+    renderQueue = std::make_shared<RenderQueue>();
 
-    auto input = std::make_shared<CFEngineRender::FrameBuffer>();
-    //auto texture = std::make_shared<CFEngineRender::Texture>("D:\\GameEngine\\CFRenderEngine\\asset\\image\\out1.png");
-    auto texture = std::make_shared<CFEngineRender::Texture>(400,600);
+    auto input = std::make_shared<FrameBuffer>();
+    //auto texture = std::make_shared<Texture>("D:\\GameEngine\\CFRenderEngine\\asset\\image\\out1.png");
+    auto texture = std::make_shared<Texture>(400,600);
     this->setRenderSize(texture->texture_width_,texture->texture_height_);
-    input->bindRenderBuffer(std::make_shared<CFEngineRender::RenderBuffer>(width_,height_));
+    input->bindRenderBuffer(std::make_shared<RenderBuffer>(width_,height_));
     input->bindTexture(texture);
 
     /**
      * fixme 为啥output的创建放在renderQueue的创建之前就会导致渲染空白的问题？
      */
-    auto output = std::make_shared<CFEngineRender::FrameBuffer>(width_,height_);
+    auto output = std::make_shared<FrameBuffer>(width_,height_);
     
     renderQueue->setInput(input);
     renderQueue->setOutput(output);
@@ -75,7 +77,7 @@ void CFEngineRender::RenderEngine::update(float dt){
 
 }
 
-void CFEngineRender::RenderEngine::setRenderSize(int width,int height){
+void RenderEngine::setRenderSize(int width,int height){
     if(width_ == width && height_ == height){
        return;
     }
@@ -87,24 +89,25 @@ void CFEngineRender::RenderEngine::setRenderSize(int width,int height){
 //    if(textureToRender_ && textureToRender_->valid()){
 //        textureToRender_->release();
 //    }
-//    textureToDisplay_ = std::make_shared<CFEngineRender::Texture>(width,height);
-//    textureToRender_ = std::make_shared<CFEngineRender::Texture>(width,height);
+//    textureToDisplay_ = std::make_shared<Texture>(width,height);
+//    textureToRender_ = std::make_shared<Texture>(width,height);
 //
 //    // 创建FBO
 //    if(fbo_ && fbo_->valid()){
 //        fbo_->release();
 //    }
-//    fbo_ = std::make_shared<CFEngineRender::FrameBuffer>();
+//    fbo_ = std::make_shared<FrameBuffer>();
 //
 //
 //    // 创建rbo
 //    if(rbo_ && rbo_->valid()){
 //        rbo_->release();
 //    }
-//    rbo_ = std::make_shared<CFEngineRender::RenderBuffer>(width,height);
+//    rbo_ = std::make_shared<RenderBuffer>(width,height);
 //
 //    fbo_->bindRenderBuffer(rbo_);
 //    fbo_->bindTexture(textureToRender_);
 //
 //    renderer_->setOutput(fbo_);
 }
+CFENGINE_RENDER_END

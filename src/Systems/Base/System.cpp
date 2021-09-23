@@ -1,14 +1,16 @@
 #include "System.h"
 
+CFENGINE_RENDER_START
 
-CFEngineRender::System::System():GL(){
-
-}
-
-void CFEngineRender::System::configure(entt::registry &registry) {
+System::System():GL(){
 
 }
 
-std::shared_ptr<CFEngineRender::Renderer> CFEngineRender::System::update(entt::registry &registry, float dt) {
+void System::configure(entt::registry &registry) {
+
+}
+
+std::shared_ptr<Renderer> System::update(entt::registry &registry, float dt) {
     return nullptr;
 }
+CFENGINE_RENDER_END

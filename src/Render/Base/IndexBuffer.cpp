@@ -4,8 +4,9 @@
 
 #include "IndexBuffer.h"
 
+CFENGINE_RENDER_START
 
-CFEngineRender::IndexBuffer::IndexBuffer(std::vector<unsigned int>& indices) : GLResource(){
+IndexBuffer::IndexBuffer(std::vector<unsigned int>& indices) : GLResource(){
     vertex_count_ = indices.size();
     glGenBuffers(1, &handle_);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, handle_);
@@ -14,11 +15,13 @@ CFEngineRender::IndexBuffer::IndexBuffer(std::vector<unsigned int>& indices) : G
     std::cout << "----------IndexBuffer()--" << handle_ << std::endl;
 }
 
-unsigned int CFEngineRender::IndexBuffer::vertexCount() {
+unsigned int IndexBuffer::vertexCount() {
     return vertex_count_;
 }
 
-CFEngineRender::IndexBuffer::~IndexBuffer() {
+IndexBuffer::~IndexBuffer() {
     std::cout << "~IndexBuffer()--" << handle_ << std::endl;
     glDeleteBuffers(1, &handle_);
 }
+
+CFENGINE_RENDER_END

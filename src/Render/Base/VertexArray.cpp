@@ -7,35 +7,37 @@
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
 
-CFEngineRender::VertexArray::VertexArray(): GLResource() {
+CFENGINE_RENDER_START
+VertexArray::VertexArray(): GLResource() {
     glGenVertexArrays(1, &handle_);
     glBindVertexArray(handle_);
     std::cout << "----------VertexArray()--" << handle_ << std::endl;
 }
 
-void CFEngineRender::VertexArray::use() {
+void VertexArray::use() {
     glBindVertexArray(handle_);
 }
 
-void CFEngineRender::VertexArray::bindVertexBuffer(std::shared_ptr<VertexBuffer> vertexBuffer) {
+void VertexArray::bindVertexBuffer(std::shared_ptr<VertexBuffer> vertexBuffer) {
     vbo_ = vertexBuffer;
     glBindVertexArray(handle_);
     glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer->handle());
     glBindVertexArray(0);
 }
 
-void CFEngineRender::VertexArray::bindIndexBuffer(std::shared_ptr<IndexBuffer> indexBuffer) {
+void VertexArray::bindIndexBuffer(std::shared_ptr<IndexBuffer> indexBuffer) {
     ibo_ = indexBuffer;
     glBindVertexArray(handle_);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer->handle());
     glBindVertexArray(0);
 }
 
-unsigned int CFEngineRender::VertexArray::vertexCount() {
+unsigned int VertexArray::vertexCount() {
     return ibo_->vertexCount();
 }
 
-CFEngineRender::VertexArray::~VertexArray() {
+VertexArray::~VertexArray() {
     std::cout << "~VertexArray()--" << handle_ << std::endl;
     glDeleteVertexArrays(1, &handle_);
 }
+CFENGINE_RENDER_END

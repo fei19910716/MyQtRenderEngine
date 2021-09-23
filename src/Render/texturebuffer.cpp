@@ -8,23 +8,25 @@
 
 #include "Utils/RenderUtils.h"
 
-CFEngineRender::TextureBuffer *CFEngineRender::TextureBuffer::instance()
+CFENGINE_RENDER_START
+
+TextureBuffer *TextureBuffer::instance()
 {
     static TextureBuffer m_instance;
     return &m_instance;
 }
 
-void CFEngineRender::TextureBuffer::createTexture(QOpenGLContext *context)
+void TextureBuffer::createTexture(QOpenGLContext *context)
 {
     context->functions()->glGenTextures(1, &m_texture);
 }
 
-void CFEngineRender::TextureBuffer::deleteTexture(QOpenGLContext *context) {
+void TextureBuffer::deleteTexture(QOpenGLContext *context) {
 
     context->functions()->glDeleteTextures(1,&m_texture);
 }
 
-void CFEngineRender::TextureBuffer::updateTexture(QOpenGLContext *context, int width, int height) {
+void TextureBuffer::updateTexture(QOpenGLContext *context, int width, int height) {
 
     QMutexLocker locker(&m_mutex);
     //! 拷贝当前fbo中的纹理到m_texture中
@@ -44,13 +46,13 @@ void CFEngineRender::TextureBuffer::updateTexture(QOpenGLContext *context, int w
     }
 }
 
-void CFEngineRender::TextureBuffer::updateTexture(QOpenGLContext *context, int textureID) {
+void TextureBuffer::updateTexture(QOpenGLContext *context, int textureID) {
 
     QMutexLocker locker(&m_mutex);
     m_texture=textureID;
 }
 
-void CFEngineRender::TextureBuffer::drawTexture(QOpenGLContext *context, int vertexCount) {
+void TextureBuffer::drawTexture(QOpenGLContext *context, int vertexCount) {
 
     QMutexLocker locker(&m_mutex);
 
@@ -72,10 +74,11 @@ void CFEngineRender::TextureBuffer::drawTexture(QOpenGLContext *context, int ver
     }
 }
 
-CFEngineRender::TextureBuffer::TextureBuffer():m_texture(0) {
+TextureBuffer::TextureBuffer():m_texture(0) {
 
 }
 
-CFEngineRender::TextureBuffer::~TextureBuffer() {
+TextureBuffer::~TextureBuffer() {
 
 }
+CFENGINE_RENDER_END
