@@ -7,7 +7,7 @@
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
 
-CFENGINE_RENDER_START
+namespace render{
 VertexArray::VertexArray(): GLResource() {
     glGenVertexArrays(1, &handle_);
     glBindVertexArray(handle_);
@@ -40,4 +40,4 @@ VertexArray::~VertexArray() {
     std::cout << "~VertexArray()--" << handle_ << std::endl;
     glDeleteVertexArrays(1, &handle_);
 }
-CFENGINE_RENDER_END
+}

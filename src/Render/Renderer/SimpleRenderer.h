@@ -11,7 +11,7 @@
 
 #include <vector>
 
-CFENGINE_RENDER_START
+namespace render{
 
 class VertexArray;
 class ShaderProgram;
@@ -83,16 +83,16 @@ public:
 
 protected:
 //    std::shared_ptr<VertexArray> vao_;
-//    std::shared_ptr<CFEngineRender::ShaderProgram> shader_;
+//    std::shared_ptr<render::ShaderProgram> shader_;
 //
     /**
      * 两个shader和两个vao，一个用于渲染input,一个渲染三角形等 TODO合并成一个draw call
      */
     std::vector<std::shared_ptr<VertexArray>> vao_;
-    std::vector<std::shared_ptr<CFEngineRender::ShaderProgram>> shader_;
+    std::vector<std::shared_ptr<render::ShaderProgram>> shader_;
 
     const std::string DEFAULT_INPUT_TEXTURE_NAME = "u_texture";
 };
 
-CFENGINE_RENDER_END
+}
 #endif //CFRENDERENGINE_SIMPLERENDERER_H

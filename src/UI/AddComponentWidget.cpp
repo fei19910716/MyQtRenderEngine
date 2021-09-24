@@ -15,7 +15,7 @@ AddComponentWidget::AddComponentWidget(QWidget *parent)
     pMainLayout->setAlignment(Qt::AlignTop);
     setWindowFlags(windowFlags() | Qt::FramelessWindowHint);
 
-    for(auto& item: CFEngineRender::ComponentManager::componentDescriptions()){
+    for(auto& item: render::ComponentManager::componentDescriptions()){
         QPushButton* com = new QPushButton(this);
         com->setText(item.second->label_);
         User *user = new User;

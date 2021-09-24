@@ -4,10 +4,9 @@
 
 #include <vector>
 
-#include "Core/Core.h"
 #include "Components/ComponentManager.h"
 
-CFENGINE_RENDER_START
+namespace render{
 class RenderQueue;
 class System;
 class FrameBuffer;
@@ -41,4 +40,4 @@ public:
     std::shared_ptr<Texture> textureToDisplay_,textureToRender_,textureToDelete_;
 };
 
-CFENGINE_RENDER_END
+}

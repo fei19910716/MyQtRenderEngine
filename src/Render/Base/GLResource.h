@@ -4,7 +4,7 @@
 #include "Core/GL.h"
 #include <iostream>
 
-CFENGINE_RENDER_START
+namespace render{
 class GLResource : public GL{
 public:
     GLResource();
@@ -15,5 +15,5 @@ protected:
     unsigned int handle_;
 };
 
-CFENGINE_RENDER_END
+}
 #endif //CFRENDERENGINE_GLRESOURCE_H

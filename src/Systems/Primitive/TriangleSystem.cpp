@@ -15,7 +15,7 @@
 #include "Utils/RenderUtils.h"
 #include "Core/glm.h"
 
-CFENGINE_RENDER_START
+namespace render{
 std::shared_ptr<Renderer> TriangleSystem::update(entt::registry &registry, float dt){
 
     auto view = registry.view<Triangle>();
@@ -66,4 +66,4 @@ std::shared_ptr<Renderer> TriangleSystem::update(entt::registry &registry, float
 TriangleSystem::TriangleSystem():System() {
 
 }
-CFENGINE_RENDER_END
+}

@@ -13,7 +13,7 @@
 #include "Systems/Primitive/TriangleSystem.h"
 #include "Systems/Primitive/QuadSystem.h"
 
-CFENGINE_RENDER_START
+namespace render{
 
 RenderEngine::RenderEngine():textureToRender_(nullptr),textureToDisplay_(nullptr),textureToDelete_(nullptr){
 
@@ -110,4 +110,4 @@ void RenderEngine::setRenderSize(int width,int height){
 //
 //    renderer_->setOutput(fbo_);
 }
-CFENGINE_RENDER_END
+}

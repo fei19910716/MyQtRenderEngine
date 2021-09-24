@@ -1,6 +1,6 @@
 #include "GLResource.h"
 
-CFENGINE_RENDER_START
+namespace render{
 unsigned int GLResource::handle() const {
     return handle_;
 }
@@ -13,4 +13,4 @@ bool GLResource::valid() {
     return handle_ != 0;
 }
 
-CFENGINE_RENDER_END
+}

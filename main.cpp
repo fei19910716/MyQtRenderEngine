@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
     glFormat.setProfile(QSurfaceFormat :: CoreProfile);
     QSurfaceFormat :: setDefaultFormat(glFormat);
 #endif
-    CFEngineRender::ComponentManager::registerComponentDescriptions();
+    render::ComponentManager::registerComponentDescriptions();
     MainWindow w;
     w.show();
 

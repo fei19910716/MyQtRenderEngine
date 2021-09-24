@@ -7,7 +7,7 @@
 
 #include "GLResource.h"
 
-CFENGINE_RENDER_START
+namespace render{
 
 class RenderBuffer : public GLResource{
 
@@ -20,5 +20,5 @@ private:
 
 };
 
-CFENGINE_RENDER_END
+}
 #endif //CFRENDERENGINE_RENDERBUFFER_H

@@ -8,9 +8,7 @@
 
 #include <optional>
 
-#include "Core/Core.h"
-
-CFENGINE_RENDER_START
+namespace render{
 
 #define COMPONENT_PROPERTY(Type,fname,name,value) \
 Q_PROPERTY(Type name READ name WRITE set##fname)\
@@ -26,7 +24,7 @@ Type name##_ = value;
 
 
 #define REGISTER_COMPONENT_DESCRIPTION(x) \
-auto x##_ptr = std::make_pair(ComponentType::k##x,CFEngineRender::x::MakeComponentDescription());\
+auto x##_ptr = std::make_pair(ComponentType::k##x,render::x::MakeComponentDescription());\
 allComponentDescriptions_.insert(x##_ptr);
 
 enum ComponentGroup{
@@ -143,6 +141,6 @@ public:
 
 };
 
-CFENGINE_RENDER_END
+}
 
 #endif // COMPONENTS_H

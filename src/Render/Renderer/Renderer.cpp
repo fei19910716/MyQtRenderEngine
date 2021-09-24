@@ -4,7 +4,7 @@
 
 #include "Renderer.h"
 
-CFENGINE_RENDER_START
+namespace render{
 Renderer::Renderer() {
 
 }
@@ -59,4 +59,4 @@ void Renderer::setRenderSize(unsigned int width, unsigned int height) {
     render_width_ = width;
     render_height_ = height;
 }
-CFENGINE_RENDER_END
+}

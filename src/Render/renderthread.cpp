@@ -6,7 +6,7 @@
 #include "Utils/RenderUtils.h"
 #include "Render/Graph/RenderQueue.h"
 
-CFENGINE_RENDER_START
+namespace render{
 RenderThread::~RenderThread() {
 
 }
@@ -68,4 +68,4 @@ void RenderThread::setRenderSize(int width, int height)
     m_width = width;
     m_height = height;
 }
-CFENGINE_RENDER_END
+}

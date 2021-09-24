@@ -6,7 +6,7 @@
 #define CFRENDERENGINE_GRAPHNODE_H
 
 #include "Render/Renderer/Renderer.h"
-CFENGINE_RENDER_START
+namespace render{
 
 /**
  * 都renderer的封装，用于构建render graph
@@ -31,7 +31,7 @@ public:
    * @param frame_buffer 输入 frame buffer
    *
    */
-    void addInput(std::shared_ptr<CFEngineRender::FrameBuffer> frame_buffer);
+    void addInput(std::shared_ptr<render::FrameBuffer> frame_buffer);
 
     /**
    *
@@ -40,13 +40,13 @@ public:
    * @param frame_buffers 输入 frame buffers
    *
    */
-    void addInput(std::vector<std::shared_ptr<CFEngineRender::FrameBuffer>>& frame_buffers);
+    void addInput(std::vector<std::shared_ptr<render::FrameBuffer>>& frame_buffers);
 
     std::vector<std::shared_ptr<GraphNode>>& nextNodes();
     std::shared_ptr<Renderer> renderer();
     unsigned int layer();
     void setLayer(unsigned int layer);
-    std::vector<std::shared_ptr<CFEngineRender::FrameBuffer>>& input();
+    std::vector<std::shared_ptr<render::FrameBuffer>>& input();
     bool enable();
 private:
     /**
@@ -64,5 +64,5 @@ private:
     unsigned int layer_;
 };
 
-CFENGINE_RENDER_END
+}
 #endif //CFRENDERENGINE_GRAPHNODE_H

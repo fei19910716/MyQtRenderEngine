@@ -1,8 +1,9 @@
 #pragma once
 
-#include "Core.h"
 #include <QOpenGLFunctions_3_3_Core>
-CFENGINE_RENDER_START
+
+namespace render{
+
 class GL: public QOpenGLFunctions_3_3_Core{
 public:
     GL();
@@ -17,4 +18,4 @@ void GLClearError(QOpenGLContext *context);
 
 bool GLLogCall(const char* function, const char* file, int line, QOpenGLContext *context);
 
-CFENGINE_RENDER_END
+}

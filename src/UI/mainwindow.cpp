@@ -188,7 +188,7 @@ void MainWindow::constructEntityPanel(){
     this->constructEntityTreeMenu();
 
     connect(ui->entityTreeWidget,&QTreeWidget::itemClicked,[=](QTreeWidgetItem *item){
-        auto entity = item->data(0,Qt::UserRole).value<CFEntity*>();
+        auto entity = item->data(0,Qt::UserRole).value<render::Entity*>();
 
         this->onDisplayComponents(entity);
 
@@ -231,7 +231,7 @@ void MainWindow::constructEntityTreeMenu(){
     treeItemContextMenu_->addAction(m_delAction);
 
     connect(m_addAction,&QAction::triggered,[=]{
-        auto entity = EntityManager::createEntity("001","GameObejct");
+        auto entity = render::EntityManager::createEntity("001","GameObejct");
         QTreeWidgetItem* item = this->buildTreeItemFromEntity(entity);
 
         QTreeWidgetItem* root = ui->entityTreeWidget->topLevelItem(0);
@@ -243,15 +243,15 @@ void MainWindow::constructEntityTreeMenu(){
         root->setExpanded(true);
         item->setSelected(true);
         ui->entityTreeWidget->setCurrentItem(item);
-        auto ent = item->data(0,Qt::UserRole).value<CFEntity*>();
+        auto ent = item->data(0,Qt::UserRole).value<render::Entity*>();
         this->onDisplayComponents(ent);
         // render
         ui->renderView->requestRender();
     });
     connect(m_delAction,&QAction::triggered,[=]{
         QTreeWidgetItem* curItem = ui->entityTreeWidget->currentItem();
-        auto entity = curItem->data(0,Qt::UserRole).value<CFEntity*>();
-        EntityManager::deleteEntity(entity);
+        auto entity = curItem->data(0,Qt::UserRole).value<render::Entity*>();
+        render::EntityManager::deleteEntity(entity);
 
         if(curItem->parent() == nullptr){
             ui->entityTreeWidget->clear();
@@ -261,7 +261,7 @@ void MainWindow::constructEntityTreeMenu(){
             parent->removeChild(curItem);
             parent->setSelected(true);
             ui->entityTreeWidget->setCurrentItem(parent);
-            auto entity = parent->data(0,Qt::UserRole).value<CFEntity*>();
+            auto entity = parent->data(0,Qt::UserRole).value<render::Entity*>();
             this->onDisplayComponents(entity);
         }
 
@@ -270,7 +270,7 @@ void MainWindow::constructEntityTreeMenu(){
         ui->renderView->requestRender();
     });
     connect(m_childAction,&QAction::triggered,[=]{
-        auto entity = EntityManager::createEntity("001","GameObejct");
+        auto entity = render::EntityManager::createEntity("001","GameObejct");
 
         QTreeWidgetItem* curItem = ui->entityTreeWidget->currentItem();
         QTreeWidgetItem* item = this->buildTreeItemFromEntity(entity);
@@ -278,7 +278,7 @@ void MainWindow::constructEntityTreeMenu(){
         curItem->setExpanded(true);
         item->setSelected(true);
         ui->entityTreeWidget->setCurrentItem(item);
-        auto ent = item->data(0,Qt::UserRole).value<CFEntity*>();
+        auto ent = item->data(0,Qt::UserRole).value<render::Entity*>();
         this->onDisplayComponents(ent);
 
         // render
@@ -288,7 +288,7 @@ void MainWindow::constructEntityTreeMenu(){
 }
 
 void MainWindow::rebuildEntityTree(){
-    auto root = EntityManager::root();
+    auto root = render::EntityManager::root();
     if(!root->valid()) {
         ui->entityTreeWidget->clear();
         return;
@@ -311,18 +311,18 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-QTreeWidgetItem *MainWindow::buildTreeItemFromEntity(CFEntity* entity)
+QTreeWidgetItem *MainWindow::buildTreeItemFromEntity(render::Entity* entity)
 {
     QTreeWidgetItem* item = new QTreeWidgetItem();
 
-    auto metaInfo = entity->component<CFEngineRender::EntityInfo>();
-    item->setData(0,Qt::UserRole,QVariant::fromValue<CFEntity*>(entity));
+    auto metaInfo = entity->component<render::EntityInfo>();
+    item->setData(0,Qt::UserRole,QVariant::fromValue<render::Entity*>(entity));
     item->setText(0,metaInfo->label_);
     item->setFlags(item->flags() | Qt::ItemIsEditable);
     return item;
 }
 
-QTreeWidgetItem *MainWindow::buildRootTreeItem(CFEntity* entity)
+QTreeWidgetItem *MainWindow::buildRootTreeItem(render::Entity* entity)
 {
     QTreeWidgetItem* rootItem = buildTreeItemFromEntity(entity);
 
@@ -345,27 +345,27 @@ void MainWindow::onAddComponent(QObject* sender) {
 
     if(curItem == nullptr)
         return;
-    auto entity = curItem->data(0,Qt::UserRole).value<CFEntity*>();
+    auto entity = curItem->data(0,Qt::UserRole).value<render::Entity*>();
 
     QPushButton *btn = qobject_cast<QPushButton*>(sender);
 
     AddComponentWidget::User* pUser = (AddComponentWidget::User *)btn->userData(Qt::UserRole+1);
-    EntityManager::addComponentWithType(entity,pUser->type_);
+    render::EntityManager::addComponentWithType(entity,pUser->type_);
 
     this->onDisplayComponents(entity);
     // render
     ui->renderView->requestRender();
 }
 
-void MainWindow::onDisplayComponents(CFEntity* entity){
+void MainWindow::onDisplayComponents(render::Entity* entity){
     //! 设置组件面板
     if(!entity->valid())
         return;
     ui->componentListWidget->clear();
-    for(auto& com : EntityManager::allComponents(entity)){
+    for(auto& com : render::EntityManager::allComponents(entity)){
         if(com == nullptr)
             continue;
-        auto uiCom = dynamic_cast<CFEngineRender::UIComponent*>(com);
+        auto uiCom = dynamic_cast<render::UIComponent*>(com);
         if(uiCom == nullptr)
             continue;
         int count = uiCom->propertyDescriptions_.size();
@@ -380,9 +380,9 @@ void MainWindow::onDisplayComponents(CFEntity* entity){
         ui->componentListWidget->setItemWidget(item,cw);
 
 
-        connect(cw, &ComponentWidget::componentChanged,[=](CFEngineRender::Component* component){
+        connect(cw, &ComponentWidget::componentChanged,[=](render::Component* component){
             QTreeWidgetItem* curItem = ui->entityTreeWidget->currentItem();
-            auto entity = curItem->data(0,Qt::UserRole).value<CFEntity*>();
+            auto entity = curItem->data(0,Qt::UserRole).value<render::Entity*>();
             
             // this->onDisplayComponents(entity);
             ui->renderView->requestRender();

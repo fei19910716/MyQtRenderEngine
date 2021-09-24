@@ -19,43 +19,43 @@ public:
      * @param component 当前需要构建UI的组件
      * @param parent 父窗口，一般为null
      */
-    explicit ComponentWidget(QListWidgetItem* item, CFEngineRender::UIComponent* component, QWidget *parent = nullptr);
+    explicit ComponentWidget(QListWidgetItem* item, render::UIComponent* component, QWidget *parent = nullptr);
 
     /**
      * 构建组件的enum属性的UI
      *
      * @param metaProperty 组件的元属性
      */
-    void constructEnum(std::shared_ptr<CFEngineRender::ComponentPropertyDescription> property);
+    void constructEnum(std::shared_ptr<render::ComponentPropertyDescription> property);
 
     /**
      * 构建组件的color属性的UI
      *
      * @param metaProperty 组件的元属性
      */
-    void constructColor(std::shared_ptr<CFEngineRender::ComponentPropertyDescription> property);
+    void constructColor(std::shared_ptr<render::ComponentPropertyDescription> property);
 
     /**
      * 构建组件的bool属性的UI
      *
      * @param metaProperty 组件的元属性
      */
-    void constructBool(std::shared_ptr<CFEngineRender::ComponentPropertyDescription> property);
+    void constructBool(std::shared_ptr<render::ComponentPropertyDescription> property);
 
     /**
      * 构建组件的一般属性的UI，比如：QString
      *
      * @param metaProperty 组件的元属性
      */
-    void constructNormal(std::shared_ptr<CFEngineRender::ComponentPropertyDescription> property);
+    void constructNormal(std::shared_ptr<render::ComponentPropertyDescription> property);
 
 private:
     QVBoxLayout* mainLayout_;
-    CFEngineRender::UIComponent* component_;
+    render::UIComponent* component_;
     QListWidgetItem* item_;
 
 signals:
-    void componentChanged(CFEngineRender::UIComponent* component);
+    void componentChanged(render::UIComponent* component);
 
 public slots:
 };

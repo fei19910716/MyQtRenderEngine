@@ -5,7 +5,7 @@
 #include "Core/GL.h"
 #include "Render/Renderer/Renderer.h"
 
-CFENGINE_RENDER_START
+namespace render{
 
 class System:public GL{
 public:
@@ -17,4 +17,4 @@ public:
 
 };
 
-CFENGINE_RENDER_END
+}

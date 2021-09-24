@@ -10,9 +10,8 @@
 
 #include "RenderEngine.h"
 #include "TextureBuffer.h"
-#include "Core/Core.h"
 
-CFENGINE_RENDER_START
+namespace render{
 
 class RenderThread : public QThread
 {
@@ -50,5 +49,5 @@ public:
     bool m_requestRender = false;
     RenderEngine* m_renderEngine= nullptr;
 };
-CFENGINE_RENDER_END
+}
 #endif // RENDERTHREAD_H

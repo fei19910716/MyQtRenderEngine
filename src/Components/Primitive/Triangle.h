@@ -7,7 +7,7 @@
 #include "Components/Base/UIComponent.h"
 #include "Components/ComponentManager.h"
 
-CFENGINE_RENDER_START
+namespace render{
 
 class Triangle: public UIComponent{
     Q_OBJECT
@@ -38,7 +38,7 @@ public:
     }
 
     void MakeComponentPropertyDescriptions() override{
-        // 
+        //
         ComponentPropertyDescription* name = new ComponentPropertyDescription("name","name");
         name->type_ = ComponentPropertyType::kString;
         name->editable_ = false;
@@ -69,4 +69,4 @@ public:
 
 signals:
 };
-CFENGINE_RENDER_END
+}

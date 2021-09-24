@@ -8,7 +8,7 @@
 #include "GraphNode.h"
 #include "Render/Renderer/Renderer.h"
 
-CFENGINE_RENDER_START
+namespace render{
 class RenderGraph: public Renderer, public std::enable_shared_from_this<RenderGraph> {
 public:
     RenderGraph();
@@ -80,9 +80,9 @@ protected:
      */
     void genNodeList();
 
-    void traverseLayer(const std::function<void(std::shared_ptr<CFEngineRender::GraphNode>)>& node_processor);
+    void traverseLayer(const std::function<void(std::shared_ptr<render::GraphNode>)>& node_processor);
 
-    std::shared_ptr<CFEngineRender::FrameBuffer> renderByLayer();
+    std::shared_ptr<render::FrameBuffer> renderByLayer();
 
 protected:
     /**
@@ -97,11 +97,11 @@ protected:
     /**
      * DFS或者 BFS获得的render graph所有的node列表，依次进行渲染
      */
-    std::shared_ptr<std::list<std::shared_ptr<CFEngineRender::GraphNode>>> node_list_;
+    std::shared_ptr<std::list<std::shared_ptr<render::GraphNode>>> node_list_;
 
     bool debug_ = true;
 
 };
 
-CFENGINE_RENDER_END
+}
 #endif //CFRENDERENGINE_RENDERGRAPH_H

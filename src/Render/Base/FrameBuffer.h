@@ -9,7 +9,7 @@
 
 #include "GLResource.h"
 
-CFENGINE_RENDER_START
+namespace render{
 
 class Texture;
 class RenderBuffer;
@@ -32,6 +32,6 @@ private:
     std::shared_ptr<RenderBuffer> rbo_;
 };
 
-CFENGINE_RENDER_END
+}
 
 #endif //CFRENDERENGINE_FRAMEBUFFER_H

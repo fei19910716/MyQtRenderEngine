@@ -11,7 +11,7 @@
 #include <queue>
 #include <unordered_set>
 
-CFENGINE_RENDER_START
+namespace render{
 RenderGraph::RenderGraph() {
 
 }
@@ -196,4 +196,4 @@ std::shared_ptr<Renderer> RenderGraph::renderer(std::string id) {
     }
     return nullptr;
 }
-CFENGINE_RENDER_END
+}

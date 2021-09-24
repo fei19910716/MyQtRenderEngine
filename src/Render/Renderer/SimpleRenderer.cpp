@@ -15,7 +15,7 @@
 
 #include "Render/Common/engine_common.h"
 
-CFENGINE_RENDER_START
+namespace render{
 SimpleRenderer::SimpleRenderer()
         : Renderer(),
           GL()
@@ -160,4 +160,4 @@ void SimpleRenderer::setUniformMat4(std::string key, glm::mat4& value) {
 void SimpleRenderer::setShaderProgram(std::shared_ptr<ShaderProgram> shaderProgram) {
     shader_ .push_back(shaderProgram);
 }
-CFENGINE_RENDER_END
+}

@@ -13,7 +13,7 @@
 #include "GLResource.h"
 #include "Core/glm.h"
 
-CFENGINE_RENDER_START
+namespace render{
 
     /**
     * 1、如果设置了mat uniform，但是没有传值，会导致渲染空白
@@ -66,5 +66,5 @@ private:
 
 };
 
-CFENGINE_RENDER_END
+}
 #endif //CFRENDERENGINE_CFSHADERPROGRAM_H

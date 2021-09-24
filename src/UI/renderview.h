@@ -62,7 +62,7 @@ public:
     /**
      * 渲染子线程，离屏渲染后共享纹理给UI线程上屏
      */
-    CFEngineRender::RenderThread* m_thread=nullptr;
+    render::RenderThread* m_thread=nullptr;
 
     QMutex lock_;
 };

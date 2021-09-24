@@ -3,7 +3,7 @@
 
 #include <vector>
 
-CFENGINE_RENDER_START
+namespace render{
 class EntityInfo: public Component
 {
     Q_OBJECT
@@ -22,4 +22,4 @@ public:
     ~EntityInfo(){}
 };
 
-CFENGINE_RENDER_END
+}

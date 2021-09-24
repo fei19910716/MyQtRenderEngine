@@ -4,7 +4,7 @@
 
 #include "ShaderProgram.h"
 #include <QDebug>
-CFENGINE_RENDER_START
+namespace render{
 ShaderProgram::ShaderProgram(std::string vertex, std::string fragment, bool fromPath): GLResource(){
     if(fromPath)
         this->fromPath(vertex,fragment);
@@ -209,5 +209,5 @@ ShaderProgram::~ShaderProgram() {
     std::cout << "~ShaderProgram()--" << handle_ << std::endl;
     glDeleteProgram(handle_);
 }
-CFENGINE_RENDER_END
+}
 

@@ -7,7 +7,7 @@
 
 #include "Render/Renderer/SimpleRenderer.h"
 
-CFENGINE_RENDER_START
+namespace render{
 class DisplayRenderer: public SimpleRenderer {
 public:
     DisplayRenderer();
@@ -33,5 +33,5 @@ protected:
     unsigned int display_width_, display_height_;
 };
 
-CFENGINE_RENDER_END
+}
 #endif //CFRENDERENGINE_DISPLAYRENDERER_H

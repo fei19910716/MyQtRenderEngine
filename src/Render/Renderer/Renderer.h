@@ -12,7 +12,7 @@
 
 #include "Render/Base/FrameBuffer.h"
 
-CFENGINE_RENDER_START
+namespace render{
 /**
  * 渲染基类，抽象renderer的特征： id, parent_id_, 输入， 输出，具体怎样渲染，用shader渲染还是... 由子类实现
  */
@@ -28,23 +28,23 @@ public:
      * 添加一个输入
      * @param frame_buffer 输入 frame buffer
      */
-    void setInput(std::shared_ptr<CFEngineRender::FrameBuffer> frame_buffer);
+    void setInput(std::shared_ptr<render::FrameBuffer> frame_buffer);
     /**
      * 添加一组输入
      * @param frame_buffers 输入 frame buffers
      */
-    void setInput(std::vector<std::shared_ptr<CFEngineRender::FrameBuffer>> frame_buffers);
+    void setInput(std::vector<std::shared_ptr<render::FrameBuffer>> frame_buffers);
     /**
      * 设置输出
      * @param frame_buffer 输出 frame_buffer
      */
-    void setOutput(std::shared_ptr<CFEngineRender::FrameBuffer> frame_buffer);
+    void setOutput(std::shared_ptr<render::FrameBuffer> frame_buffer);
     /**
      * 获取输出
      * @return 输出 frame buffer
      */
-    std::shared_ptr<CFEngineRender::FrameBuffer> output();
-    std::vector<std::shared_ptr<CFEngineRender::FrameBuffer>>& input();
+    std::shared_ptr<render::FrameBuffer> output();
+    std::vector<std::shared_ptr<render::FrameBuffer>>& input();
     /**
      * 渲染
      */
@@ -85,9 +85,9 @@ protected:
     unsigned int render_width_;
     unsigned int render_height_;
 
-    std::vector<std::shared_ptr<CFEngineRender::FrameBuffer>> input_;
-    std::shared_ptr<CFEngineRender::FrameBuffer> output_;
+    std::vector<std::shared_ptr<render::FrameBuffer>> input_;
+    std::shared_ptr<render::FrameBuffer> output_;
 };
 
-CFENGINE_RENDER_END
+}
 #endif //CFRENDERENGINE_RENDERER_H

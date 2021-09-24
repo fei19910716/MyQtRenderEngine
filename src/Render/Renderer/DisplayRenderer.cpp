@@ -4,7 +4,7 @@
 
 #include "DisplayRenderer.h"
 
-CFENGINE_RENDER_START
+namespace render{
 DisplayRenderer::DisplayRenderer() : display_width_(0), display_height_(0) {
 
 }
@@ -27,4 +27,4 @@ void DisplayRenderer::setDisplaySize(unsigned int width, unsigned int height) {
     this->display_height_ = height;
 }
 
-CFENGINE_RENDER_END
+}

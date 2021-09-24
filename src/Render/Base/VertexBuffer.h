@@ -8,7 +8,7 @@
 #include <cstdint>
 #include "GLResource.h"
 
-CFENGINE_RENDER_START
+namespace render{
 struct Attribute{
     enum Enum{
         Position,
@@ -91,5 +91,5 @@ public:
 
 };
 
-CFENGINE_RENDER_END
+}
 #endif //CFRENDERENGINE_VERTEXBUFFER_H

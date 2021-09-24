@@ -6,15 +6,17 @@
 #include "Components/Primitive/Triangle.h"
 #include <Components/Primitive/Quad.h>
 
-CFEntity* EntityManager::root_ = nullptr;
+namespace render{
 
-CFEntity* EntityManager::createEntity(QString entityId, QString name, CFEntity* parent){
+Entity* EntityManager::root_ = nullptr;
+
+Entity* EntityManager::createEntity(QString entityId, QString name, Entity* parent){
     if(!root_ || !root_->valid()){
-        root_ = new CFEntity(entityId,name);
+        root_ = new Entity(entityId,name);
         return root_;
     }
 
-    auto entity = new CFEntity(entityId,name);
+    auto entity = new Entity(entityId,name);
     if(parent == nullptr){
         entity->parent_ = root_;
         root_->addChild(entity);
@@ -25,23 +27,23 @@ CFEntity* EntityManager::createEntity(QString entityId, QString name, CFEntity* 
     return entity;
 }
 
-void EntityManager::deleteEntity(CFEntity* entity){
+void EntityManager::deleteEntity(Entity* entity){
     if(entity->parent_)
         entity->parent_->removeChild(entity);
     delete entity;
 }
 
-CFEntity* EntityManager::root(){
+Entity* EntityManager::root(){
     return root_;
 }
 
-bool EntityManager::addComponentWithType(CFEntity *entity, CFEngineRender::ComponentType type) {
+bool EntityManager::addComponentWithType(Entity *entity, render::ComponentType type) {
     switch(type){
-        case CFEngineRender::ComponentType::kTriangle:
-            entity->addComponent<CFEngineRender::Triangle>();
+        case render::ComponentType::kTriangle:
+            entity->addComponent<render::Triangle>();
             break;
-        case CFEngineRender::ComponentType::kQuad:
-            entity->addComponent<CFEngineRender::Quad>();
+        case render::ComponentType::kQuad:
+            entity->addComponent<render::Quad>();
             break;
         default:
             assert(false);
@@ -49,15 +51,16 @@ bool EntityManager::addComponentWithType(CFEntity *entity, CFEngineRender::Compo
     return true;
 }
 
-std::vector<CFEngineRender::Component *> EntityManager::allComponents(CFEntity *entity) {
+std::vector<render::Component *> EntityManager::allComponents(Entity *entity) {
     //TODO 这里需要注册所有的component
     auto com = ENTT::registry.try_get<
-            CFEngineRender::EntityInfo,
-            CFEngineRender::Triangle,
-            CFEngineRender::Quad>(entity->entity_);
+            render::EntityInfo,
+            render::Triangle,
+            render::Quad>(entity->entity_);
 
-    std::vector<CFEngineRender::Component*> components;
+    std::vector<render::Component*> components;
     allComponentsGetter(components,com);
 
     return components;
+}
 }

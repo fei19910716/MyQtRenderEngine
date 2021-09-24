@@ -9,7 +9,7 @@
 
 #include "GLResource.h"
 
-CFENGINE_RENDER_START
+namespace render{
 
 class IndexBuffer: public GLResource {
 public:
@@ -23,5 +23,5 @@ private:
 
 };
 
-CFENGINE_RENDER_END
+}
 #endif //CFRENDERENGINE_INDEXBUFFER_H

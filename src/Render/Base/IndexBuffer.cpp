@@ -4,7 +4,7 @@
 
 #include "IndexBuffer.h"
 
-CFENGINE_RENDER_START
+namespace render{
 
 IndexBuffer::IndexBuffer(std::vector<unsigned int>& indices) : GLResource(){
     vertex_count_ = indices.size();
@@ -24,4 +24,4 @@ IndexBuffer::~IndexBuffer() {
     glDeleteBuffers(1, &handle_);
 }
 
-CFENGINE_RENDER_END
+}

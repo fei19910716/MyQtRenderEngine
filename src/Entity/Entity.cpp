@@ -3,44 +3,47 @@
 //
 
 
-#include "CFEntity.h"
+#include "Entity.h"
 #include "Components/Base/EntityInfo.h"
 
-CFEntity::CFEntity() {
+namespace render{
+Entity::Entity() {
 
 }
 
-CFEntity::CFEntity(const CFEntity &other){
+Entity::Entity(const Entity &other){
 
 }
 
-CFEntity::CFEntity(QString entityId, QString name){
+Entity::Entity(QString entityId, QString name){
     entity_ = ENTT::registry.create();
-    ENTT::registry.emplace<CFEngineRender::EntityInfo>(entity_,entityId,name);
+    ENTT::registry.emplace<render::EntityInfo>(entity_,entityId,name);
 }
 
-CFEntity::~CFEntity() noexcept {
+Entity::~Entity() noexcept {
     for(auto& item: children_){
         ENTT::registry.destroy(item->entity_);
     }
     ENTT::registry.destroy(entity_);
 }
 
-bool CFEntity::valid(){
+bool Entity::valid(){
     return ENTT::registry.valid(entity_);
 }
 
-void CFEntity::addChild(CFEntity* child){
+void Entity::addChild(Entity* child){
     if(std::find(children_.begin(),children_.end(),child) == children_.end()){
         children_.push_back(child);
     }
 }
 
-void CFEntity::removeChild(CFEntity* child){
+void Entity::removeChild(Entity* child){
     for(auto ite = children_.begin(); ite !=children_.end(); ite++){
         if(*ite == child){
             children_.erase(ite);
             return;
         }
     }
+}
+
 }

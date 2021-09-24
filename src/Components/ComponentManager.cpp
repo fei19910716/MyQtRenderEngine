@@ -6,7 +6,7 @@
 #include "Components/Primitive/Triangle.h"
 #include "Components/Primitive/Quad.h"
 
-CFENGINE_RENDER_START
+namespace render{
 
 std::unordered_map<ComponentType,std::shared_ptr<ComponentDescription>> ComponentManager::allComponentDescriptions_;
 
@@ -26,4 +26,4 @@ std::unordered_map<ComponentType,std::shared_ptr<ComponentDescription>>& Compone
     return allComponentDescriptions_;
 }
 
-CFENGINE_RENDER_END
+}

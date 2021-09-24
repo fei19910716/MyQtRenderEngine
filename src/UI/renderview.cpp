@@ -126,7 +126,7 @@ void RenderView::paintGL()
 //        Utils::saveTextureToImage(this->context(),m_textureID,QSize(texture_w,texture_h),"D:\\GameEngine\\CFRenderEngine\\test_out.png"); // TODO 为什么这句中的f->glGetTexImage会crash？ 而下一句中不会crash？ ans: 因为传入的size和图片的size不一致
     }
 
-    CFEngineRender::TextureBuffer::instance()->drawTexture(this->context(), 6);
+    render::TextureBuffer::instance()->drawTexture(this->context(), 6);
 
     glBindVertexArray(0);
     m_program->release();
@@ -149,10 +149,10 @@ void RenderView::initRenderThread()
     renderSurface->create();
 
     context->doneCurrent();
-    m_thread = new CFEngineRender::RenderThread(renderSurface,context,this);
+    m_thread = new render::RenderThread(renderSurface,context,this);
     context->makeCurrent(mainSurface);
 
-    connect(m_thread,&CFEngineRender::RenderThread::imageReady, this, [this]() { update(); },Qt::QueuedConnection);
+    connect(m_thread,&render::RenderThread::imageReady, this, [this]() { update(); },Qt::QueuedConnection);
     m_thread->start();
 
     qDebug() << "GLWidget::initRenderThread() end";

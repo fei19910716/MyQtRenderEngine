@@ -7,7 +7,7 @@
 #include "Utils/RenderUtils.h"
 #include <QOpenGLContext>
 
-CFENGINE_RENDER_START
+namespace render{
 Texture::Texture(unsigned int width, unsigned int height): GLResource() {
 
     texture_width_ = width;
@@ -42,4 +42,4 @@ Texture::~Texture() {
     std::cout << "~Texture()--" << handle_ << std::endl;
     glDeleteTextures(1, &handle_);
 }
-CFENGINE_RENDER_END
+}

@@ -2,7 +2,7 @@
 #include "GL.h"
 #include <iostream>
 
-CFENGINE_RENDER_START
+namespace render{
 
 GL::GL(){
     initializeOpenGLFunctions();
@@ -23,5 +23,5 @@ bool GLLogCall(const char* function, const char* file, int line, QOpenGLContext 
     return true;
 }
 
-CFENGINE_RENDER_END
+}
 

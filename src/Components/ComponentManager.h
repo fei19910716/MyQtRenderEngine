@@ -12,7 +12,7 @@
 
 #include "Base/Component.h"
 
-CFENGINE_RENDER_START
+namespace render{
 
 class ComponentManager {
 public:
@@ -36,5 +36,5 @@ public:
 };
 
 
-CFENGINE_RENDER_END
+}
 #endif //CFRENDERENGINE_COMPONENTMANAGER_H

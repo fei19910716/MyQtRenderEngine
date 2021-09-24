@@ -3,7 +3,7 @@
 #include "Systems/Base/System.h"
 #include "Components/Primitive/Triangle.h"
 
-CFENGINE_RENDER_START
+namespace render{
 class TriangleSystem : public System{
 public:
 
@@ -16,4 +16,4 @@ private:
 
     QString fragmentShader_ = ":/shader/primitive/primitive.frag";
 };
-CFENGINE_RENDER_END
+}

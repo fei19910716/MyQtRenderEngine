@@ -7,7 +7,7 @@
 
 #include "GLResource.h"
 
-CFENGINE_RENDER_START
+namespace render{
 
 class Texture : public GLResource{
 public:
@@ -23,5 +23,5 @@ public:
     int texture_height_;
 };
 
-CFENGINE_RENDER_END
+}
 #endif //CFRENDERENGINE_TEXTURE_H

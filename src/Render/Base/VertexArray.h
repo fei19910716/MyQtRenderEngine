@@ -9,7 +9,7 @@
 
 #include "GLResource.h"
 
-CFENGINE_RENDER_START
+namespace render{
 
 class VertexBuffer;
 class IndexBuffer;
@@ -34,5 +34,5 @@ private:
 
 };
 
-CFENGINE_RENDER_END
+}
 #endif //CFRENDERENGINE_VERTEXARRAY_H

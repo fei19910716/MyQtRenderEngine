@@ -6,7 +6,7 @@
 
 #include <algorithm>
 
-CFENGINE_RENDER_START
+namespace render{
 GraphNode::GraphNode(std::shared_ptr<Renderer> renderer): renderer_(renderer) , layer_(0){
 
 }
@@ -50,4 +50,4 @@ bool GraphNode::enable() {
 void GraphNode::setLayer(unsigned int layer) {
     layer_ = layer;
 }
-CFENGINE_RENDER_END
+}

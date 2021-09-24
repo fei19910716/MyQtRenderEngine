@@ -7,7 +7,7 @@
 
 #include "RenderGraph.h"
 
-CFENGINE_RENDER_START
+namespace render{
 class RenderQueue: public RenderGraph {
 public:
     RenderQueue();
@@ -23,5 +23,5 @@ protected:
     std::string tail_renderer_id_;
 };
 
-CFENGINE_RENDER_END
+}
 #endif //CFRENDERENGINE_RENDERQUEUE_H

@@ -4,7 +4,7 @@
 
 #include "RenderBuffer.h"
 
-CFENGINE_RENDER_START
+namespace render{
 RenderBuffer::RenderBuffer(unsigned int width, unsigned int height):GLResource() {
     glGenRenderbuffers(1, &handle_);
     glBindRenderbuffer(GL_RENDERBUFFER, handle_);
@@ -17,4 +17,4 @@ RenderBuffer::~RenderBuffer() {
     std::cout << "~RenderBuffer()--" << handle_ << std::endl;
     glDeleteFramebuffers(1, &handle_);
 }
-CFENGINE_RENDER_END
+}

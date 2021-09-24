@@ -2,8 +2,8 @@
 // Created by fordchen on 2021/9/13.
 //
 
-#ifndef CFRENDERENGINE_CFENTITY_H
-#define CFRENDERENGINE_CFENTITY_H
+#ifndef CFRENDERENGINE_ENTITY_H
+#define CFRENDERENGINE_ENTITY_H
 
 #include <QObject>
 
@@ -11,18 +11,20 @@
 
 #include "Core/entityx.h"
 #include "Components/Base/Component.h"
-class CFEntity: public QObject {
+
+namespace render{
+class Entity: public QObject {
     Q_OBJECT
 public:
-    CFEntity();
-    CFEntity(const CFEntity &other);
-    explicit CFEntity(QString entityId, QString name);
-    ~CFEntity();
+    Entity();
+    Entity(const Entity &other);
+    explicit Entity(QString entityId, QString name);
+    ~Entity();
 
     bool valid();
 
-    void addChild(CFEntity* child);
-    void removeChild(CFEntity* child);
+    void addChild(Entity* child);
+    void removeChild(Entity* child);
 
     template<typename T>
     T* component(){
@@ -50,9 +52,9 @@ public:
 public:
     ENTTEntity entity_;
 
-    CFEntity* parent_ = nullptr;
-    std::vector<CFEntity*> children_;
+    Entity* parent_ = nullptr;
+    std::vector<Entity*> children_;
 };
 
-
-#endif //CFRENDERENGINE_CFENTITY_H
+}
+#endif //CFRENDERENGINE_ENTITY_H

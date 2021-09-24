@@ -4,7 +4,7 @@
 
 #include "RenderQueue.h"
 
-CFENGINE_RENDER_START
+namespace render{
 RenderQueue::RenderQueue() {
 
 }
@@ -46,6 +46,6 @@ void RenderQueue::connectRenderer(std::string preId, std::string curId) {
     }
     node_list_ = nullptr;
 }
-CFENGINE_RENDER_END
+}
 
 

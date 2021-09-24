@@ -8,7 +8,7 @@
 
 #include "Utils/RenderUtils.h"
 
-CFENGINE_RENDER_START
+namespace render{
 
 TextureBuffer *TextureBuffer::instance()
 {
@@ -81,4 +81,4 @@ TextureBuffer::TextureBuffer():m_texture(0) {
 TextureBuffer::~TextureBuffer() {
 
 }
-CFENGINE_RENDER_END
+}

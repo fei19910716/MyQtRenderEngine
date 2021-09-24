@@ -5,7 +5,7 @@
 #include <QTreeWidgetItem>
 #include <QDebug>
 
-#include "Entity/CFEntity.h"
+#include "Entity/Entity.h"
 
 class QListWidgetItem;
 class QPushButton;
@@ -31,7 +31,7 @@ public:
      *
      * @return 构建的QTreeWidgetItem
      */
-    QTreeWidgetItem* buildTreeItemFromEntity(CFEntity* entity);
+    QTreeWidgetItem* buildTreeItemFromEntity(render::Entity* entity);
 
     /**
      * 从一个entity来构建对象树，会递归调用buildTreeItemFromEntity
@@ -40,7 +40,7 @@ public:
      *
      * @return 顶层QTreeWidgetItem
      */
-    QTreeWidgetItem* buildRootTreeItem(CFEntity* entity);
+    QTreeWidgetItem* buildRootTreeItem(render::Entity* entity);
 
 
     /**
@@ -85,7 +85,7 @@ private slots:
      */
     void onShowTreeWidgetMenu(QPoint pos);
 
-    void onDisplayComponents(CFEntity* entity);
+    void onDisplayComponents(render::Entity* entity);
 
 private:
     Ui::MainWindow *ui;

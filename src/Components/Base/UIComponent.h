@@ -9,10 +9,10 @@
 #include <iostream>
 #include "Component.h"
 
-CFENGINE_RENDER_START
+namespace render{
 
 #define REGISTER_COMPONENT_AND_PROPERTY_DESCRIPTION(ClassName)\
-componentDescription_ = ComponentManager::componentDescriptionWithType(CFEngineRender::ComponentType::k##ClassName); \
+componentDescription_ = ComponentManager::componentDescriptionWithType(render::ComponentType::k##ClassName); \
 this->MakeComponentPropertyDescriptions();
 
 #define ARG_COUNTX(...)  A1X(__VA_ARGS__)
@@ -55,5 +55,5 @@ public:
 
 };
 
-CFENGINE_RENDER_END
+}
 #endif //CFRENDERENGINE_UICOMPONENT_H

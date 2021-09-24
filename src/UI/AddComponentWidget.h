@@ -13,7 +13,7 @@ class AddComponentWidget : public QWidget
     Q_OBJECT
 public:
     struct User : QObjectUserData {
-        CFEngineRender::ComponentType type_;
+        render::ComponentType type_;
     };
 
     explicit AddComponentWidget(QWidget *parent = nullptr);

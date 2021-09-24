@@ -7,7 +7,7 @@
 #include "Components/Base/UIComponent.h"
 #include "Components/ComponentManager.h"
 
-CFENGINE_RENDER_START
+namespace render{
 
 class Quad: public UIComponent{
 Q_OBJECT
@@ -25,7 +25,7 @@ public:
     }
 
     static std::shared_ptr<ComponentDescription> MakeComponentDescription(){
-        auto quad_ = std::make_shared<CFEngineRender::ComponentDescription>();
+        auto quad_ = std::make_shared<render::ComponentDescription>();
         quad_->type_ = ComponentType::kQuad;
         quad_->group_ = ComponentGroup::kPrimitive;
         quad_->label_ = "Quad";
@@ -64,4 +64,4 @@ public:
 
 signals:
 };
-CFENGINE_RENDER_END
+}

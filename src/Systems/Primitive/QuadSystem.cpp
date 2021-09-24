@@ -11,7 +11,7 @@
 #include "Render/Renderer/SimpleRenderer.h"
 #include "Utils/RenderUtils.h"
 
-CFENGINE_RENDER_START
+namespace render{
 std::shared_ptr<Renderer> QuadSystem::update(entt::registry &registry, float dt) {
 
     auto view = registry.view<Quad>();
@@ -59,4 +59,4 @@ std::shared_ptr<Renderer> QuadSystem::update(entt::registry &registry, float dt)
 QuadSystem::QuadSystem(): System() {
 
 }
-CFENGINE_RENDER_END
+}

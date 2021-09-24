@@ -3,7 +3,7 @@
 #include "Systems/Base/System.h"
 #include "Components/Primitive/Quad.h"
 
-CFENGINE_RENDER_START
+namespace render{
 class QuadSystem: public System{
 public:
     QuadSystem();
@@ -15,4 +15,4 @@ private:
 
     QString fragmentShader_ = ":/shader/primitive/primitive.frag";
 };
-CFENGINE_RENDER_END
+}
