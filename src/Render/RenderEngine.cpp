@@ -51,15 +51,14 @@ void RenderEngine::update(float dt){
 
     auto input = std::make_shared<FrameBuffer>();
     //auto texture = std::make_shared<Texture>("D:\\GameEngine\\CFRenderEngine\\asset\\image\\out1.png");
-    auto texture = std::make_shared<Texture>(400,600);
-    this->setRenderSize(texture->texture_width_,texture->texture_height_);
-    input->bindRenderBuffer(std::make_shared<RenderBuffer>(width_,height_));
+    auto texture = std::make_shared<Texture>(render_width_,render_height_);
+    input->bindRenderBuffer(std::make_shared<RenderBuffer>(render_width_,render_height_));
     input->bindTexture(texture);
 
     /**
      * fixme 为啥output的创建放在renderQueue的创建之前就会导致渲染空白的问题？
      */
-    auto output = std::make_shared<FrameBuffer>(width_,height_);
+    auto output = std::make_shared<FrameBuffer>(render_width_,render_height_);
     
     renderQueue->setInput(input);
     renderQueue->setOutput(output);
@@ -67,6 +66,7 @@ void RenderEngine::update(float dt){
     for (System *system : m_systems) {
         renderQueue->addRenderer(system->update(ENTT::registry, dt),std::to_string( i++));
     }
+    renderQueue->setRenderSize(render_width_,render_height_);
     renderQueue->render();
     // Utils::saveFBOToImage( renderQueue->output()->handle(),QSize(width_,height_), "D:\\GameEngine\\CFRenderEngine\\" + renderQueue->id() + ".png", QOpenGLContext::currentContext());
 //    unsigned int value = textureToDisplay_->handle();
@@ -78,11 +78,11 @@ void RenderEngine::update(float dt){
 }
 
 void RenderEngine::setRenderSize(int width,int height){
-    if(width_ == width && height_ == height){
+    if(render_width_ == width && render_height_ == height){
        return;
     }
-    width_ = width;
-    height_ = height;
+    render_width_ = width;
+    render_height_ = height;
 //    initializeOpenGLFunctions();
 
 //    // 创建纹理

@@ -11,8 +11,6 @@ IndexBuffer::IndexBuffer(std::vector<unsigned int>& indices) : GLResource(){
     glGenBuffers(1, &handle_);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, handle_);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(int) * indices.size(), indices.data(), GL_STATIC_DRAW);
-
-    std::cout << "----------IndexBuffer()--" << handle_ << std::endl;
 }
 
 unsigned int IndexBuffer::vertexCount() {
@@ -20,7 +18,6 @@ unsigned int IndexBuffer::vertexCount() {
 }
 
 IndexBuffer::~IndexBuffer() {
-    std::cout << "~IndexBuffer()--" << handle_ << std::endl;
     glDeleteBuffers(1, &handle_);
 }
 

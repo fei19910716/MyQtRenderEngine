@@ -43,8 +43,8 @@ public:
     QOpenGLContext* m_mainContext;
     QMutex m_mutex;
     QWaitCondition m_condition;
-    unsigned int m_width = 960;
-    unsigned int m_height = 1280;
+    unsigned int render_width_ = 960;
+    unsigned int render_height_ = 1280;
     bool  m_running = true;
     bool m_requestRender = false;
     RenderEngine* m_renderEngine= nullptr;

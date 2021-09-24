@@ -11,7 +11,6 @@ namespace render{
 VertexArray::VertexArray(): GLResource() {
     glGenVertexArrays(1, &handle_);
     glBindVertexArray(handle_);
-    std::cout << "----------VertexArray()--" << handle_ << std::endl;
 }
 
 void VertexArray::use() {
@@ -37,7 +36,6 @@ unsigned int VertexArray::vertexCount() {
 }
 
 VertexArray::~VertexArray() {
-    std::cout << "~VertexArray()--" << handle_ << std::endl;
     glDeleteVertexArrays(1, &handle_);
 }
 }

@@ -31,8 +31,8 @@ public:
     /**
      * 子线程初始的渲染尺寸
      */
-    int width_ = 960;
-    int height_ = 1280;
+    int render_width_ = 960;
+    int render_height_ = 1280;
 
     std::shared_ptr<RenderQueue> renderQueue;
     std::shared_ptr<RenderBuffer> rbo_;

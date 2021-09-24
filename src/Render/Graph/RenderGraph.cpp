@@ -98,7 +98,7 @@ std::shared_ptr<FrameBuffer> RenderGraph::renderByLayer() {
         if (node->enable()) {
             // TODO 更新当前节点的output，非终结节点从pool里获取FB，终结节点直接使用output_
             if (!node->nextNodes().empty()) {
-                auto fbo = std::make_shared<FrameBuffer>(400,600);
+                auto fbo = std::make_shared<FrameBuffer>(render_width_,render_height_);
                 node->renderer()->setOutput(fbo);
             } else if (output_ != nullptr) {
                 node->renderer()->setOutput(output_);

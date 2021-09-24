@@ -20,7 +20,6 @@ Texture::Texture(unsigned int width, unsigned int height): GLResource() {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glBindTexture(GL_TEXTURE_2D, 0);
 
-    std::cout << "----------Texture()--" << handle_ << std::endl;
 }
 
 void Texture::use(int unit) {
@@ -34,12 +33,9 @@ void Texture::setHandle(unsigned int value) {
 
 Texture::Texture(QString path) {
     handle_ = Utils::genTextureFromStbImage(path,&texture_width_,&texture_height_,QOpenGLContext::currentContext());
-
-    std::cout << "----------Texture()--" << handle_ << std::endl;
 }
 
 Texture::~Texture() {
-    std::cout << "~Texture()--" << handle_ << std::endl;
     glDeleteTextures(1, &handle_);
 }
 }

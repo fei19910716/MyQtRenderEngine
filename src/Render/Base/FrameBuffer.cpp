@@ -14,7 +14,6 @@ namespace render{
         else
             handle_ = 0;
 
-        std::cout << "----------FrameBuffer()--" << handle_ << std::endl;
     }
 
     FrameBuffer::FrameBuffer(unsigned int width, unsigned int height) {
@@ -25,8 +24,6 @@ namespace render{
 
         this->bindRenderBuffer(rbo_);
         this->bindTexture(texture);
-
-        std::cout << "----------FrameBuffer()--" << handle_ << std::endl;
     }
 
 
@@ -59,7 +56,6 @@ namespace render{
     }
 
     FrameBuffer::~FrameBuffer() {
-        std::cout << "~FrameBuffer()--" << handle_<< std::endl;
         glDeleteFramebuffers(1, &handle_);
     }
 

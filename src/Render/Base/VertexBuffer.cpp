@@ -18,11 +18,9 @@ VertexBuffer::VertexBuffer(std::vector<float>& vertices, std::shared_ptr<VertexL
         glEnableVertexAttribArray(i);
     }
 
-    std::cout << "----------VertexBuffer()--" << handle_ << std::endl;
 }
 
 VertexBuffer::~VertexBuffer() {
-    std::cout << "~VertexBuffer()--" << handle_ << std::endl;
     glDeleteBuffers(1, &handle_);
 }
 }

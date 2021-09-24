@@ -107,6 +107,8 @@ void RenderView::initializeGL()
 void RenderView::resizeGL(int w, int h)
 {
     m_thread->setRenderSize(w, h);
+    this->requestRender();
+    qDebug() << "resize------------------------"<< w << "h: " << h;
 }
 
 void RenderView::paintGL()
@@ -153,6 +155,7 @@ void RenderView::initRenderThread()
     context->makeCurrent(mainSurface);
 
     connect(m_thread,&render::RenderThread::imageReady, this, [this]() { update(); },Qt::QueuedConnection);
+    m_thread->setRenderSize(this->width(),this->height());
     m_thread->start();
 
     qDebug() << "GLWidget::initRenderThread() end";

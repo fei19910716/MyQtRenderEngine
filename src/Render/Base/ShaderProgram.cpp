@@ -107,7 +107,6 @@ void ShaderProgram::fromSource(std::string vertexShaderSource, std::string fragm
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
 
-    std::cout << "----------ShaderProgram()--" << handle_ << std::endl;
 }
 
 void ShaderProgram::checkCompileErrors(unsigned int shader, std::string type)
@@ -206,7 +205,6 @@ void ShaderProgram::clearColor() {
 }
 
 ShaderProgram::~ShaderProgram() {
-    std::cout << "~ShaderProgram()--" << handle_ << std::endl;
     glDeleteProgram(handle_);
 }
 }
