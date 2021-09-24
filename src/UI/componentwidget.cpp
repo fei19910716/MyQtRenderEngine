@@ -11,7 +11,7 @@
 #include <QCheckBox>
 #include <QListWidgetItem>
 
-#include "ComponentHeaderButton.h"
+#include "ComponentHeaderWidget.h"
 
 ComponentWidget::ComponentWidget(QListWidgetItem* item, render::UIComponent* component, QWidget *parent)
     : QWidget(parent),
@@ -19,13 +19,11 @@ ComponentWidget::ComponentWidget(QListWidgetItem* item, render::UIComponent* com
       item_(item)
 {
 
-    ComponentHeaderButton* m_headerButton = new ComponentHeaderButton;
-    m_headerButton->setObjectName("ComponentHeaderButton");
+    ComponentHeaderWidget* m_headerButton = new ComponentHeaderWidget;
+    m_headerButton->setObjectName("ComponentHeaderWidget");
     m_headerButton->SetTextLabel(component_->componentDescription()->label_);
     //m_sizeButton->SetImageLabel(QPixmap(":/Dialog/Resources/Collapse.png"));
-    m_headerButton->setStyleSheet("#ComponentHeaderButton{background-color:transparent}"
-                                  "#ComponentHeaderButton:hover{background-color:rgba(195,195,195,0.4)}"
-                                  "#ComponentHeaderButton:pressed{background-color:rgba(127,127,127,0.4)}");
+    m_headerButton->setStyleSheet("background-color:rgba(34,50,42,0.5)");
 
     QWidget* m_contentWidget = new QWidget;
     m_contentWidget->setParent(this);
@@ -66,7 +64,7 @@ ComponentWidget::ComponentWidget(QListWidgetItem* item, render::UIComponent* com
 
     this->setLayout(vlayout);
 
-    connect(m_headerButton, &ComponentHeaderButton::clicked, [=](bool) {
+    connect(m_headerButton, &ComponentHeaderWidget::clicked, [=](bool) {
         if (m_headerButton->collapse()) {
             m_headerButton->SetImageLabel(QPixmap(":/Dialog/Resources/Expand.png"));
             m_contentWidget->setVisible(true);
@@ -80,6 +78,8 @@ ComponentWidget::ComponentWidget(QListWidgetItem* item, render::UIComponent* com
             m_headerButton->setCollapse(true);
         }
     });
+
+    connect(m_headerButton, &ComponentHeaderWidget::removeComponent, [=](){ componentRemoved(item_,component_);});
 
 }
 

@@ -51,6 +51,20 @@ bool EntityManager::addComponentWithType(Entity *entity, render::ComponentType t
     return true;
 }
 
+bool EntityManager::removeComponentWithType(Entity *entity, render::ComponentType type) {
+    switch(type){
+        case render::ComponentType::kTriangle:
+            entity->removeComponent<render::Triangle>();
+            break;
+            case render::ComponentType::kQuad:
+                entity->removeComponent<render::Quad>();
+                break;
+                default:
+                    assert(false);
+    }
+    return true;
+}
+
 std::vector<render::Component *> EntityManager::allComponents(Entity *entity) {
     //TODO 这里需要注册所有的component
     auto com = ENTT::registry.try_get<

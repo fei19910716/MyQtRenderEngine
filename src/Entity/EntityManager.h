@@ -21,6 +21,8 @@ public:
 
     static bool addComponentWithType(Entity* entity, render::ComponentType type);
 
+    static bool removeComponentWithType(Entity* entity, render::ComponentType type);
+
     static std::vector<render::Component*> allComponents(Entity* entity);
 
 private:

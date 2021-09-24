@@ -372,7 +372,7 @@ void MainWindow::onDisplayComponents(render::Entity* entity){
         if(count == 0)
             continue;
         QListWidgetItem* item = new QListWidgetItem(ui->componentListWidget);
-        ComponentWidget* cw = new ComponentWidget(item,uiCom,this);
+        ComponentWidget* cw = new ComponentWidget(item,uiCom,ui->componentListWidget);
         item->setSizeHint(QSize(200,(count+1)*30));
         ui->componentListWidget->addItem(item);
         ui->componentListWidget->setSpacing(2);
@@ -380,11 +380,18 @@ void MainWindow::onDisplayComponents(render::Entity* entity){
         ui->componentListWidget->setItemWidget(item,cw);
 
 
-        connect(cw, &ComponentWidget::componentChanged,[=](render::Component* component){
+        connect(cw, &ComponentWidget::componentChanged,[=](render::UIComponent* component){
+            ui->renderView->requestRender();
+        });
+
+        connect(cw, &ComponentWidget::componentRemoved,[=](QListWidgetItem* item_, render::UIComponent* component){
             QTreeWidgetItem* curItem = ui->entityTreeWidget->currentItem();
             auto entity = curItem->data(0,Qt::UserRole).value<render::Entity*>();
-            
-            // this->onDisplayComponents(entity);
+
+            render::EntityManager::removeComponentWithType(entity,component->componentDescription()->type_);
+            ui->componentListWidget->removeItemWidget(item_);
+            delete item_;
+
             ui->renderView->requestRender();
         });
     }

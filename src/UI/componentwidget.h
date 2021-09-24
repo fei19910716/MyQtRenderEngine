@@ -55,7 +55,8 @@ private:
     QListWidgetItem* item_;
 
 signals:
-    void componentChanged(render::UIComponent* component);
+    void componentChanged(render::UIComponent*);
+    void componentRemoved(QListWidgetItem*, render::UIComponent*);
 
 public slots:
 };

@@ -5,12 +5,12 @@
 
 class QLabel;
 
-class ComponentHeaderButton : public QPushButton
+class ComponentHeaderWidget : public QWidget
 {
     Q_OBJECT
 public:
     /// @brief 构造方法
-    explicit ComponentHeaderButton(QWidget* parent = nullptr);
+    explicit ComponentHeaderWidget(QWidget* parent = nullptr);
 
     /// @brief SetImageLabel
     /// 设置按钮图标
@@ -22,7 +22,7 @@ public:
 
     /// @brief GetImageHandle
     /// 返回m_imageLabel
-    QLabel* GetImageHandle();
+    QPushButton* GetImageHandle();
 
     /// @brief GetImageHandle
     /// 返回m_textLabel
@@ -32,11 +32,17 @@ public:
 
     void setCollapse(bool collapse);
 
+signals:
+    void clicked(bool);
+    void removeComponent();
+
 private:
     // 按钮图标
-    QLabel* m_imageLabel;
+    QPushButton* m_imageBtn;
     // 按钮文字
     QLabel* m_textLabel;
+    // 设置按钮
+    QPushButton* m_settingBtn;
 
     bool collapse_;
 };
