@@ -186,6 +186,18 @@ void MainWindow::constructEntityPanel(){
     ui->entityTreeWidget->setHeaderHidden(true); // 隐藏header
 
     this->constructEntityTreeMenu();
+    {
+//        https://blog.csdn.net/weixin_39485901/article/details/88413789
+//        QTreeWidgetItem* item = new QTreeWidgetItem;
+//        item->setSizeHint(0,QSize(200,30));
+//        item->setBackgroundColor(0,QColor(230,230,230));
+//        QWidget* w = new QWidget;
+//        QVBoxLayout* layout1 = new QVBoxLayout;
+//        layout1->addWidget(new QLabel("hello"));
+//        w->setLayout(layout1);
+//        ui->entityTreeWidget->addTopLevelItem(item);
+//        ui->entityTreeWidget->setItemWidget(item,0,w);
+    }
 
     connect(ui->entityTreeWidget,&QTreeWidget::itemClicked,[=](QTreeWidgetItem *item){
         auto entity = item->data(0,Qt::UserRole).value<render::Entity*>();
@@ -233,6 +245,7 @@ void MainWindow::constructEntityTreeMenu(){
     connect(m_addAction,&QAction::triggered,[=]{
         auto entity = render::EntityManager::createEntity("001","GameObejct");
         QTreeWidgetItem* item = this->buildTreeItemFromEntity(entity);
+
 
         QTreeWidgetItem* root = ui->entityTreeWidget->topLevelItem(0);
         if(root == nullptr){
