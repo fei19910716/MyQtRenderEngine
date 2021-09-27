@@ -5,6 +5,7 @@
 #include "Entity/EntityManager.h"
 #include "UI/componentwidget.h"
 #include "UI/AddComponentWidget.h"
+#include "UI/renderview.h"
 
 #include <QDesktopWidget>
 #include <QWidgetAction>
@@ -15,13 +16,17 @@
 #include <QBitmap>
 #include <Components/Primitive/Quad.h>
 #include "Components/Primitive/Triangle.h"
-#include "Components/Base//Transform.h"
+#include "Components/Base/Transform.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    renderView_ = new RenderView(this);
+    renderView_->setMinimumSize(400, 205);
+    setCentralWidget(renderView_);
 
     this->initWindowSize();
 
@@ -206,7 +211,7 @@ void MainWindow::constructEntityPanel(){
         this->onDisplayComponents(entity);
 
         // render
-        ui->renderView->requestRender();
+        this->renderView_->requestRender();
     });
 }
 
@@ -224,10 +229,10 @@ void MainWindow::initWindowSize(){
 //     this->setWindowState(this->windowState() ^ Qt::WindowFullScreen); // 设置全屏显示
 //     this->showMaximized(); // 设置最大化显示
 
-    ui->centralWidget->setFixedSize(600,800);
+//    ui->centralWidget->setFixedSize(600,800);
 
     //! 设置glView的size
-    ui->renderView->setFixedSize(ui->centralWidget->width(),ui->centralWidget->height());
+    // this->renderView_->setFixedSize(ui->centralWidget->width(),ui->centralWidget->height());
 }
 
 void MainWindow::constructEntityTreeMenu(){
@@ -260,7 +265,7 @@ void MainWindow::constructEntityTreeMenu(){
         auto ent = item->data(0,Qt::UserRole).value<render::Entity*>();
         this->onDisplayComponents(ent);
         // render
-        ui->renderView->requestRender();
+        this->renderView_->requestRender();
     });
     connect(m_delAction,&QAction::triggered,[=]{
         QTreeWidgetItem* curItem = ui->entityTreeWidget->currentItem();
@@ -281,7 +286,7 @@ void MainWindow::constructEntityTreeMenu(){
 
 
         // render
-        ui->renderView->requestRender();
+        this->renderView_->requestRender();
     });
     connect(m_childAction,&QAction::triggered,[=]{
         auto entity = render::EntityManager::createEntity("001","GameObejct");
@@ -296,7 +301,7 @@ void MainWindow::constructEntityTreeMenu(){
         this->onDisplayComponents(ent);
 
         // render
-        ui->renderView->requestRender();
+        this->renderView_->requestRender();
     });
     connect(ui->entityTreeWidget, &QTreeWidget::customContextMenuRequested,this, &MainWindow::onShowTreeWidgetMenu);
 }
@@ -369,7 +374,7 @@ void MainWindow::onAddComponent(QObject* sender) {
 
     this->onDisplayComponents(entity);
     // render
-    ui->renderView->requestRender();
+    this->renderView_->requestRender();
 }
 
 void MainWindow::onDisplayComponents(render::Entity* entity){
@@ -396,7 +401,7 @@ void MainWindow::onDisplayComponents(render::Entity* entity){
 
 
         connect(cw, &ComponentWidget::componentChanged,[=](render::UIComponent* component){
-            ui->renderView->requestRender();
+            this->renderView_->requestRender();
         });
 
         connect(cw, &ComponentWidget::componentRemoved,[=](QListWidgetItem* item_, render::UIComponent* component){
@@ -407,7 +412,7 @@ void MainWindow::onDisplayComponents(render::Entity* entity){
             ui->componentListWidget->removeItemWidget(item_);
             delete item_;
 
-            ui->renderView->requestRender();
+            this->renderView_->requestRender();
         });
     }
 }

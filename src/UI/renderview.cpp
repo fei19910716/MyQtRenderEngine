@@ -102,13 +102,14 @@ void RenderView::initializeGL()
 
     glEnable( GL_BLEND );
     glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+
+    m_thread->setRenderSize(this->width(), this->height());
+    this->requestRender();
 }
 
 void RenderView::resizeGL(int w, int h)
 {
-    m_thread->setRenderSize(w, h);
-    this->requestRender();
-    qDebug() << "resize------------------------"<< w << "h: " << h;
+    glViewport(0,0,w,h);
 }
 
 void RenderView::paintGL()
@@ -136,7 +137,6 @@ void RenderView::paintGL()
 }
 
 void RenderView::requestRender() {
-    QMutexLocker locker(&lock_);
     m_thread->m_condition.wakeOne();
 }
 

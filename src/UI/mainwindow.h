@@ -10,6 +10,7 @@
 class QListWidgetItem;
 class QPushButton;
 class AddComponentWidget;
+class RenderView;
 
 namespace Ui {
 class MainWindow;
@@ -95,6 +96,8 @@ private:
     QMenu* treeContextMenu_;
 
     QMenu* treeItemContextMenu_;
+
+    RenderView* renderView_;
 
     QPushButton* addComponentBtn_;
 

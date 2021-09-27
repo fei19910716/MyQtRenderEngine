@@ -6,6 +6,8 @@
 #include "Utils/RenderUtils.h"
 #include "Render/Graph/RenderQueue.h"
 
+#include "Render/Base/Texture.h"
+
 namespace render{
 RenderThread::~RenderThread() {
 
@@ -54,8 +56,8 @@ void RenderThread::run(){
 
         // m_renderContext->functions()->glBindFramebuffer(GL_FRAMEBUFFER,m_renderEngine->renderQueue->output()->handle()); // TODO 这里需要绑定最终的输出FBO到context上
         m_renderEngine->renderQueue->output()->use();
-        // TextureBuffer::instance()->updateTexture(m_renderContext,m_renderEngine->textureToDisplay_->handle());
-        TextureBuffer::instance()->updateTexture(m_renderContext,render_width_,render_height_); // TODO 使用深拷贝texture时，createTexture必须要调用
+        TextureBuffer::instance()->updateTexture(m_renderContext,m_renderEngine->textureToDisplay_->handle());
+        // TextureBuffer::instance()->updateTexture(m_renderContext,render_width_,render_height_); // TODO 使用深拷贝texture时，createTexture必须要调用
         emit imageReady();
         m_requestRender = false;
     }
