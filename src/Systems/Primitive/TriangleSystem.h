@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Systems/Base/System.h"
-#include "Components/Primitive/Triangle.h"
 
 namespace render{
 class TriangleSystem : public System{

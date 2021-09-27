@@ -52,7 +52,6 @@ SimpleRenderer::SimpleRenderer(const std::string &vertex_shader, const std::stri
 //          shader_(nullptr),
 //          vao_(nullptr)
 {
-    initializeOpenGLFunctions();
     auto vao = std::make_shared<VertexArray>();
     auto vboLayout = std::make_shared<VertexLayout>();
     vboLayout->begin().add(Attribute::Enum::Position,3,AttribType::Enum::Float)
@@ -120,13 +119,12 @@ void SimpleRenderer::bindInput() {
 
 void SimpleRenderer::bindOutput() {
     if(output_ == nullptr){
-        output_ = std::make_shared<FrameBuffer>(true); // 绑定到屏幕
+        output_ = std::make_shared<FrameBuffer>(false); // 绑定到屏幕
     }
     output_->use();
 }
 
 void SimpleRenderer::renderInternal() {
-    std::cout << "renderer: " << this->id_ << "--renderInternal()" << std::endl;
     for(int i = 0; i < vao_.size(); i++){
         auto vao = vao_[i];
         auto shader = shader_[i];

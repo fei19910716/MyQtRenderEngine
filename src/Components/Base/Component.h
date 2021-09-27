@@ -35,12 +35,14 @@ enum ComponentPropertyType{
     kString,
     kBool,
     kColor,
-    kEnum
+    kEnum,
+    kVec3
 };
 
 enum ComponentType{
     kTriangle,
     kQuad,
+    kTransform,
 };
 
 struct ComponentPropertyDescription{

@@ -217,7 +217,7 @@ void MainWindow::initWindowSize(){
      auto screenRects = QGuiApplication::screens();
      double screenX = screenRects[0]->size().width();
      double screenY = screenRects[0]->size().height();
-     this->setGeometry(0,0,static_cast<int>(screenX)/2,static_cast<int>(screenY)/2);
+     this->setGeometry(screenX/2 - screenX/4,screenY/2 - screenY/4,static_cast<int>(screenX)/2,static_cast<int>(screenY)/2);
 
 //     this->showFullScreen(); // 设置全屏显示
 //     this->setWindowState(this->windowState() ^ Qt::WindowFullScreen); // 设置全屏显示

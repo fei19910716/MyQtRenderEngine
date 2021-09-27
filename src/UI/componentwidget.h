@@ -49,6 +49,8 @@ public:
      */
     void constructNormal(std::shared_ptr<render::ComponentPropertyDescription> property);
 
+    void constructVec3(std::shared_ptr<render::ComponentPropertyDescription> property);
+
 private:
     QVBoxLayout* mainLayout_;
     render::UIComponent* component_;
@@ -59,4 +61,5 @@ signals:
     void componentRemoved(QListWidgetItem*, render::UIComponent*);
 
 public slots:
+
 };

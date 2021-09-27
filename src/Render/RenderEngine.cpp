@@ -83,31 +83,5 @@ void RenderEngine::setRenderSize(int width,int height){
     }
     render_width_ = width;
     render_height_ = height;
-//    initializeOpenGLFunctions();
-
-//    // 创建纹理
-//    if(textureToRender_ && textureToRender_->valid()){
-//        textureToRender_->release();
-//    }
-//    textureToDisplay_ = std::make_shared<Texture>(width,height);
-//    textureToRender_ = std::make_shared<Texture>(width,height);
-//
-//    // 创建FBO
-//    if(fbo_ && fbo_->valid()){
-//        fbo_->release();
-//    }
-//    fbo_ = std::make_shared<FrameBuffer>();
-//
-//
-//    // 创建rbo
-//    if(rbo_ && rbo_->valid()){
-//        rbo_->release();
-//    }
-//    rbo_ = std::make_shared<RenderBuffer>(width,height);
-//
-//    fbo_->bindRenderBuffer(rbo_);
-//    fbo_->bindTexture(textureToRender_);
-//
-//    renderer_->setOutput(fbo_);
 }
 }

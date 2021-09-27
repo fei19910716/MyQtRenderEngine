@@ -5,6 +5,7 @@
 #include "ComponentManager.h"
 #include "Components/Primitive/Triangle.h"
 #include "Components/Primitive/Quad.h"
+#include "Components/Base/Transform.h"
 
 namespace render{
 
@@ -15,6 +16,8 @@ void ComponentManager::registerComponentDescriptions() {
     REGISTER_COMPONENT_DESCRIPTION(Triangle)
 
     REGISTER_COMPONENT_DESCRIPTION(Quad)
+
+    REGISTER_COMPONENT_DESCRIPTION(Transform)
 }
 
 std::shared_ptr<ComponentDescription> ComponentManager::componentDescriptionWithType(ComponentType type){

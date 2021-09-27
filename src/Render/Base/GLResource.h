@@ -1,8 +1,9 @@
-#ifndef CFRENDERENGINE_GLRESOURCE_H
-#define CFRENDERENGINE_GLRESOURCE_H
+#pragma once
 
 #include "Core/GL.h"
 #include <iostream>
+
+#define INVALID_HANDLE 0
 
 namespace render{
 class GLResource : public GL{
@@ -16,4 +17,4 @@ protected:
 };
 
 }
-#endif //CFRENDERENGINE_GLRESOURCE_H
+

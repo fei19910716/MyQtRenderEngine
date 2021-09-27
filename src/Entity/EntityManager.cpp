@@ -3,6 +3,7 @@
 #include <QDebug>
 
 #include "Components/Base/EntityInfo.h"
+#include "Components/Base/Transform.h"
 #include "Components/Primitive/Triangle.h"
 #include <Components/Primitive/Quad.h>
 
@@ -45,6 +46,9 @@ bool EntityManager::addComponentWithType(Entity *entity, render::ComponentType t
         case render::ComponentType::kQuad:
             entity->addComponent<render::Quad>();
             break;
+        case render::ComponentType::kTransform:
+            entity->addComponent<render::Transform>();
+            break;
         default:
             assert(false);
     }
@@ -56,11 +60,14 @@ bool EntityManager::removeComponentWithType(Entity *entity, render::ComponentTyp
         case render::ComponentType::kTriangle:
             entity->removeComponent<render::Triangle>();
             break;
-            case render::ComponentType::kQuad:
-                entity->removeComponent<render::Quad>();
-                break;
-                default:
-                    assert(false);
+        case render::ComponentType::kQuad:
+            entity->removeComponent<render::Quad>();
+            break;
+        case render::ComponentType::kTransform:
+            entity->removeComponent<render::Transform>();
+            break;
+        default:
+            assert(false);
     }
     return true;
 }
@@ -69,6 +76,7 @@ std::vector<render::Component *> EntityManager::allComponents(Entity *entity) {
     //TODO 这里需要注册所有的component
     auto com = ENTT::registry.try_get<
             render::EntityInfo,
+            render::Transform,
             render::Triangle,
             render::Quad>(entity->entity_);
 

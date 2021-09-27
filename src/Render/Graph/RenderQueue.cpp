@@ -10,7 +10,7 @@ RenderQueue::RenderQueue() {
 }
 
 RenderQueue::~RenderQueue() {
-    std::cout << "---------~RenderQueue()--------" << std::endl;
+    // std::cout << "---------~RenderQueue()--------" << std::endl;
 }
 
 void RenderQueue::addRenderer(std::shared_ptr<Renderer> renderer, std::string id) {

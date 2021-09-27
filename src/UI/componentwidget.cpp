@@ -9,9 +9,13 @@
 #include <QColorDialog>
 #include <QPushButton>
 #include <QCheckBox>
+#include <QDoubleSpinBox>
 #include <QListWidgetItem>
 
 #include "ComponentHeaderWidget.h"
+#include "Core/glm.h"
+
+Q_DECLARE_METATYPE(glm::vec3)
 
 ComponentWidget::ComponentWidget(QListWidgetItem* item, render::UIComponent* component, QWidget *parent)
     : QWidget(parent),
@@ -48,6 +52,9 @@ ComponentWidget::ComponentWidget(QListWidgetItem* item, render::UIComponent* com
                 break;
             case render::ComponentPropertyType::kEnum:
                 constructEnum(property);
+                break;
+            case render::ComponentPropertyType::kVec3:
+                constructVec3(property);
                 break;
             default:
                 constructNormal(property);
@@ -95,15 +102,15 @@ void ComponentWidget::constructBool(std::shared_ptr<render::ComponentPropertyDes
     checkBox->setChecked(value.toBool());
     checkBox->setEnabled(property->editable_);
 
-    connect(checkBox,&QCheckBox::stateChanged,[=](int state){
-        component_->setProperty(propertyName,(state == Qt::Checked));
-        emit componentChanged(component_);
-    });
-
     QHBoxLayout* hLayout = new QHBoxLayout;
     hLayout->addWidget(uiName);
     hLayout->addWidget(checkBox);
     mainLayout_->addLayout(hLayout);
+
+    connect(checkBox,&QCheckBox::stateChanged,[=](int state){
+        component_->setProperty(propertyName,(state == Qt::Checked));
+        emit componentChanged(component_);
+    });
 }
 
 void ComponentWidget::constructNormal(std::shared_ptr<render::ComponentPropertyDescription> property){
@@ -174,4 +181,52 @@ void ComponentWidget::constructEnum(std::shared_ptr<render::ComponentPropertyDes
     hLayout->addWidget(uiName);
     hLayout->addWidget(comBox);
     mainLayout_->addLayout(hLayout);
+}
+
+void ComponentWidget::constructVec3(std::shared_ptr<render::ComponentPropertyDescription> property){
+    QLabel* uiName = new QLabel(property->label_);
+    uiName->setFixedWidth(80);
+
+    // 拿到component存储的值
+    QVariant value = component_->property(property->name_.c_str());
+    glm::vec3 vec3 = value.value<glm::vec3>();
+
+    QHBoxLayout* layout = new QHBoxLayout;
+    QLabel* label_x = new QLabel("x");
+    QDoubleSpinBox* line_x = new QDoubleSpinBox;
+    line_x->setFixedWidth(60);
+    line_x->setSingleStep(0.1);
+    line_x->setValue(vec3.x);
+    QLabel* label_y = new QLabel("y");
+    QDoubleSpinBox* line_y = new QDoubleSpinBox;
+    line_y->setValue(vec3.y);
+    line_y->setSingleStep(0.1);
+    line_y->setFixedWidth(60);
+    QLabel* label_z = new QLabel("z");
+    QDoubleSpinBox* line_z = new QDoubleSpinBox;
+    line_z->setValue(vec3.z);
+    line_z->setSingleStep(0.1);
+    line_z->setFixedWidth(60);
+
+    layout->addWidget(uiName);
+    layout->addWidget(label_x);
+    layout->addWidget(line_x);
+    layout->addWidget(label_y);
+    layout->addWidget(line_y);
+    layout->addWidget(label_z);
+    layout->addWidget(line_z);
+
+
+    mainLayout_->addLayout(layout);
+
+    auto fun = [=](double value){
+        auto propertyName = property->name_.c_str();
+        component_->setProperty(propertyName,QVariant::fromValue(glm::vec3(value,line_y->value(),line_z->value())));
+        emit componentChanged(component_);
+    };
+
+    connect(line_x,static_cast<void (QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),fun);
+    connect(line_y,static_cast<void (QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),fun);
+    connect(line_z,static_cast<void (QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),fun);
+
 }
