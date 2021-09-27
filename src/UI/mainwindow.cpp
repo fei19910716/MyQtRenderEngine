@@ -15,6 +15,7 @@
 #include <QBitmap>
 #include <Components/Primitive/Quad.h>
 #include "Components/Primitive/Triangle.h"
+#include "Components/Base//Transform.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -327,6 +328,7 @@ MainWindow::~MainWindow()
 QTreeWidgetItem *MainWindow::buildTreeItemFromEntity(render::Entity* entity)
 {
     QTreeWidgetItem* item = new QTreeWidgetItem();
+    entity->addComponent<render::Transform>();
 
     auto metaInfo = entity->component<render::EntityInfo>();
     item->setData(0,Qt::UserRole,QVariant::fromValue<render::Entity*>(entity));

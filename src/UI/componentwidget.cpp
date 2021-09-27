@@ -221,7 +221,7 @@ void ComponentWidget::constructVec3(std::shared_ptr<render::ComponentPropertyDes
 
     auto fun = [=](double value){
         auto propertyName = property->name_.c_str();
-        component_->setProperty(propertyName,QVariant::fromValue(glm::vec3(value,line_y->value(),line_z->value())));
+        component_->setProperty(propertyName,QVariant::fromValue(glm::vec3(line_x->value(),line_y->value(),line_z->value())));
         emit componentChanged(component_);
     };
 
