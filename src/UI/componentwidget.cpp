@@ -230,3 +230,22 @@ void ComponentWidget::constructVec3(std::shared_ptr<render::ComponentPropertyDes
     connect(line_z,static_cast<void (QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),fun);
 
 }
+
+void ComponentWidget::constructFloat(std::shared_ptr<render::ComponentPropertyDescription> property) {
+    QLabel* uiName = new QLabel(property->label_);
+    uiName->setFixedWidth(80);
+
+    // 拿到component存储的值
+    QVariant value = component_->property(property->name_.c_str());
+
+    QHBoxLayout* layout = new QHBoxLayout;
+    QDoubleSpinBox* spinBox = new QDoubleSpinBox;
+    spinBox->setFixedWidth(60);
+    spinBox->setSingleStep(0.1);
+    spinBox->setValue(value.toFloat());
+
+    layout->addWidget(uiName);
+    layout->addWidget(spinBox);
+
+    mainLayout_->addLayout(layout);
+}

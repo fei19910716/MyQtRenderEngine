@@ -25,7 +25,7 @@ namespace render{
         static std::shared_ptr<ComponentDescription> MakeComponentDescription(){
             auto transform_ = std::make_shared<ComponentDescription>();
             transform_->type_ = ComponentType::kTransform;
-            transform_->group_ = ComponentGroup::kPrimitive;
+            transform_->group_ = ComponentGroup::kBase;
             transform_->label_ = "Transform";
             transform_->isHiddenInList_ = false;
 

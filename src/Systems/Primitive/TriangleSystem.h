@@ -6,8 +6,6 @@ namespace render{
 class TriangleSystem : public System{
 public:
 
-    TriangleSystem();
-
     std::shared_ptr<Renderer> update(entt::registry &registry, float dt) override;
 
 private:

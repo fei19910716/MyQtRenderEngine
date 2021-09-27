@@ -4,8 +4,10 @@
 
 #include "Components/Base/EntityInfo.h"
 #include "Components/Base/Transform.h"
+#include "Components/Base/Camera.h"
 #include "Components/Primitive/Triangle.h"
-#include <Components/Primitive/Quad.h>
+#include "Components/Primitive/Cube.h"
+#include "Components/Primitive/Quad.h"
 
 namespace render{
 
@@ -46,8 +48,14 @@ bool EntityManager::addComponentWithType(Entity *entity, render::ComponentType t
         case render::ComponentType::kQuad:
             entity->addComponent<render::Quad>();
             break;
+        case render::ComponentType::kCube:
+            entity->addComponent<render::Cube>();
+            break;
         case render::ComponentType::kTransform:
             entity->addComponent<render::Transform>();
+            break;
+        case render::ComponentType::kCamera:
+            entity->addComponent<render::Camera>();
             break;
         default:
             assert(false);
@@ -63,8 +71,14 @@ bool EntityManager::removeComponentWithType(Entity *entity, render::ComponentTyp
         case render::ComponentType::kQuad:
             entity->removeComponent<render::Quad>();
             break;
+        case render::ComponentType::kCube:
+            entity->removeComponent<render::Cube>();
+            break;
         case render::ComponentType::kTransform:
             entity->removeComponent<render::Transform>();
+            break;
+        case render::ComponentType::kCamera:
+            entity->removeComponent<render::Camera>();
             break;
         default:
             assert(false);
@@ -77,7 +91,9 @@ std::vector<render::Component *> EntityManager::allComponents(Entity *entity) {
     auto com = ENTT::registry.try_get<
             render::EntityInfo,
             render::Transform,
+            render::Camera,
             render::Triangle,
+            render::Cube,
             render::Quad>(entity->entity_);
 
     std::vector<render::Component*> components;

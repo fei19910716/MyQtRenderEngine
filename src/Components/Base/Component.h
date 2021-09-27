@@ -28,6 +28,7 @@ auto x##_ptr = std::make_pair(ComponentType::k##x,render::x::MakeComponentDescri
 allComponentDescriptions_.insert(x##_ptr);
 
 enum ComponentGroup{
+    kBase,
     kPrimitive,
 };
 
@@ -36,13 +37,16 @@ enum ComponentPropertyType{
     kBool,
     kColor,
     kEnum,
-    kVec3
+    kVec3,
+    kFloat
 };
 
 enum ComponentType{
     kTriangle,
     kQuad,
+    kCube,
     kTransform,
+    kCamera,
 };
 
 struct ComponentPropertyDescription{

@@ -1,6 +1,5 @@
 #include "QuadSystem.h"
 #include <QDebug>
-#include <QFile>
 
 #include "stb_image_write.h"
 #include "Render/Base/ShaderProgram.h"
@@ -10,6 +9,8 @@
 
 #include "Render/Renderer/SimpleRenderer.h"
 #include "Utils/RenderUtils.h"
+
+#include "Components/Primitive/Quad.h"
 
 namespace render{
 std::shared_ptr<Renderer> QuadSystem::update(entt::registry &registry, float dt) {
@@ -54,9 +55,5 @@ std::shared_ptr<Renderer> QuadSystem::update(entt::registry &registry, float dt)
         return renderer_;
     }
     return nullptr;
-}
-
-QuadSystem::QuadSystem(): System() {
-
 }
 }

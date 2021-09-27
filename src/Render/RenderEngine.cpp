@@ -12,6 +12,7 @@
 
 #include "Systems/Primitive/TriangleSystem.h"
 #include "Systems/Primitive/QuadSystem.h"
+#include "Systems/Primitive/CubeSystem.h"
 
 namespace render{
 
@@ -19,6 +20,7 @@ RenderEngine::RenderEngine():textureToRender_(nullptr),textureToDisplay_(nullptr
 
     m_systems.push_back(std::make_shared<QuadSystem>());
     m_systems.push_back(std::make_shared<TriangleSystem>());
+    // m_systems.push_back(std::make_shared<CubeSystem>());
 }
 
 void RenderEngine::update(float dt){

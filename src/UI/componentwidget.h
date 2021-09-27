@@ -51,6 +51,8 @@ public:
 
     void constructVec3(std::shared_ptr<render::ComponentPropertyDescription> property);
 
+    void constructFloat(std::shared_ptr<render::ComponentPropertyDescription> property);
+
 private:
     QVBoxLayout* mainLayout_;
     render::UIComponent* component_;
