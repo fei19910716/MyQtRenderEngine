@@ -56,6 +56,9 @@ ComponentWidget::ComponentWidget(QListWidgetItem* item, render::UIComponent* com
             case render::ComponentPropertyType::kVec3:
                 constructVec3(property);
                 break;
+            case render::ComponentPropertyType::kFloat:
+                constructFloat(property);
+                break;
             default:
                 constructNormal(property);
                 break;
@@ -239,8 +242,8 @@ void ComponentWidget::constructFloat(std::shared_ptr<render::ComponentPropertyDe
     QVariant value = component_->property(property->name_.c_str());
 
     QHBoxLayout* layout = new QHBoxLayout;
+    layout->setAlignment(Qt::AlignLeft);
     QDoubleSpinBox* spinBox = new QDoubleSpinBox;
-    spinBox->setFixedWidth(60);
     spinBox->setSingleStep(0.1);
     spinBox->setValue(value.toFloat());
 
@@ -248,4 +251,12 @@ void ComponentWidget::constructFloat(std::shared_ptr<render::ComponentPropertyDe
     layout->addWidget(spinBox);
 
     mainLayout_->addLayout(layout);
+
+    auto fun = [=](double value){
+        auto propertyName = property->name_.c_str();
+        component_->setProperty(propertyName,spinBox->value());
+        emit componentChanged(component_);
+    };
+
+    connect(spinBox,static_cast<void (QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),fun);
 }

@@ -109,7 +109,7 @@ void SimpleRenderer::bindInput() {
 
     for(int i = 0; i < input_.size(); i++){
         if (input_[i] == nullptr) continue;
-        Utils::saveFBOToImage( input_[i]->handle(),QSize(render_width_,render_height_), "D:\\GameEngine\\CFRenderEngine\\" + this->id() + "__bindInput.png", QOpenGLContext::currentContext());
+        //Utils::saveFBOToImage( input_[i]->handle(),QSize(render_width_,render_height_), "D:\\GameEngine\\CFRenderEngine\\" + this->id() + "__bindInput.png", QOpenGLContext::currentContext());
 
         std::string textureKey = DEFAULT_INPUT_TEXTURE_NAME;
         textureKey += std::to_string(i);
@@ -133,9 +133,9 @@ void SimpleRenderer::renderInternal() {
         shader->use();
         vao->use();
 
-        GLCALL(glDrawElements(GL_TRIANGLES, vao->vertexCount(), GL_UNSIGNED_INT, 0);)
+        GLCALL(glDrawElements(GL_TRIANGLE_STRIP, vao->vertexCount(), GL_UNSIGNED_INT, 0);)
         GLCALL(glFinish();)
-        Utils::saveFBOToImage( output_->handle(),QSize(render_width_,render_height_), "D:\\GameEngine\\CFRenderEngine\\" + shader->id_ + ".png", QOpenGLContext::currentContext());
+        //Utils::saveFBOToImage( output_->handle(),QSize(render_width_,render_height_), "D:\\GameEngine\\CFRenderEngine\\" + shader->id_ + ".png", QOpenGLContext::currentContext());
     }
 
 }

@@ -104,6 +104,7 @@ std::shared_ptr<FrameBuffer> RenderGraph::renderByLayer() {
                 node->renderer()->setOutput(output_);
             }
             // 渲染
+            node->renderer()->setRenderSize(render_width_,render_height_);
             node->renderer()->render();
             intermediateOutput = node->renderer()->output();
 

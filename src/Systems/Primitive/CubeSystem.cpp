@@ -6,6 +6,7 @@
 
 #include "Components/Primitive/Cube.h"
 #include "Components/Base/Transform.h"
+#include "Components/Base/Camera.h"
 
 #include "Render/Renderer/SimpleRenderer.h"
 #include "Render/Base/VertexArray.h"
@@ -17,10 +18,11 @@
 namespace render{
     std::shared_ptr<Renderer> CubeSystem::update(entt::registry &registry, float dt){
 
-        auto view = registry.view<Cube,Transform>();
+        auto view = registry.view<Cube,Transform,Camera>();
         for(auto entity: view) {
             auto &cube = view.get<Cube>(entity);
             auto &transform = view.get<Transform>(entity);
+            auto &camera = view.get<Camera>(entity);
 
             if(!cube.enable()) continue;
 
@@ -51,17 +53,24 @@ namespace render{
 
 
             shaderProgram->use();
-            glm::mat4 trans = glm::mat4(1.0f);
 
+            glm::mat4 projection = glm::perspective(glm::radians(camera.fov()), camera.aspect(), camera.nearPlane(), camera.farPlane());
+            shaderProgram->setMat4("m_projection", projection);
+
+            glm::mat4 view = glm::lookAt(glm::vec3(0.0f, 0.0f, 3.0f),
+                                         glm::vec3(0.0f, 0.0f, 0.0f),
+                                         glm::vec3(0.0f, 1.0f, 0.0f));
+            shaderProgram->setMat4("m_view", view);
+
+            glm::mat4 trans = glm::mat4(1.0f);
             trans = glm::translate(trans, transform.position());
             trans = glm::rotate(trans, glm::radians(transform.rotation().x), glm::vec3(1.0, 0.0, 0.0));
             trans = glm::rotate(trans, glm::radians(transform.rotation().y), glm::vec3(0.0, 1.0, 0.0));
             trans = glm::rotate(trans, glm::radians(transform.rotation().z), glm::vec3(0.0, 0.0, 1.0));
             trans = glm::scale(trans, transform.scale());
-            shaderProgram->setVec3("u_color",glm::vec3(0.6,0.3,0.2));
             shaderProgram->setMat4("m_model",trans);
 
-
+            shaderProgram->setVec3("u_color",glm::vec3(0.6,0.3,0.2));
             return renderer_;
         }
         return nullptr;
