@@ -7,6 +7,7 @@
 #include <QVariant>
 
 #include <optional>
+#include <unordered_map>
 
 namespace render{
 
@@ -30,6 +31,11 @@ allComponentDescriptions_.insert(x##_ptr);
 enum ComponentGroup{
     kBase,
     kPrimitive,
+};
+
+const std::unordered_map<ComponentGroup, QString> const ComponentGroupToString = {
+        std::make_pair(kBase ,"Base"),
+        std::make_pair(kPrimitive ,"Primitive")
 };
 
 enum ComponentPropertyType{

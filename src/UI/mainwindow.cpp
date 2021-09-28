@@ -150,9 +150,11 @@ void MainWindow::constructInspectorPanel(){
             "}"
             "QPushButton::menu-indicator{image:none}");
 
-    addComponentWidget_ = new AddComponentWidget();
+    auto width = addComponentBtn_->width()*1.5;
+    auto height = addComponentBtn_->height()*5;
+    addComponentWidget_ = new AddComponentWidget(width,height);
     addComponentWidget_->installEventFilter(this);
-    addComponentWidget_->setFixedSize(addComponentBtn_->width()*1.5, addComponentBtn_->height()*5);
+    addComponentWidget_->setFixedSize(width, height);
 
     connect(addComponentBtn_,&QPushButton::clicked,[=](){
         addComponentWidget_->show(); // show调用时，会收到QEvent::Show事件，然后由this先处理

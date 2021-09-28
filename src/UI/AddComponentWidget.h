@@ -5,6 +5,8 @@
 
 #include "Components/Base/Component.h"
 
+class QListWidget;
+
 /**
  * 自定义添加Component的窗口，当点击添加组件按钮时在按钮上方弹出该窗口，点击其他区域时关闭窗口
  */
@@ -16,7 +18,7 @@ public:
         render::ComponentType type_;
     };
 
-    explicit AddComponentWidget(QWidget *parent = nullptr);
+    explicit AddComponentWidget(int width, int height, QWidget *parent = nullptr);
 
 protected:
     virtual void paintEvent(QPaintEvent *e);
@@ -31,5 +33,11 @@ signals:
     void componentClicked(QObject* sender);
 
 public slots:
+
+
+private:
+    int width_;
+    int height_;
+    QListWidget* listWidget_;
 
 };
