@@ -14,7 +14,7 @@
 
 #include "Utils/RenderUtils.h"
 #include "Core/glm.h"
-#include "Core/CameraManager.h"
+#include "Render/Common/CameraManager.h"
 
 #include "Components/Primitive/Triangle.h"
 #include "Components/Base/Transform.h"
@@ -79,11 +79,11 @@ std::shared_ptr<Renderer> TriangleSystem::update(entt::registry &registry, float
 
         if(!camera.enable()) continue;
 
-        glm::mat4 projection = glm::perspective(glm::radians(camera.fov() + CameraManager::instance()->Zoom), camera.aspect(), camera.near(), camera.far());
+        glm::mat4 projection = glm::perspective(glm::radians(camera.fov()), camera.aspect(), camera.near(), camera.far());
         shaderProgram->setMat4("m_projection", projection);
 
 
-        glm::mat4 view = CameraManager::instance()->GetViewMatrix();
+        auto view = CameraManager::Inst()->GetViewMatrix();
         shaderProgram->setMat4("m_view", view);
 
         shaderProgram->setVec3("u_color",glm::vec3(0.6,0.3,0.2));

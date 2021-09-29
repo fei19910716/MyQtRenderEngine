@@ -6,15 +6,11 @@
 #include "Utils/RenderUtils.h"
 #include "Render/Common/engine_common.h"
 #include "Core/entityx.h"
-#include "Core/CameraManager.h"
-#include "Components/Base/Camera.h"
-
-
-Q_DECLARE_METATYPE(glm::vec2)
+#include "Render/Common/CameraManager.h"
 
 RenderView::RenderView(QWidget *parent) : QOpenGLWidget(parent)
 {
-
+    setFocusPolicy(Qt::StrongFocus);
 }
 
 RenderView::~RenderView(){
@@ -137,34 +133,85 @@ void RenderView::initRenderThread()
 }
 
 void RenderView::mousePressEvent(QMouseEvent *event) {
-    lastX = event->x();
-    lastY = event->y();
+    isDown = true;
+    float x = event->x();
+    float y = event->y();
+    mx = x;
+    my = y;
+
+    update();
 }
 
 void RenderView::mouseReleaseEvent(QMouseEvent *event) {
+    isDown = false;
 
 }
 
 void RenderView::mouseMoveEvent(QMouseEvent *event) {
 
-    if(event->buttons() & Qt::LeftButton){
-        float xoffset = lastX - event->x();
-        float yoffset = event->y() - lastY; // reversed since y-coordinates go from bottom to top
+    if(isDown)
+    {
+        float x = event->x();
+        float y = event->y();
 
-        lastX = event->x();
-        lastY = event->y();
+        ay += (x - mx) / 5.0f;
+        mx = x;
 
+        ax += (y - my) / 5.0f;
+        my = y;
 
-        CameraManager::instance()->ProcessMouseMovement(xoffset, yoffset);
-        this->requestRender();
-    } else{ // 旋转
+        // clamp(ax,-70,70)
+        if(ax >= 70)
+            ax = 70;
+        else if(ax <= -70)
+            ax = -70;
 
+        render::CameraManager::Inst()->SetRotateXY(ax, ay);
+        render::CameraManager::Inst()->UpdateViewMatrix();
+        update();
     }
+
+    this->requestRender();
 }
 
 void RenderView::wheelEvent(QWheelEvent *event) {
-    float delta = event->delta() > 0 ? 5.0f : -5.0f;
-    CameraManager::instance()->ProcessMouseScroll(delta);
+    float numDegrees = (float)event->delta() / 50;
+    render::CameraManager::Inst()->Zoom(numDegrees);
+    update();
     this->requestRender();
+}
 
+void RenderView::keyPressEvent(QKeyEvent *event) {
+    const float step = 0.6f;
+    if(event->key() == Qt::Key_W)
+    {
+        render::CameraManager::Inst()->MoveFront(step);
+        update();
+    }
+    else if(event->key() == Qt::Key_S)
+    {
+        render::CameraManager::Inst()->MoveBack(step);
+        update();
+    }
+    else if(event->key() == Qt::Key_A)
+    {
+        render::CameraManager::Inst()->MoveLeft(step);
+        update();
+    }
+    else if(event->key() == Qt::Key_D)
+    {
+        render::CameraManager::Inst()->MoveRight(step);
+        update();
+    }
+    else if(event->key() == Qt::Key_Q)
+    {
+        render::CameraManager::Inst()->MoveUp(step);
+        update();
+    }
+    else if(event->key() == Qt::Key_E)
+    {
+        render::CameraManager::Inst()->MoveDown(step);
+        update();
+    }
+    this->requestRender();
 }

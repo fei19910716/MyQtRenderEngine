@@ -207,5 +207,9 @@ void ShaderProgram::clearColor() {
 ShaderProgram::~ShaderProgram() {
     glDeleteProgram(handle_);
 }
+
+void ShaderProgram::setMat4(const std::string &name, const QMatrix4x4 &mat) {
+    glUniformMatrix4fv(glGetUniformLocation(handle_, name.c_str()), 1, GL_FALSE, mat.data());
+}
 }
 

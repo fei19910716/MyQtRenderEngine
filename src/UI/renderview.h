@@ -45,6 +45,9 @@ public:
 
     void requestRender();
 
+protected:
+    void keyPressEvent(QKeyEvent *event) override;
+
 public:
     /**
      * UI线程的context，子线程需要与之share
@@ -80,8 +83,8 @@ public:
 
     QMutex lock_;
 
-    bool firstMouse = true;
-    float lastX,lastY;
+    float mx = 0,my = 0,ax = 0,ay = 0;
+    bool isDown = false;
 };
 
 #endif // RENDERVIEW_H

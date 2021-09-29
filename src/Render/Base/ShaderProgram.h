@@ -10,6 +10,8 @@
 #include <sstream>
 #include <iostream>
 
+#include <QMatrix4x4>
+
 #include "GLResource.h"
 #include "Core/glm.h"
 
@@ -56,6 +58,8 @@ public:
     void setMat3(const std::string &name, const glm::mat3 &mat) ;
 // ------------------------------------------------------------------------
     void setMat4(const std::string &name, const glm::mat4 &mat) ;
+
+    void setMat4(const std::string &name, const QMatrix4x4 &mat) ;
 
     void setTexture2D(const std::string &name, int textureUnit);
 
