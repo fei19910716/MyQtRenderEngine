@@ -53,7 +53,7 @@ std::shared_ptr<Renderer> QuadSystem::update(entt::registry &registry, float dt)
 
         shaderProgram->use();
 
-        glm::mat4 projection = glm::perspective(glm::radians(camera.fov()), camera.aspect(), camera.nearPlane(), camera.farPlane());
+        glm::mat4 projection = glm::perspective(glm::radians(camera.fov()), camera.aspect(), camera.near(), camera.far());
         shaderProgram->setMat4("m_projection", projection);
 
         glm::mat4 view = glm::lookAt(glm::vec3(0.0f, 0.0f, 3.0f),

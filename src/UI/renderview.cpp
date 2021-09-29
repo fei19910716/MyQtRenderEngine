@@ -1,41 +1,16 @@
 #include "renderview.h"
 #include <QDebug>
+#include <QMouseEvent>
 
 #include "Entity/EntityManager.h"
 #include "Utils/RenderUtils.h"
+#include "Render/Common/engine_common.h"
+#include "Core/entityx.h"
+#include "Core/CameraManager.h"
+#include "Components/Base/Camera.h"
 
-static float vertices[] = {
-//     ---- 位置 ----           - 纹理坐标 -
-        -1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
-        -1.0f, 1.0f,  0.0f, 0.0f, 1.0f,
-        1.0f,  1.0f,  0.0f, 1.0f, 1.0f,
-        1.0f,  -1.0f, 0.0f, 1.0f, 0.0f,
-};
 
-static unsigned int indices[] = {
-        0, 1, 2, 2, 3, 0,
-};
-
-static const char* vertexShaderSource =
-        "#version 330 core\n"
-        "layout (location = 0) in vec3 aPos;\n"
-        "layout (location = 1) in vec2 aTexCoord;\n"
-        "out vec2 TexCoord;\n"
-        "void main()\n"
-        "{\n"
-        "    gl_Position = vec4(aPos, 1.0);\n"
-        "    TexCoord = aTexCoord;\n"
-        "}\n";
-static const char* fragmentShaderSource =
-        "#version 330 core\n"
-        "out vec4 FragColor;\n"
-
-        "in vec2 TexCoord;\n"
-        "uniform sampler2D ourTexture;\n"
-        "void main()\n"
-        "{\n"
-        "    FragColor = texture(ourTexture, TexCoord);\n"
-        "}\n";
+Q_DECLARE_METATYPE(glm::vec2)
 
 RenderView::RenderView(QWidget *parent) : QOpenGLWidget(parent)
 {
@@ -69,8 +44,8 @@ void RenderView::initializeGL()
     glViewport(0, 0, width(), height());
 
     m_program=new QOpenGLShaderProgram;
-    m_program->addShaderFromSourceCode(QOpenGLShader::Vertex,vertexShaderSource);
-    m_program->addShaderFromSourceCode(QOpenGLShader::Fragment,fragmentShaderSource);
+    m_program->addShaderFromSourceCode(QOpenGLShader::Vertex,Utils::readShaderSource(":/shader/simple/simple.vert").c_str());
+    m_program->addShaderFromSourceCode(QOpenGLShader::Fragment,Utils::readShaderSource(":/shader/simple/simple.frag").c_str());
     m_program->link();
 
     glGenVertexArrays(1,&m_vao);
@@ -81,10 +56,10 @@ void RenderView::initializeGL()
     glGenBuffers(1, &ebo);
 
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * render::SIMPLE_VERTEX.size(), render::SIMPLE_VERTEX.data(), GL_STATIC_DRAW);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(float) * render::SIMPLE_INDEX.size(), render::SIMPLE_INDEX.data(), GL_STATIC_DRAW);
 
     // position attribute
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
@@ -159,4 +134,37 @@ void RenderView::initRenderThread()
     m_thread->start();
 
     qDebug() << "GLWidget::initRenderThread() end";
+}
+
+void RenderView::mousePressEvent(QMouseEvent *event) {
+    lastX = event->x();
+    lastY = event->y();
+}
+
+void RenderView::mouseReleaseEvent(QMouseEvent *event) {
+
+}
+
+void RenderView::mouseMoveEvent(QMouseEvent *event) {
+
+    if(event->buttons() & Qt::LeftButton){
+        float xoffset = lastX - event->x();
+        float yoffset = event->y() - lastY; // reversed since y-coordinates go from bottom to top
+
+        lastX = event->x();
+        lastY = event->y();
+
+
+        CameraManager::instance()->ProcessMouseMovement(xoffset, yoffset);
+        this->requestRender();
+    } else{ // 旋转
+
+    }
+}
+
+void RenderView::wheelEvent(QWheelEvent *event) {
+    float delta = event->delta() > 0 ? 5.0f : -5.0f;
+    CameraManager::instance()->ProcessMouseScroll(delta);
+    this->requestRender();
+
 }

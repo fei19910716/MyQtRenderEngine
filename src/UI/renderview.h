@@ -25,8 +25,22 @@ public slots:
 
 public:
     void initializeGL();
+
+protected:
+    void wheelEvent(QWheelEvent *event) override;
+
+public:
     void resizeGL(int w, int h);
     void paintGL();
+
+protected:
+    void mousePressEvent(QMouseEvent *event) override;
+
+    void mouseReleaseEvent(QMouseEvent *event) override;
+
+    void mouseMoveEvent(QMouseEvent *event) override;
+
+public:
     void initRenderThread();
 
     void requestRender();
@@ -65,6 +79,9 @@ public:
     render::RenderThread* m_thread=nullptr;
 
     QMutex lock_;
+
+    bool firstMouse = true;
+    float lastX,lastY;
 };
 
 #endif // RENDERVIEW_H
