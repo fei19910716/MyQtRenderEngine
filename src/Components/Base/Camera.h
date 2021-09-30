@@ -17,8 +17,6 @@ namespace render{
         COMPONENT_PROPERTY(float, Aspect, aspect, 1.0)
         COMPONENT_PROPERTY(float, Near, near, 0.1)
         COMPONENT_PROPERTY(float, Far, far, 100.0)
-
-        COMPONENT_PROPERTY(glm::vec2, Delta,delta,glm::vec2(0.0f,0.0f))
     public:
         Camera():UIComponent(){
             REGISTER_COMPONENT_AND_PROPERTY_DESCRIPTION(Camera)
