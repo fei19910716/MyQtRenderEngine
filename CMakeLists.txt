@@ -71,10 +71,10 @@ add_subdirectory(vendor)
 add_executable(${target} ${CORE_SOURCE_FILES} ${QRC_SOURCES})
 
 # add_custom_target(CopyResources
-#     COMMAND cp -r assets/package/windows/resources/ ${CMAKE_CURRENT_BINARY_DIR}/resources/
-#     COMMAND cp -r assets/package/windows/vendor/ ${CMAKE_CURRENT_BINARY_DIR}/resources/
-#     COMMAND cp -r assets/package/shared/ ${CMAKE_CURRENT_BINARY_DIR}/resources/
-#     COMMAND cp -r vendor/LightRenderer/assets/ ${CMAKE_CURRENT_BINARY_DIR}/resources/assets/ # 拷贝AEKit相关资源
+#     COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/external/glut/lib/freeglut.dll ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}${CMAKE_BUILD_TYPE}
+#     COMMAND ${CMAKE_COMMAND} -E xcopy assets/package/windows/vendor/ ${CMAKE_CURRENT_BINARY_DIR}/resources/
+#     COMMAND ${CMAKE_COMMAND} -E xcopy assets/package/shared/ ${CMAKE_CURRENT_BINARY_DIR}/resources/
+#     COMMAND ${CMAKE_COMMAND} -E xcopy vendor/LightRenderer/assets/ ${CMAKE_CURRENT_BINARY_DIR}/resources/assets/ # 拷贝AEKit相关资源
 #     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/)
 
 # set(CMAKE_BUILD_TYPE "Debug")
