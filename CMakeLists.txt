@@ -70,21 +70,6 @@ add_subdirectory(vendor)
 
 add_executable(${target} ${CORE_SOURCE_FILES} ${QRC_SOURCES})
 
-# add_custom_target(CopyResources
-#     COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/external/glut/lib/freeglut.dll ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}${CMAKE_BUILD_TYPE}
-#     COMMAND ${CMAKE_COMMAND} -E xcopy assets/package/windows/vendor/ ${CMAKE_CURRENT_BINARY_DIR}/resources/
-#     COMMAND ${CMAKE_COMMAND} -E xcopy assets/package/shared/ ${CMAKE_CURRENT_BINARY_DIR}/resources/
-#     COMMAND ${CMAKE_COMMAND} -E xcopy vendor/LightRenderer/assets/ ${CMAKE_CURRENT_BINARY_DIR}/resources/assets/ # 拷贝AEKit相关资源
-#     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/)
-
-# set(CMAKE_BUILD_TYPE "Debug")
-
-# message(STATUS "dddddd${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_RUNTIME_OUTPUT_DIRECTORY}${CMAKE_BUILD_TYPE}/${target}.exe")
-# add_custom_command(TARGET ${target} POST_BUILD
-#     COMMAND cd ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_RUNTIME_OUTPUT_DIRECTORY}${CMAKE_BUILD_TYPE}
-#     COMMAND ${QT_ABSOLUTE_PATH}/msvc2017_64/bin/windeployqt.exe ${target}.exe
-# )
-
 # 指定头文件路径，否则会提示在ui_mainwindow.cpp中找不到提升的class
 target_include_directories(${target} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src/UI)
 target_include_directories(${target} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
